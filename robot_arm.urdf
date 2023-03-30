@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot name="robot_arm">
+
+  <link name="link1">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="link2">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint1" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin rpy="0 0 0" xyz="0 0 0.5"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+</robot>
