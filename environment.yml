@@ -1,0 +1,12 @@
+name: robotica-dev
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8.16
+  - pip
+  - pybullet
+  - scipy
+  - numpy
+  - matplotlib
+  - numpngw
+  - ipython
