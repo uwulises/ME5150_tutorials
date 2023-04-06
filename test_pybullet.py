@@ -9,7 +9,7 @@ useFixedBase = True #Para que el brazo no flote o se desplace
 # Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
 robotId = p.loadURDF("kr6_2.urdf", basePosition=[0, 0, 0],useFixedBase=useFixedBase)
-
+tableId = p.loadURDF("table/table.urdf", basePosition=[1.5, 0, 0],useFixedBase=useFixedBase)
 # Set gravity and time step
 p.setGravity(0, 0, -9.81)
 p.setTimeStep(1 / 240)
