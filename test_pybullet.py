@@ -15,7 +15,7 @@ p.setGravity(0, 0, -9.81)
 p.setTimeStep(1 / 240)
 
 
-# Get the joint info for the first joint of the robot arm
+# Get the joint info for the joints of the robot arm
 jointInfo0 = p.getJointInfo(robotId, 0)
 jointInfo1 = p.getJointInfo(robotId, 1)
 jointInfo2 = p.getJointInfo(robotId, 2)
@@ -23,7 +23,7 @@ jointInfo3 = p.getJointInfo(robotId, 3)
 jointInfo4 = p.getJointInfo(robotId, 4)
 jointInfo5 = p.getJointInfo(robotId, 5)
 
-# Add a slider to the GUI for controlling the position of the first joint
+# Add a slider to the GUI for controlling the position of the joints
 sliderJointId0= jointInfo0[0]
 sliderJointId1= jointInfo1[0]
 sliderJointId2= jointInfo2[0]
@@ -52,7 +52,7 @@ while True:
 
     joints= [joint1Pos, joint2Pos, joint3Pos, joint4Pos, joint5Pos, joint6Pos]
 
-    # Set the position of all joints of the robot arm
+    # Set the position of the robot arm
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions=joints)
 
     # effectorId = p.getBodyInfo(robotId)[1]
