@@ -8,5 +8,3 @@ dependencies:
   - scipy
   - numpy
   - matplotlib
-  - numpngw
-  - ipython
