@@ -1,12 +1,12 @@
 import pybullet as p
 import pybullet_data
 import time
-
+import numpy as np
 # Initialize PyBullet
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 useFixedBase = True #Para que el brazo no flote o se desplace
-# Load UR5 robot arm and table
+# Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
 robotId = p.loadURDF("kr6_2.urdf", basePosition=[0, 0, 0],useFixedBase=useFixedBase)
 
@@ -15,7 +15,7 @@ p.setGravity(0, 0, -9.81)
 p.setTimeStep(1 / 240)
 
 
-# Get the joint info for the joints of the robot arm
+# Get the joints info
 jointInfo0 = p.getJointInfo(robotId, 0)
 jointInfo1 = p.getJointInfo(robotId, 1)
 jointInfo2 = p.getJointInfo(robotId, 2)
@@ -41,7 +41,6 @@ p.addUserDebugParameter("Joint 6 Position", -3.14, 3.14, 0)
 # Run the simulation
 while True:
     p.stepSimulation()
-
     # Get the current position of the slider
     joint1Pos = p.readUserDebugParameter(sliderJointId0)
     joint2Pos = p.readUserDebugParameter(sliderJointId1)
@@ -55,15 +54,5 @@ while True:
     # Set the position of the robot arm
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions=joints)
 
-    # effectorId = p.getBodyInfo(robotId)[1]
-    # effectorPos, effectorOrn = p.getBasePositionAndOrientation(effectorId)
-    # p.addUserDebugLine(effectorPos, [0, 0, 1], lineWidth=5, lifeTime=0)
-    # p.addUserDebugText(f"Effector position: {effectorPos}", [0, 0, 3], lifeTime=0)
-
-
     # Step the simulation
     p.stepSimulation()
-
-# Disconnect from PyBullet
-
-p.disconnect()
