@@ -8,19 +8,12 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 useFixedBase = True #Para que el brazo no flote o se desplace
 # Load UR5 robot arm and table
 planeId = p.loadURDF("plane.urdf")
-robotId = p.loadURDF("kr6_2.urdf", [0, 0, 0],useFixedBase=useFixedBase)
+robotId = p.loadURDF("kr6_2.urdf", basePosition=[0, 0, 0],useFixedBase=useFixedBase)
 
 # Set gravity and time step
 p.setGravity(0, 0, -9.81)
 p.setTimeStep(1 / 240)
 
-# Move the arm to the starting position
-p.resetJointState(robotId, 0, -0.5)
-p.resetJointState(robotId, 1, -1.0)
-p.resetJointState(robotId, 2, 1.0)
-p.resetJointState(robotId, 3, -1.57)
-p.resetJointState(robotId, 4, 1.57)
-p.resetJointState(robotId, 5, 0.0)
 
 # Get the joint info for the first joint of the robot arm
 jointInfo0 = p.getJointInfo(robotId, 0)
@@ -48,9 +41,7 @@ p.addUserDebugParameter("Joint 6 Position", -3.14, 3.14, 0)
 # Run the simulation
 while True:
     p.stepSimulation()
-    # Move the arm towards the object
-    #jointPos = p.calculateInverseKinematics(robotId, 6, targetPos)
-    #p.setJointMotorControlArray(robotId, [0, 1, 2, 3, 4, 5], p.POSITION_CONTROL, jointPos)
+
     # Get the current position of the slider
     joint1Pos = p.readUserDebugParameter(sliderJointId0)
     joint2Pos = p.readUserDebugParameter(sliderJointId1)
@@ -61,8 +52,14 @@ while True:
 
     joints= [joint1Pos, joint2Pos, joint3Pos, joint4Pos, joint5Pos, joint6Pos]
 
-    # Set the position of the first joint of the robot arm
+    # Set the position of all joints of the robot arm
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions=joints)
+
+    # effectorId = p.getBodyInfo(robotId)[1]
+    # effectorPos, effectorOrn = p.getBasePositionAndOrientation(effectorId)
+    # p.addUserDebugLine(effectorPos, [0, 0, 1], lineWidth=5, lifeTime=0)
+    # p.addUserDebugText(f"Effector position: {effectorPos}", [0, 0, 3], lifeTime=0)
+
 
     # Step the simulation
     p.stepSimulation()
