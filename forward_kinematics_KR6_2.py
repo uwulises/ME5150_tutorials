@@ -2,6 +2,7 @@ import pybullet as p
 import pybullet_data
 import time
 import numpy as np
+
 # Initialize PyBullet
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -24,19 +25,23 @@ jointInfo4 = p.getJointInfo(robotId, 4)
 jointInfo5 = p.getJointInfo(robotId, 5)
 
 # A1 -> A6
-path_KR6_2 = [[0,0,0,0,0,0],[1.57,0,0,0,0,0],[-1.57,0,0,0,0,0],[0,0,0,0,0,0]]
+path_KR6_2 = [[0,0,0,0,0,0], [1.57,0,0,0,0,0], [-1.57,0,0,0,0,0], [0,0,0,0,0,0]]
+
+# Ciclos por instrucción
+rate = 400
 
 # Run the simulation
 while True:
     p.stepSimulation()
-    
-    for i in range(len(path_KR6_2)):
-        j = i*240
-        while (j%240 != 0):
 
+    for i in range(len(path_KR6_2)):
+        j = i*rate
+
+        while (j/(rate*(i+1)) <= 1):
             # Set the position of the robot arm
             p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions=path_KR6_2[i])
             # Step the simulation
             p.stepSimulation()
+            
             j+=1
 
