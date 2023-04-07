@@ -15,7 +15,7 @@ tableId = p.loadURDF("table/table.urdf",
 gripperId = p.loadURDF("gripper_simple.urdf", basePosition=[
                        2, 0, 2])
 
-joint_axis_gripper = [0, 1, 1]
+joint_axis_gripper = [0, 0, 0]
 gripper_parentFramePosition = [0, 0, 0]
 gripper_childFramePosition = [0, 0.01, 0]
 gripper_childFrameOrientation = p.getQuaternionFromEuler([0,0,-np.pi/2])
