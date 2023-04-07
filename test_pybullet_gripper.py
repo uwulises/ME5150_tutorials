@@ -12,14 +12,13 @@ robotId = p.loadURDF("kr6_2.urdf", basePosition=[
                      0, 0, 0], useFixedBase=useFixedBase)
 tableId = p.loadURDF("table/table.urdf",
                      basePosition=[1.5, 0, 0], useFixedBase=useFixedBase)
-gripperId = p.loadURDF("gripper_simple.urdf", basePosition=[
-                       2, 0, 2])
+gripperId = p.loadURDF("gripper_simple.urdf")
 
 joint_axis_gripper = [0, 0, 0]
 gripper_parentFramePosition = [0, 0, 0]
 gripper_childFramePosition = [0, 0.01, 0]
 gripper_childFrameOrientation = p.getQuaternionFromEuler([0,0,-np.pi/2])
-joint_constraint = p.createConstraint(robotId, 5, gripperId, -1, p.JOINT_FIXED, joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
+joint_constraint = p.createConstraint(robotId, 5, childBodyUniqueId= gripperId, childLinkIndex= -1, jointType= p.JOINT_FIXED, jointAxis= joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
                                       childFramePosition=gripper_childFramePosition, childFrameOrientation=gripper_childFrameOrientation)
 # Set gravity and time step
 p.setGravity(0, 0, -9.81)
