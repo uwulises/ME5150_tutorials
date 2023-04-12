@@ -14,8 +14,8 @@ p.setTimeStep(1 / 240)
 
 # Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
-robotId = p.loadURDF("kr6_2.urdf", basePosition=[0, 0, 0], useFixedBase = useFixedBase)
-tableId = p.loadURDF("table/table.urdf", basePosition=[1.5, 0, 0], useFixedBase = useFixedBase)
+robotId = p.loadURDF("kr6_2.urdf", basePosition = [0, 0, 0], useFixedBase = useFixedBase)
+tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBase = useFixedBase)
 
 # Create sliders for X, Y, Z, A, B, and C
 x_slider = p.addUserDebugParameter("X", 0, 2, 1)
