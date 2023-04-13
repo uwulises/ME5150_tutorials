@@ -17,6 +17,9 @@ planeId = p.loadURDF("plane.urdf")
 robotId = p.loadURDF("kr6_2.urdf", basePosition = [0, 0, 0], useFixedBase = useFixedBase)
 tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBase = useFixedBase)
 
+# tool coordinate position
+n_tcf = 5
+
 # Create sliders for X, Y, Z, A, B, and C
 x_slider = p.addUserDebugParameter("X", 0, 2, 1)
 y_slider = p.addUserDebugParameter("Y", -1, 1, 0)
@@ -39,9 +42,10 @@ while True:
     xyz = [x,y,z]
     # target orientation
     ori = p.getQuaternionFromEuler([a,b,c])
+    
     # calculate joint target
-    target = p.calculateInverseKinematics(robotId, 5, targetPosition = xyz, targetOrientation = ori)
-    p.stepSimulation()
+    target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz, targetOrientation = ori)
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions = target)
+    p.stepSimulation()
     time.sleep(0.1)
     
