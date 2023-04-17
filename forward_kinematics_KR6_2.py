@@ -28,16 +28,16 @@ jointInfo5 = p.getJointInfo(robotId, 5)
 path_KR6_2 = [[0,0,0,0,0,0], [1.57,0,0,0,0,0], [-1.57,0,0,0,0,0], [0,0,0,0,0,0]]
 
 # Ciclos por instrucción
-rate = 400
+rate = 2000
 
 # Run the simulation
 while True:
     p.stepSimulation()
 
     for i in range(len(path_KR6_2)):
-        j = i*rate
-
-        while (j/(rate*(i+1)) <= 1):
+        j = 1
+        while (j/rate <= 1):
+            
             # Set the position of the robot arm
             p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions=path_KR6_2[i])
             # Step the simulation
