@@ -26,17 +26,17 @@ gripper_childFrameOrientation = p.getQuaternionFromEuler([0,-np.pi/2,0])
 joint_constraint = p.createConstraint(robotId, 5, childBodyUniqueId= punteroId, childLinkIndex= -1, jointType= p.JOINT_FIXED, jointAxis= joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
                                       childFramePosition=gripper_childFramePosition, childFrameOrientation=gripper_childFrameOrientation)
 
-# --------- CARGAR PELOTA DE FUTBOL Y POSICIONAR EN EL CENTRO DE LA MESA ------------
+# ----- CARGAR PELOTA DE FUTBOL Y POSICIONAR EN Y = 0 SOBRE LA MESA ------------
 # Considera lo siguiente:
 # nombre urdf: soccerball.urdf // escala: globalScaling = 0.2 // no debe estar fijo en el espacio
 
 
 
-#------ CREAR UNA SERIE DE POSES QUE REALICEN UNA CIRCUNFERENCIA EN EL PLANO DE LA MESA, SIN TOCAR EL CUBO, MINIMO 20 POSE ----------
+# ------ CREAR UNA SERIE DE POSES QUE REALICEN UNA CIRCUNFERENCIA EN EL PLANO DE LA MESA, SIN TOCAR LA PELOTA, MINIMO 20 POSES ----------
 # Pose array
 path_KR6_2 = [[1, 0, 1, 0, 1.57, 0], [1.05, 0, 1, 0, 2, 0]]
 
-#------ FIN TAREA -------
+# ------ FIN TAREA -------
 
 # tool coordinate position
 n_tcf = 5
