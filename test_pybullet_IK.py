@@ -14,7 +14,7 @@ p.setTimeStep(1 / 240)
 
 # Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
-robotId = p.loadURDF("kr6_2.urdf", basePosition = [0, 0, 0], useFixedBase = useFixedBase)
+robotId = p.loadURDF("brazos/kuka_model/kr6_2.urdf", basePosition = [0, 0, 0], useFixedBase = useFixedBase)
 tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBase = useFixedBase)
 
 # tool coordinate position
@@ -38,6 +38,7 @@ while True:
     a = p.readUserDebugParameter(a_slider)
     b = p.readUserDebugParameter(b_slider)
     c = p.readUserDebugParameter(c_slider)
+    
     # target position
     xyz = [x,y,z]
     # target orientation
