@@ -2,7 +2,7 @@ import pybullet as p
 import pybullet_data
 import time
 import numpy as np
-from camera import get_img_rgba, pose_object
+from camera import get_img_rgba, pose_object, detect_borders
 import cv2
 # Initialize PyBullet
 physicsClient = p.connect(p.GUI)
@@ -50,7 +50,8 @@ while True:
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions = target)
     imagen_RGB = get_img_rgba()
 
-    cv2.imshow('image',pose_object(imagen_RGB))
+    cv2.imshow('Pose object',pose_object(imagen_RGB))
+    cv2.imshow('Edges',detect_borders(imagen_RGB))
     cv2.waitKey(1)
     p.stepSimulation()
     
