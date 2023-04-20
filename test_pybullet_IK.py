@@ -46,4 +46,6 @@ while True:
     # calculate joint target
     target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz, targetOrientation = ori)
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions = target)
+    p.stepSimulation()
+    
     
