@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<robot name="tweezer">
+  <link name="base_link">
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
+
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://tweezer/meshes/visual/tweezer_baselink.stl"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://tweezer/meshes/collision/tweezer_baselink.stl"/>
+      </geometry>
+    </collision>
+     <contact>
+    	<friction_anchor/>
+    	   <lateral_friction value="1.0"/>
+    </contact>
+
+  </link>
+
+
+  <link name="phalanx1">
+
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
+  <contact>
+    	<friction_anchor/>
+    	   <lateral_friction value="1.0"/>
+    </contact>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.04 0 0"/>
+      <geometry>
+        <mesh filename="package://tweezer/meshes/visual/tweezer_patita.stl"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin rpy="0 0 0" xyz="0.04 0 0"/>
+      <geometry>
+        <mesh filename="package://tweezer/meshes/collision/tweezer_patita.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+
+  <link name="phalanx2">
+      <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
+
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.04 0 0"/>
+      <geometry>
+        <mesh filename="package://tweezer/meshes/visual/tweezer_patita.stl"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.04 0 0"/>
+      <geometry>
+        <mesh filename="package://tweezer/meshes/collision/tweezer_patita.stl"/>
+      </geometry>
+    </collision>
+     <contact>
+    	<friction_anchor/>
+    	   <lateral_friction value="1.0"/>
+    </contact>
+  </link>
+
+  <joint name="joint1" type="prismatic">
+    <parent link="base_link"/>
+    <child link="phalanx1"/>
+    <origin xyz="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.03" upper="0" effort="10" velocity="10"/>
+  </joint>
+
+  <joint name="joint2" type="prismatic">
+    <parent link="base_link"/>
+    <child link="phalanx2"/>
+    <origin xyz="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="0.03" effort="10" velocity="10"/>
+  </joint>
+
+</robot>
