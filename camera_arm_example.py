@@ -4,6 +4,7 @@ import time
 import numpy as np
 from camera import get_img_rgba, pose_object, detect_borders
 import cv2
+
 # Initialize PyBullet
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -17,6 +18,7 @@ p.setTimeStep(1 / 240)
 planeId = p.loadURDF("plane.urdf")
 robotId = p.loadURDF("brazos/kuka_model/kr6_2.urdf", basePosition = [0, 0, 0], useFixedBase = useFixedBase)
 tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBase = useFixedBase)
+cubeId = p.loadURDF("objetos/cubo.urdf", basePosition = [1.2, 0, 0.7])
 
 # tool coordinate position
 n_tcf = 5
