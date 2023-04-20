@@ -16,18 +16,23 @@ p.setTimeStep(1 / 240)
 planeId = p.loadURDF("plane.urdf")
 robotId = p.loadURDF("brazos/kuka_model/kr6_2.urdf", basePosition = [0, 0, 0], useFixedBase = useFixedBase)
 tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBase = useFixedBase)
-punteroId = p.loadURDF("efectores/puntero/puntero.urdf")
-tweezerId = p.loadURDF("efectores/tweezer/tweezer.urdf", globalScaling=0.01)
-"""
+tweezerId = p.loadURDF("efectores/tweezer/tweezer.urdf", basePosition = [1.5, 0, 1])
+cubeId = p.loadURDF("objetos/cubo.urdf", basePosition = [1.2, 0, 0.7])
+
+#kuka_gripper_id = p.loadSDF("gripper/wsg50_one_motor_gripper_new_free_base.sdf")[0]
+time.sleep(1)
 
 # Join gripper to robot
 joint_axis_gripper = [0, 0, 0]
 gripper_parentFramePosition = [0, 0, 0]
-gripper_childFramePosition = [0, 0, -0.01]
-gripper_childFrameOrientation = p.getQuaternionFromEuler([0,-np.pi/2,0])
-joint_constraint = p.createConstraint(robotId, 5, childBodyUniqueId= tweezerId, childLinkIndex= -1, jointType= p.JOINT_FIXED, jointAxis= joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
-                                      childFramePosition=gripper_childFramePosition, childFrameOrientation=gripper_childFrameOrientation)
-
+gripper_childFramePosition = [0, 0, -0.036]
+gripper_childFrameOrientation = p.getQuaternionFromEuler([-np.pi/2,-np.pi/2,0])
+joint_constraint = p.createConstraint(robotId, 5, childBodyUniqueId = tweezerId, childLinkIndex= -1, jointType= p.JOINT_FIXED, jointAxis= joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
+                                     childFramePosition=gripper_childFramePosition, childFrameOrientation=gripper_childFrameOrientation)
+"""joint_constraint = p.createConstraint(robotId, 5, childBodyUniqueId = tweezerId, childLinkIndex= 0, jointType= p.JOINT_FIXED, jointAxis= joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
+                                     childFramePosition=gripper_childFramePosition, childFrameOrientation=gripper_childFrameOrientation)
+kuka_cid2 = p.createConstraint(robotId, 5 , tweezerId, 0, jointType=p.JOINT_GEAR, jointAxis=[1,1,1], parentFramePosition=[0,0,0], childFramePosition=gripper_childFramePosition)
+p.changeConstraint(kuka_cid2, gearRatio=-1, erp=0.5, relativePositionTarget=0, maxForce=100)
 """
 # tool coordinate position
 n_tcf = 5
@@ -42,7 +47,7 @@ c_slider = p.addUserDebugParameter("C", -3.14, 3.14, 0)
 
 # Create button for end effector activation
 
-effector_slider = p.addUserDebugParameter("End effector", 0, 1, 0.5)
+effector_slider = p.addUserDebugParameter("End effector", -0.03, 0, 0)
 
 # Run the simulation
 while True:
@@ -64,6 +69,5 @@ while True:
     # calculate joint target
     target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz, targetOrientation = ori)
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions = target)
+    p.setJointMotorControlArray(tweezerId, range(2), p.POSITION_CONTROL, targetPositions = [eff, -eff])
     p.stepSimulation()
-    time.sleep(0.1)
-    
