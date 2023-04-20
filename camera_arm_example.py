@@ -2,6 +2,8 @@ import pybullet as p
 import pybullet_data
 import time
 import numpy as np
+from camera import get_img_rgba, pose_object
+import cv2
 # Initialize PyBullet
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -46,4 +48,9 @@ while True:
     # calculate joint target
     target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz, targetOrientation = ori)
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions = target)
+    imagen_RGB = get_img_rgba()
+
+    cv2.imshow('image',pose_object(imagen_RGB))
+    cv2.waitKey(1)
+    p.stepSimulation()
     
