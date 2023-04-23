@@ -19,7 +19,6 @@ tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBas
 tweezerId = p.loadURDF("efectores/tweezer/tweezer.urdf", basePosition = [1.5, 0, 1])
 cubeId = p.loadURDF("objetos/cubo.urdf", basePosition = [1.2, 0, 0.7])
 
-#kuka_gripper_id = p.loadSDF("gripper/wsg50_one_motor_gripper_new_free_base.sdf")[0]
 time.sleep(1)
 
 # Join gripper to robot
@@ -29,11 +28,7 @@ gripper_childFramePosition = [0, 0, -0.036]
 gripper_childFrameOrientation = p.getQuaternionFromEuler([-np.pi/2,-np.pi/2,0])
 joint_constraint = p.createConstraint(robotId, 5, childBodyUniqueId = tweezerId, childLinkIndex= -1, jointType= p.JOINT_FIXED, jointAxis= joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
                                      childFramePosition=gripper_childFramePosition, childFrameOrientation=gripper_childFrameOrientation)
-"""joint_constraint = p.createConstraint(robotId, 5, childBodyUniqueId = tweezerId, childLinkIndex= 0, jointType= p.JOINT_FIXED, jointAxis= joint_axis_gripper, parentFramePosition=gripper_parentFramePosition,
-                                     childFramePosition=gripper_childFramePosition, childFrameOrientation=gripper_childFrameOrientation)
-kuka_cid2 = p.createConstraint(robotId, 5 , tweezerId, 0, jointType=p.JOINT_GEAR, jointAxis=[1,1,1], parentFramePosition=[0,0,0], childFramePosition=gripper_childFramePosition)
-p.changeConstraint(kuka_cid2, gearRatio=-1, erp=0.5, relativePositionTarget=0, maxForce=100)
-"""
+
 # tool coordinate position
 n_tcf = 5
 
