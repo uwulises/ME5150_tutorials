@@ -19,6 +19,8 @@ tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBas
 tweezerId = p.loadURDF("efectores/tweezer/tweezer.urdf", basePosition = [1.5, 0, 1])
 cubeId = p.loadURDF("objetos/cubo.urdf", basePosition = [1.2, 0, 0.7])
 
+tweezerId = p.loadURDF("efectores/scara/tweezer/tweezer.urdf", basePosition = [1.5, 0, 2])
+
 time.sleep(1)
 
 # Join gripper to robot

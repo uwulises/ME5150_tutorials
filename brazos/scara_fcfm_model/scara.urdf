@@ -90,7 +90,8 @@
 
     <link name="zeta">
         <inertial>
-            <origin xyz="-0.011881 0.12518 -0.016578" rpy="0 0 0" />
+            <!--origin xyz="-0.011881 0.12518 -0.016578" rpy="0 0 0" /-->
+            <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="2" />
             <inertia ixx="0.0028275" ixy="3.4325E-06" ixz="2.9995E-10" iyy="0.00010967" iyz="9.9633E-12" izz="0.0028174" />
         </inertial>
@@ -103,12 +104,12 @@
                 <color rgba="0.75294 0.75294 0.75294 1" />
             </material>
         </visual>
-        <collision>
+        <!--collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <mesh filename="package://scara_fcfm_model/meshes/z_corrected.dae" />
             </geometry>
-        </collision>
+        </collision-->
     </link>
 
     <joint name="pris" type="prismatic">
