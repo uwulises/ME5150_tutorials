@@ -1,48 +1,90 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Load the image
-img = cv2.imread('Vision/shapes.jpg')
+image = cv2.imread("Vision/taylor.jpg")
+class ImageProcessing:
+    def __init__(self, image):
+        self.img = image
+        self.gray_img = None
+        self.binary_image = None
+        self.rgb_image = None
+        self.scaled_image = None
+        self.rotated_image = None
+        self.equalized_image = None
+        self.dilated_image = None
+        self.eroded_image = None
 
-print(img)
+    def showImg(self, image, label_img = 'Image'):
+        cv2.imshow(label_img, image)
+    
+    def saveImage(self, image, path_img = 'image.png'):
+        cv2.imwrite(path_img, image)
+    
+    def displayColorSpaces(self):
+        self.showImg(self.img, 'Original Image')
+        self.showImg(self.rgb_image, 'RGB Image')
+        self.showImg(self.gray_image, 'Grayscale Image')
+        self.showImg(self.binary_image, 'Binary Image')
+
+        # Wait for a key press and then close the windows
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    def toGray(self):
+        self.gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        _, self.binary_image = cv2.threshold(self.gray_image, 128, 255, cv2.THRESH_BINARY)
+        return self.binary_image
+
+    def toRGB(self):
+        self.rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        return self.rgb_image
+
+    def toGrayScale(self):
+        self.gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return self.gray_image
 
 
-# Convert the image to grayscale
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# Apply Gaussian blur to the grayscale image
-blur = cv2.GaussianBlur(gray, (7, 7), 0)
+    #--------------------------------- Preprocesamiento ------------------
 
-# Apply Canny edge detection to the blurred image
-edges = cv2.Canny(blur, 100, 200)
+    def scaling(self, width, height):
+        # Resize the image
+        self.scaled_image = cv2.resize(self.img, (width, height))
+        return self.scaled_image
 
-cv2.imshow('shapes', edges)
-cv2.waitKey(0)
+    def rotation(self, ang = 45):
+        # Get the image dimensions
+        height, width = self.img.shape[:2]
 
-# Find contours in the edges image
-contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        # Calculate the rotation matrix
+        rotation_matrix = cv2.getRotationMatrix2D((width / 2, height / 2), ang, 1)
 
-# Draw a green bounding box around each detected contour
-for cnt in contours:
-    area = cv2.contourArea(cnt)
-    if area > 150:  # Ignore small contours
-        approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt, True), True)
-        if len(approx) == 3:
-            cv2.drawContours(img, [cnt], 0, (0, 255, 0), 2)
-        elif len(approx) == 4:
-            x, y, w, h = cv2.boundingRect(cnt)
-            aspect_ratio = float(w) / h
-            if aspect_ratio >= 0.95 and aspect_ratio <= 1.05:
-                cv2.drawContours(img, [cnt], 0, (255, 255, 0), 2)
-            else: 
-                cv2.drawContours(img, [cnt], 0, (255, 150, 0), 2)
-        elif len(approx) == 5:
-            cv2.drawContours(img, [cnt], 0, (0, 255, 0), 2)
-        else:
-            cv2.drawContours(img, [cnt], 0, (255, 0, 255), 2)
+        # Perform the rotation
+        self.rotated_image = cv2.warpAffine(self.img, rotation_matrix, (width, height))
+        return self.rotated_image
 
-# displaying the image after drawing contours
-cv2.imshow('shapes', img)
-  
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    def equalizate(self):
+        self.equalized_image = cv2.equalizeHist(self.gray_image)
+        return self.equalized_image
+
+    def dilate(self, k = 5):
+        # Define the kernel size and shape for dilatation
+        kernel = np.ones((k, k), np.uint8)
+
+        # Perform dilatation on the image
+        self.dilated_image = cv2.dilate(self.img, kernel, iterations=1)
+        return self.dilated_image
+
+    def erosion(self, k = 5):
+        # Define the kernel size and shape for erosion
+        kernel = np.ones((k, k), np.uint8)
+
+        # Perform erosion on the image
+        self.eroded_image = cv2.erode(self.img, kernel, iterations=1)
+        return self.eroded_image
+
+image_proc = ImageProcessing(image)
+dilate = image_proc.dilate()
+image_proc(dilate, 'Dilated Image')
