@@ -12,11 +12,10 @@ if not cap.isOpened():
 # Read the first frame
 ret, frame = cap.read()
 
-
-def frame_processing(img):
+def frame_processing(frame):
         #------------  ADD YOUR CODE HERE   -----------
-        new_frame = np.zeros([720,1280,3])
-        
+        new_frame = np.zeros([720, 1280, 3])
+
 
         #------------ END -----------
         return new_frame
