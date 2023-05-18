@@ -17,18 +17,25 @@ def frame_processing(frame):
     # Transformación de BGR a HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    # Aplicar dilatación a imagen hsv, con un kernel a definir
-    dilated_image = np.zeros(hsv.shape)
+    #lower_blue = np.array([90, 100, 160])
+    #upper_blue = np.array([120, 255, 255])
+    lower_blue = (90, 100, 160)
+    upper_blue = (120, 255, 255)
 
-    # Definir colores límites (inferior y superior) para la máscara
-    lower_blue = np.array([0, 0, 0])
-    upper_blue = np.array([180, 255, 255])
+    # Aplicar dilatación a imagen hsv, con un kernel a definir
+    k=13 
+    
+    # Define the kernel size and shape for dilatation
+    kernel = np.ones((k, k), np.uint8)
+
+    # Perform dilatation on the image
+    dilated_image = cv2.dilate(hsv, kernel, iterations=1)
 
     # Generar máscara a partir de rango de colores
     mask_blue = cv2.inRange(dilated_image, lower_blue, upper_blue)
 
     # Encontrar contornos de pitufos en la máscara
-    contours = []
+    contours, _ = cv2.findContours(mask_blue, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Crear bounding boxes rectangulares para áreas de cierto tamaño
     for cnt in contours:
@@ -36,7 +43,6 @@ def frame_processing(frame):
         if area > 500:  # Ignore small contours
             x, y, w, h = cv2.boundingRect(cnt)
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            
     new_frame = frame
     return new_frame
 
