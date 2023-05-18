@@ -23,7 +23,7 @@ def frame_processing(frame):
     upper_blue = (120, 255, 255)
 
     # Aplicar dilatación a imagen hsv, con un kernel a definir
-    k=13 
+    k = 13 
     
     # Define the kernel size and shape for dilatation
     kernel = np.ones((k, k), np.uint8)
