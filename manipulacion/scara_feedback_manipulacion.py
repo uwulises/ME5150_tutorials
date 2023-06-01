@@ -67,7 +67,7 @@ while True:
 
     target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz)
     p.setJointMotorControlArray(robotId, range(3), p.POSITION_CONTROL, targetPositions = target)
-    print(xyz , center_segm_id)
+    print("Posicion robot: {} , Centro en px objeto: {}".format(xyz, center_segm_id))
     cv2.circle(img_RGB, (center_segm_id[0], center_segm_id[1]), radius=3, color=(0,0,255), thickness=-1)
     cv2.imshow("Seg", img_RGB)
     cv2.waitKey(1)
