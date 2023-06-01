@@ -17,7 +17,7 @@ p.setTimeStep(1 / 240)
 planeId = p.loadURDF("plane.urdf")
 tableId = p.loadURDF("table/table.urdf", basePosition = [0.3, 0, 0], useFixedBase = useFixedBase)
 robotId = p.loadURDF("../brazos/scara_fcfm_model/scara.urdf", basePosition = [0, 0, 0.63], useFixedBase = useFixedBase)
-cubeId = p.loadURDF("../objetos/cubo.urdf", basePosition = [0.6, 0.2, 0.61])
+cubeId = p.loadURDF("../objetos/cubo.urdf", basePosition = [0.6, 0.2, 0.7])
 # tool coordinate position
 n_tcf = 2
 
@@ -59,7 +59,7 @@ while True:
     center_segm_id = find_object_center(img_segmentada, cubeId)
 
     
-    # calculate joint target
+    # calculate joint target (center + offset pixel & world offset)
     target_obj_x = (center_segm_id[0]-120)/215 + 1 
     target_obj_y = -(center_segm_id[1]-120)/215
 
@@ -67,6 +67,8 @@ while True:
 
     target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz)
     p.setJointMotorControlArray(robotId, range(3), p.POSITION_CONTROL, targetPositions = target)
+
+    #handle position point over rgb image
     print("Posicion robot: {} , Centro en px objeto: {}".format(xyz, center_segm_id))
     cv2.circle(img_RGB, (center_segm_id[0], center_segm_id[1]), radius=3, color=(0,0,255), thickness=-1)
     cv2.imshow("Seg", img_RGB)
