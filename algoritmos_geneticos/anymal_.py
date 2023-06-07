@@ -10,20 +10,20 @@ LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]  # Replace with actual joint na
 LEG_JOINT_NUMBERS = [1,2,3]
 
 MAX_JOINT_FORCE = 80  # Maximum joint force applied by the motors
-NUM_STEPS = 100
+NUM_STEPS = 10
 # NEAT parameters
 NUM_INPUTS = 3  # Replace with the number of inputs based on your quadruped's state
 #NUM_OUTPUTS = NUM_LEGS * len(LEG_JOINT_NAMES)  # Each leg has joint control
 NUM_OUTPUTS = 3  # Each leg has joint control
 # NEAT training loop
-NUM_GENERATIONS = 1000
+NUM_GENERATIONS = 2
 # Quadruped environment class
 class QuadrupedEnv:
     def __init__(self):
         p.connect(p.GUI)  # or p.DIRECT for headless mode
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.loadURDF("plane.urdf")  # Load the ground plane
-        self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.8])
+        self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.8], useFixedBase = True) #Fixed
         p.setGravity(0, 0, -9.81)
         self.joint_ids = []
         # for leg_id in range(NUM_LEGS):
@@ -34,36 +34,33 @@ class QuadrupedEnv:
 
     def reset(self):
         # Reset the simulation
-        p.resetSimulation()
-        #p.loadURDF("plane.urdf")  # Load the ground plane
-        #self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.8])
         p.setGravity(0, 0, -9.81)
+        #TODO modify to call every joint
+        p.resetJointState(self.quadruped,jointIndex=1,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=2,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=3,targetValue=0)
 
-    def step(self, joint_angles):
-        # for joint_id in self.joint_ids:
-        #     p.setJointMotorControl2(
-        #         self.quadruped,
-        #         joint_id,
-        #         p.POSITION_CONTROL,
-        #         targetPosition=joint_angles[joint_id],
-        #         force=MAX_JOINT_FORCE,
-        #     )
-        p.setJointMotorControl2(self.quadruped,1,p.POSITION_CONTROL, targetPosition=joint_angles[0],force=MAX_JOINT_FORCE)
-        p.setJointMotorControl2(self.quadruped,2,p.POSITION_CONTROL, targetPosition=joint_angles[1],force=MAX_JOINT_FORCE)
-        p.setJointMotorControl2(self.quadruped,3,p.POSITION_CONTROL, targetPosition=joint_angles[2],force=MAX_JOINT_FORCE)
+    def step(self, joint_angles=[0,0,0]):
+        #TODO modify to call every joint
+        p.setJointMotorControl2(self.quadruped,jointIndex=1,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[0],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=2,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[1],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=3,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[2],force=MAX_JOINT_FORCE)
         p.stepSimulation()
         time.sleep(1.0 / 240.0)  # Control the simulation speed
 
     def get_quadruped_state(self):
         # Retrieve and return the state of the quadruped (e.g., position, orientation, velocities)
         # Implement this based on your specific needs
-      
-        return [0,0,0]
+
+        #TODO 
+
+        return [random.random(),random.random(),random.random()]
 
     def get_fitness(self):
         # Compute and return the fitness score based on the performance of the quadruped
         # Implement this based on your specific objectives
-
+        
+        #TODO 
 
         return -1
 
@@ -102,8 +99,7 @@ quadruped_env = QuadrupedEnv()
 
 for generation in range(NUM_GENERATIONS):
     print(f"Generation {generation + 1}/{NUM_GENERATIONS}")
-    _, best_genome = population.run(eval_genomes, 1)
-
+    best_genome = population.run(eval_genomes, 1)
     # Evaluate the best genome on a final test run
     quadruped_env.reset()
     quadruped_state = quadruped_env.get_quadruped_state()
@@ -114,14 +110,13 @@ for generation in range(NUM_GENERATIONS):
         joint_angles = outputs[:NUM_OUTPUTS]
         quadruped_env.step(joint_angles)
         quadruped_state = quadruped_env.get_quadruped_state()
-
-    # Save the best genome if desired
-    best_genome.save("best_genome.txt")
+    # # Save the best genome if desired
+    # TODO Save the best genome 
 
 # Use the best genome for control
-# Load the best genome
-best_genome = neat.Checkpointer.restore_checkpoint("best_genome.txt")
-best_net = neat.nn.FeedForwardNetwork.create(best_genome, config)
+# Load the best genome #TODO
+#best_genome = neat.Checkpointer.restore_checkpoint("best_genome.txt")
+#best_net = neat.nn.FeedForwardNetwork.create(best_genome, config)
 
 # Quadruped control loop using the best genome
 quadruped_env.reset()
