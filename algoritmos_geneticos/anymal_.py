@@ -12,7 +12,7 @@ LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]  # Replace with actual joint na
 LEG_JOINT_NUMBERS = [1,2,3,6,7,8]
 
 MAX_JOINT_FORCE = 80  # Maximum joint force applied by the motors
-NUM_STEPS = 30
+NUM_STEPS = 10
 # NEAT parameters
 NUM_INPUTS = 12  # Replace with the number of inputs based on your quadruped's state
 #NUM_OUTPUTS = NUM_LEGS * len(LEG_JOINT_NAMES)  # Each leg has joint control
@@ -21,7 +21,7 @@ NUM_OUTPUTS = 12  # Each leg has joint control
 NUM_GENERATIONS = 100
 # Quadruped environment class
 class QuadrupedEnv:
-    def __init__(self):
+    def __init__(self): 
         p.connect(p.GUI)  # or p.DIRECT for headless mode
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.loadURDF("plane.urdf")  # Load the ground plane
@@ -101,7 +101,10 @@ class QuadrupedEnv:
         ori = p.getLinkState(self.quadruped,0)[1]
         angle_z = p.getEulerFromQuaternion(ori)[2]*180/np.pi
 
-        fitness = np.sqrt(distance_x*distance_x + distance_y*distance_y)
+        fitness = distance_x*10
+
+        if distance_x < 0.1:
+            fitness = -100
 
         return fitness 
 
