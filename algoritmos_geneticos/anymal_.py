@@ -7,7 +7,7 @@ import neat
 QUADRUPED_URDF_PATH = "../anymal/urdf/anymal.urdf"
 NUM_LEGS = 1
 LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]  # Replace with actual joint names
-LEG_JOINT_NUMBER = [1,2,3]
+LEG_JOINT_NUMBERS = [1,2,3]
 
 MAX_JOINT_FORCE = 1.0  # Maximum joint force applied by the motors
 NUM_STEPS = 100000
@@ -29,7 +29,7 @@ class QuadrupedEnv:
         #     for joint_name in LEG_JOINT_NAMES:
         #         joint_id = p.getJointInfo(self.quadruped, leg_id, joint_name)
         #         self.joint_ids.append(joint_id[0])
-        self.joint_ids = [1,2,3]
+        self.joint_ids = LEG_JOINT_NUMBERS
 
     def reset(self):
         # Reset the simulation
