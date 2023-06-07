@@ -12,7 +12,7 @@ LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]  # Replace with actual joint na
 LEG_JOINT_NUMBERS = [1,2,3,6,7,8]
 
 MAX_JOINT_FORCE = 80  # Maximum joint force applied by the motors
-NUM_STEPS = 3
+NUM_STEPS = 30
 # NEAT parameters
 NUM_INPUTS = 12  # Replace with the number of inputs based on your quadruped's state
 #NUM_OUTPUTS = NUM_LEGS * len(LEG_JOINT_NAMES)  # Each leg has joint control
@@ -33,6 +33,8 @@ class QuadrupedEnv:
         #         joint_id = p.getJointInfo(self.quadruped, leg_id, joint_name)
         #         self.joint_ids.append(joint_id[0])
         self.joint_ids = LEG_JOINT_NUMBERS
+
+        p.setTimeStep(1 / 2000)  # Control the simulation speed
 
     def reset(self):
         # Reset the simulation
@@ -66,7 +68,8 @@ class QuadrupedEnv:
         p.setJointMotorControl2(self.quadruped,jointIndex=17,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[10],force=MAX_JOINT_FORCE)
         p.setJointMotorControl2(self.quadruped,jointIndex=18,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[11],force=MAX_JOINT_FORCE)
         p.stepSimulation()
-        time.sleep(1.0 / 240.0)  # Control the simulation speed
+
+        
 
     def get_quadruped_state(self):
         # Retrieve and return the state of the quadruped (e.g., position, orientation, velocities)
@@ -91,13 +94,16 @@ class QuadrupedEnv:
     def get_fitness(self):
         # Compute and return the fitness score based on the performance of the quadruped
         # Implement this based on your specific objectives
-        
+        fitness=0.0
         #TODO 
-        distance= p.getLinkState(self.quadruped,0)[0][0] - 10
-        if distance < 3:
-            abs(distance*10)
+        distance_x= p.getLinkState(self.quadruped,0)[0][0]
+        distance_y= p.getLinkState(self.quadruped,0)[0][1]
+        ori = p.getLinkState(self.quadruped,0)[1]
+        angle_z = p.getEulerFromQuaternion(ori)[2]*180/np.pi
 
-        return distance
+        fitness = np.sqrt(distance_x*distance_x + distance_y*distance_y)
+
+        return fitness 
 
 # NEAT fitness evaluation
 def eval_genomes(genomes, config):
