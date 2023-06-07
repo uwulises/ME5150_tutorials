@@ -1,4 +1,5 @@
 import pybullet as p
+import pybullet_data
 import time
 import neat
 
@@ -6,10 +7,12 @@ import neat
 QUADRUPED_URDF_PATH = "../anymal/urdf/anymal.urdf"
 NUM_LEGS = 1
 LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]  # Replace with actual joint names
+LEG_JOINT_NUMBER = [1,2,3]
+
 MAX_JOINT_FORCE = 1.0  # Maximum joint force applied by the motors
-NUM_STEPS = 10
+NUM_STEPS = 100000
 # NEAT parameters
-NUM_INPUTS = 10  # Replace with the number of inputs based on your quadruped's state
+NUM_INPUTS = 3  # Replace with the number of inputs based on your quadruped's state
 #NUM_OUTPUTS = NUM_LEGS * len(LEG_JOINT_NAMES)  # Each leg has joint control
 NUM_OUTPUTS = 3  # Each leg has joint control
 # NEAT training loop
@@ -17,14 +20,16 @@ NUM_GENERATIONS = 100
 # Quadruped environment class
 class QuadrupedEnv:
     def __init__(self):
-        p.connect(p.GUI)  # or p.DIRECT for headless mode
+        p.connect(p.DIRECT)  # or p.DIRECT for headless mode
+        p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.loadURDF("plane.urdf")  # Load the ground plane
         self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.5])
         self.joint_ids = []
-        for leg_id in range(NUM_LEGS):
-            for joint_name in LEG_JOINT_NAMES:
-                joint_id = p.getJointInfo(self.quadruped, leg_id, joint_name)
-                self.joint_ids.append(joint_id[0])
+        # for leg_id in range(NUM_LEGS):
+        #     for joint_name in LEG_JOINT_NAMES:
+        #         joint_id = p.getJointInfo(self.quadruped, leg_id, joint_name)
+        #         self.joint_ids.append(joint_id[0])
+        self.joint_ids = [1,2,3]
 
     def reset(self):
         # Reset the simulation
@@ -75,7 +80,7 @@ def eval_genomes(genomes, config):
         genome.fitness = fitness
 
 # NEAT setup
-config_path = "path_to_neat_config_file"  # Replace with the path to your NEAT configuration file
+config_path = "config.cfg"  # Replace with the path to your NEAT configuration file
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
 population = neat.Population(config)
