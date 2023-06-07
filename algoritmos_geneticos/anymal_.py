@@ -3,27 +3,29 @@ import pybullet_data
 import time
 import neat
 import random
+import numpy as np
+
 # Quadruped simulation parameters
 QUADRUPED_URDF_PATH = "../anymal/urdf/anymal.urdf"
 NUM_LEGS = 1
 LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]  # Replace with actual joint names
-LEG_JOINT_NUMBERS = [1,2,3]
+LEG_JOINT_NUMBERS = [1,2,3,6,7,8]
 
 MAX_JOINT_FORCE = 80  # Maximum joint force applied by the motors
-NUM_STEPS = 10
+NUM_STEPS = 3
 # NEAT parameters
-NUM_INPUTS = 3  # Replace with the number of inputs based on your quadruped's state
+NUM_INPUTS = 12  # Replace with the number of inputs based on your quadruped's state
 #NUM_OUTPUTS = NUM_LEGS * len(LEG_JOINT_NAMES)  # Each leg has joint control
-NUM_OUTPUTS = 3  # Each leg has joint control
+NUM_OUTPUTS = 12  # Each leg has joint control
 # NEAT training loop
-NUM_GENERATIONS = 2
+NUM_GENERATIONS = 100
 # Quadruped environment class
 class QuadrupedEnv:
     def __init__(self):
         p.connect(p.GUI)  # or p.DIRECT for headless mode
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.loadURDF("plane.urdf")  # Load the ground plane
-        self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.8], useFixedBase = True) #Fixed
+        self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.8])
         p.setGravity(0, 0, -9.81)
         self.joint_ids = []
         # for leg_id in range(NUM_LEGS):
@@ -39,12 +41,30 @@ class QuadrupedEnv:
         p.resetJointState(self.quadruped,jointIndex=1,targetValue=0)
         p.resetJointState(self.quadruped,jointIndex=2,targetValue=0)
         p.resetJointState(self.quadruped,jointIndex=3,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=6,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=7,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=8,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=11,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=12,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=13,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=16,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=17,targetValue=0)
+        p.resetJointState(self.quadruped,jointIndex=18,targetValue=0)
 
-    def step(self, joint_angles=[0,0,0]):
+    def step(self, joint_angles=[0,0,0,0,0,0,0,0,0,0,0,0]):
         #TODO modify to call every joint
         p.setJointMotorControl2(self.quadruped,jointIndex=1,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[0],force=MAX_JOINT_FORCE)
         p.setJointMotorControl2(self.quadruped,jointIndex=2,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[1],force=MAX_JOINT_FORCE)
         p.setJointMotorControl2(self.quadruped,jointIndex=3,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[2],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=6,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[3],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=7,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[4],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=8,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[5],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=11,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[6],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=12,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[7],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=13,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[8],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=16,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[9],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=17,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[10],force=MAX_JOINT_FORCE)
+        p.setJointMotorControl2(self.quadruped,jointIndex=18,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[11],force=MAX_JOINT_FORCE)
         p.stepSimulation()
         time.sleep(1.0 / 240.0)  # Control the simulation speed
 
@@ -53,16 +73,31 @@ class QuadrupedEnv:
         # Implement this based on your specific needs
 
         #TODO 
+        J1_state = p.getJointState(self.quadruped,jointIndex=1)[0]
+        J2_state = p.getJointState(self.quadruped,jointIndex=2)[0]
+        J3_state = p.getJointState(self.quadruped,jointIndex=3)[0]
+        J6_state = p.getJointState(self.quadruped,jointIndex=6)[0]
+        J7_state = p.getJointState(self.quadruped,jointIndex=7)[0]
+        J8_state = p.getJointState(self.quadruped,jointIndex=8)[0]
+        J11_state = p.getJointState(self.quadruped,jointIndex=11)[0]
+        J12_state = p.getJointState(self.quadruped,jointIndex=12)[0]
+        J13_state = p.getJointState(self.quadruped,jointIndex=13)[0]
+        J16_state = p.getJointState(self.quadruped,jointIndex=16)[0]
+        J17_state = p.getJointState(self.quadruped,jointIndex=17)[0]
+        J18_state = p.getJointState(self.quadruped,jointIndex=18)[0]
 
-        return [random.random(),random.random(),random.random()]
+        return [J1_state,J2_state,J3_state,J6_state,J7_state,J8_state,J11_state,J12_state,J13_state,J16_state,J17_state,J18_state]
 
     def get_fitness(self):
         # Compute and return the fitness score based on the performance of the quadruped
         # Implement this based on your specific objectives
         
         #TODO 
+        distance= p.getLinkState(self.quadruped,0)[0][0] - 10
+        if distance < 3:
+            abs(distance*10)
 
-        return -1
+        return distance
 
 # NEAT fitness evaluation
 def eval_genomes(genomes, config):
