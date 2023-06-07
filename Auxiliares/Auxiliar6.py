@@ -68,7 +68,7 @@ while ret:
 
 # Create video
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-video = cv2.VideoWriter('Auxiliares/det_pitufos.avi', fourcc, 30, (1280, 720))
+video = cv2.VideoWriter('Auxiliares/det_pitufos.mp4',fourcc, 25.0, (1920, 1080))
 
 for i in range(len(new_video)):
     video.write(new_video[i])
