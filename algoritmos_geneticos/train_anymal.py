@@ -49,10 +49,10 @@ class QuadrupedEnv:
         for index in self.joint_ids:
             p.resetJointState(self.quadruped,jointIndex=index,targetValue=0)
 
-    def step(self, joint_angles=np.zeros(12)):
+    def step(self, joints_state=np.zeros(12)):
         i = 0
         for index in self.joint_ids:
-            p.setJointMotorControl2(self.quadruped,jointIndex=index,controlMode=p.POSITION_CONTROL, targetPosition=joint_angles[i])
+            p.setJointMotorControl2(self.quadruped,jointIndex=index,controlMode=p.POSITION_CONTROL, targetPosition=joints_state[i])
             i+=1
         p.stepSimulation()
 
@@ -66,7 +66,7 @@ class QuadrupedEnv:
         for index in self.joint_ids:
             joints_state.append(p.getJointState(self.quadruped,jointIndex=index)[0])
 
-        return joint_angles
+        return joints_state
 
     def get_fitness(self):
         # Compute and return the fitness score based on the performance of the quadruped
@@ -120,8 +120,8 @@ def eval_genomes(genomes, config):
         for _ in range(NUM_STEPS):
             inputs = quadruped_state  # Replace with appropriate inputs based on the quadruped's state
             outputs = net.activate(inputs)
-            joint_angles = outputs[:NUM_OUTPUTS]
-            quadruped_env.step(joint_angles)
+            joints_states = outputs[:NUM_OUTPUTS]
+            quadruped_env.step(joints_states)
             quadruped_state = quadruped_env.get_quadruped_state()
 
             fitness += quadruped_env.get_fitness()
@@ -163,4 +163,6 @@ for generation in range(NUM_GENERATIONS):
         quadruped_env.step(joint_angles)
         quadruped_state = quadruped_env.get_quadruped_state()
     quadruped_env.check_ori_x()
-    save_checkpoint(config, population, generation)
+    # Save the winner.
+    with open('checkpoint/winner', 'wb') as f:
+        pickle.dump(best_genome, f)
