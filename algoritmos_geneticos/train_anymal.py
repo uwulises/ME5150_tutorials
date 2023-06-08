@@ -12,14 +12,14 @@ QUADRUPED_URDF_PATH = "../anymal/urdf/anymal.urdf"
 NUM_LEGS = 1
 LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]  # Replace with actual joint names
 LEG_JOINT_NUMBERS = [1, 2, 3, 6, 7, 8, 11, 12, 13, 16, 17, 18]
-NUM_STEPS = 100
+NUM_STEPS = 600
 
 # NEAT parameters
 NUM_INPUTS = 12  # Replace with the number of inputs based on your quadruped's state
 NUM_OUTPUTS = 12  # Each leg has joint control
 
 # NEAT training loop
-NUM_GENERATIONS = 10
+NUM_GENERATIONS = 5
 
 global generation
 
@@ -154,6 +154,6 @@ for generation in range(NUM_GENERATIONS):
         quadruped_env.step(joint_angles)
         quadruped_state = quadruped_env.get_quadruped_state()
     quadruped_env.check_ori_x()
-    # Save the winner.
-    with open('checkpoint/winner', 'wb') as f:
+    # Save the best genome.
+    with open('checkpoint/best_genome', 'wb') as f:
         pickle.dump(best_genome, f)
