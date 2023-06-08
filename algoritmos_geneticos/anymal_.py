@@ -130,15 +130,6 @@ class QuadrupedEnv:
             return True
         return False
     
-def save_checkpoint(config, population, generation):
-    """ Save the current simulation state. """
-    filename = 'best_genome.neat-checkpoint-'
-    print("Saving checkpoint to {0}".format(filename))
-
-    with gzip.open(filename, 'w', compresslevel=5) as f:
-        data = (generation, config, population, 0, random.getstate())
-        pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
 # NEAT fitness evaluation
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
@@ -173,6 +164,7 @@ population.add_reporter(neat.StdOutReporter(True))
 stats = neat.StatisticsReporter()
 population.add_reporter(stats)
 
+
 # Quadruped environment initialization
 quadruped_env = QuadrupedEnv()
 
@@ -191,14 +183,20 @@ for generation in range(NUM_GENERATIONS):
         quadruped_env.step(joint_angles)
         quadruped_state = quadruped_env.get_quadruped_state()
     quadruped_env.check_ori_x()
-    save_checkpoint(config, population, generation)
+    # Save the winner.
+    with open('checkpoint/winner', 'wb') as f:
+        pickle.dump(best_genome, f)
+
     # # Save the best genome if desired
     # TODO Save the best genome 
 
 # Use the best genome for control
 # Load the best genome #TODO
-best_genome = neat.Checkpointer.restore_checkpoint('best_genome.neat-checkpoint-')
-best_net = neat.nn.FeedForwardNetwork.create(best_genome, config)
+# load the winner
+with open('checkpoint/winner', 'rb') as f:
+    init_genome = pickle.load(f)
+
+best_net = neat.nn.FeedForwardNetwork.create(init_genome, config)
 # Quadruped control loop using the best genome
 quadruped_env.reset()
 quadruped_state = quadruped_env.get_quadruped_state()
