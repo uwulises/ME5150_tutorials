@@ -99,15 +99,6 @@ class QuadrupedEnv:
             return True
         return False
     
-def save_checkpoint(config, population, generation):
-    """ Save the current simulation state. """
-    filename = 'best_genome.neat-checkpoint-'
-    print("Saving checkpoint to {0}".format(filename))
-
-    with gzip.open(filename, 'w', compresslevel=5) as f:
-        data = (generation, config, population, 0, random.getstate())
-        pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
 # NEAT fitness evaluation
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
