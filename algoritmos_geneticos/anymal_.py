@@ -164,8 +164,11 @@ for generation in range(NUM_GENERATIONS):
 
 # Use the best genome for control
 # Load the best genome #TODO
-best_genome = neat.Checkpointer.restore_checkpoint('best_genome.neat-checkpoint-')
-best_net = neat.nn.FeedForwardNetwork.create(best_genome, config)
+# load the winner
+with open('checkpoint/winner', 'rb') as f:
+    init_genome = pickle.load(f)
+
+best_net = neat.nn.FeedForwardNetwork.create(init_genome, config)
 # Quadruped control loop using the best genome
 quadruped_env.reset()
 quadruped_state = quadruped_env.get_quadruped_state()
