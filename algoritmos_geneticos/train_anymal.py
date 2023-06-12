@@ -13,17 +13,16 @@ NUM_LEGS = 1
 # Replace with actual joint names
 LEG_JOINT_NAMES = ["LF_HAA", "LF_HFE", "LF_KFE"]
 LEG_JOINT_NUMBERS = [1, 2, 3, 6, 7, 8, 11, 12, 13, 16, 17, 18]
-NUM_STEPS = 600
+NUM_STEPS = 100
 
 # NEAT parameters
-NUM_INPUTS = 12  # Replace with the number of inputs based on your quadruped's state
+NUM_INPUTS = 13  # Replace with the number of inputs based on your quadruped's state
 NUM_OUTPUTS = 12  # Each leg has joint control
 
 # NEAT training loop
-NUM_GENERATIONS = 5
-
+NUM_GENERATIONS =100
+last_distance=0
 global generation
-
 # Quadruped environment class
 
 
@@ -63,6 +62,7 @@ class QuadrupedEnv:
         p.stepSimulation()
 
     def get_quadruped_state(self):
+        
         # Retrieve and return the state of the quadruped (e.g., position, orientation, velocities)
         # Implement this based on your specific needs
 
@@ -70,16 +70,20 @@ class QuadrupedEnv:
         for index in self.joint_ids:
             joints_state.append(p.getJointState(
                 self.quadruped, jointIndex=index)[0])
-
+        
+        distance_x = p.getLinkState(self.quadruped, 0)[0][0]
+        joints_state.append(distance_x)
         return joints_state
 
     def get_fitness(self):
         # Compute and return the fitness score based on the performance of the quadruped
         # Implement this based on your specific objectives
+        global last_distance
         fitness = 0.0
         # TODO
 
         distance_x = p.getLinkState(self.quadruped, 0)[0][0]
+        
         distance_y = p.getLinkState(self.quadruped, 0)[0][1]
         ori = p.getLinkState(self.quadruped, 0)[1]
         angle_x = p.getEulerFromQuaternion(ori)[0]*180/np.pi
@@ -87,9 +91,27 @@ class QuadrupedEnv:
         angle_z = p.getEulerFromQuaternion(ori)[2]*180/np.pi
         orientation_deg = [angle_x, angle_y, angle_z]
 
-        self.check_ori_x()
+        
+        
+        if (self.check_ori_x()):
+            fitness=-1000
+            last_distance=0
 
-        fitness = distance_x
+        elif (distance_x>last_distance):
+            fitness = distance_x-last_distance
+            last_distance=distance_x
+
+        elif (round(distance_x,1)==round(last_distance,1)):
+            fitness = 0
+            last_distance=distance_x
+
+        else:
+            fitness=-1-p.getLinkState(self.quadruped, 0)[0][0]
+            last_distance=p.getLinkState(self.quadruped, 0)[0][0]
+        
+        
+
+        print(fitness, last_distance)
 
         return fitness
 
@@ -125,7 +147,7 @@ def eval_genomes(genomes, config):
         # Assign fitness to the genome
         genome.fitness = fitness
         if (quadruped_env.check_ori_x()):
-            genome.fitness = -10
+            genome.fitness = -100
 
 
 # NEAT setup
