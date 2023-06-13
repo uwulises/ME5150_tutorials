@@ -11,13 +11,13 @@ import csv
 QUADRUPED_URDF_PATH = "anymal/urdf/anymal.urdf"
 
 LEG_JOINT_NUMBERS = [1, 2, 3, 6, 7, 8, 11, 12, 13, 16, 17, 18]
-NUM_STEPS = 10
+NUM_STEPS = 200
 # NEAT parameters
 NUM_INPUTS = 14  # Replace with the number of inputs based on your quadruped's state
 NUM_OUTPUTS = 12  # Each leg has joint control
 up_stairs_x = 4
 # NEAT training loop
-NUM_GENERATIONS = 200
+NUM_GENERATIONS = 30
 last_distance = 0
 global generation
 # Quadruped environment class
@@ -34,7 +34,7 @@ class QuadrupedEnv:
         self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.8])
         self.joint_ids = LEG_JOINT_NUMBERS
 
-        p.setTimeStep(1 / 100)  # Control the simulation speed
+        p.setTimeStep(1 / 400)  # Control the simulation speed
 
     def hard_reset(self):
         p.resetSimulation()
@@ -78,12 +78,14 @@ class QuadrupedEnv:
             # TODO
 
             distance_x = p.getLinkState(self.quadruped, 0)[0][0]
-            
             distance_y = p.getLinkState(self.quadruped, 0)[0][1]
-            ori = p.getLinkState(self.quadruped, 0)[1]
-            angle_x = p.getEulerFromQuaternion(ori)[0]
-            angle_y = p.getEulerFromQuaternion(ori)[1]
-            angle_z = p.getEulerFromQuaternion(ori)[2]
+            distance_z = p.getLinkState(self.quadruped, 0)[0][2]
+            orientation = p.getLinkState(self.quadruped, 0)[1]
+            angle_x = p.getEulerFromQuaternion(orientation)[0]
+            angle_y = p.getEulerFromQuaternion(orientation)[1]
+            angle_z = p.getEulerFromQuaternion(orientation)[2]
+
+
 
             if (self.check_quadruped()):
                 fitness=-1000
@@ -101,7 +103,6 @@ class QuadrupedEnv:
             elif(round(distance_x)==up_stairs_x):
                 with open('Tareas/TA3/checkpoint/best_genome', 'wb') as f:
                     pickle.dump(best_genome, f)
-                exit()
             return fitness
 
     def check_quadruped(self):
@@ -152,14 +153,14 @@ population.add_reporter(neat.StdOutReporter(True))
 stats = neat.StatisticsReporter()
 population.add_reporter(stats)
 
+
 # Quadruped environment initialization
 quadruped_env = QuadrupedEnv()
 
 
 for generation in range(NUM_GENERATIONS):
 
-    best_genome = population.run(eval_genomes, 1)
-
+    best_genome = population.run(eval_genomes,1)
     # Evaluate the best genome on a final test run
     quadruped_env.reset()
     quadruped_state = quadruped_env.get_quadruped_state()
