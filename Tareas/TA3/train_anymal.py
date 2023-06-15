@@ -2,7 +2,6 @@ import pybullet as p
 import pybullet_data
 import neat
 import numpy as np
-import pickle
 import csv
 
 # Quadruped simulation parameters
@@ -11,10 +10,10 @@ LEG_JOINT_NUMBERS = [1, 2, 3, 6, 7, 8, 11, 12, 13, 16, 17, 18]
 NUM_STEPS = 100
 
 # NEAT parameters
-NUM_INPUTS = 14  # Replace with the number of inputs based on your quadruped's state
-NUM_OUTPUTS = 12  # Each leg has joint control
-MAX_FORCES= [50]*12 # Max force for joints
-up_stairs_x = 4 # Target position
+NUM_INPUTS = 14         # Replace with the number of inputs based on your quadruped's state
+NUM_OUTPUTS = 12        # Each leg has joint control
+MAX_FORCES= [50] * 12   # Max force for joints
+up_stairs_x = 4         # Target position
 
 # NEAT training loop
 NUM_GENERATIONS = 2
@@ -44,7 +43,7 @@ class QuadrupedEnv:
         p.loadURDF("objetos/stair.urdf", basePosition = [0, 0, 0], useFixedBase = True)
         p.setGravity(0, 0, -9.81)
 
-        self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition=[0, 0, 0.6])
+        self.quadruped = p.loadURDF(QUADRUPED_URDF_PATH, basePosition = [0, 0, 0.6])
         self.log_joints = np.array([])
 
 
@@ -52,12 +51,7 @@ class QuadrupedEnv:
         p.setGravity(0, 0, -9.81)
 
         for index in self.joint_ids:
-            p.resetJointState(self.quadruped, jointIndex=index, targetValue=0)
-
-    def step(self, joints_state=np.zeros(12)):
-        p.setJointMotorControlArray(self.quadruped, jointIndices=self.joint_ids, controlMode=p.POSITION_CONTROL, targetPositions=joints_state, forces=MAX_FORCES)
-        self.log_joints = np.append(self.log_joints, self.get_quadruped_state())
-        p.stepSimulation()
+            p.resetJointState(self.quadruped, jointIndex = index, targetValue = 0)
 
     def get_quadruped_state(self):
         
@@ -66,11 +60,10 @@ class QuadrupedEnv:
 
         joints_state = []
         for index in self.joint_ids:
-            joints_state.append(p.getJointState(
-                self.quadruped, jointIndex=index)[0])
+            joints_state.append(p.getJointState(self.quadruped, jointIndex = index)[0])
         
-        distance_x = p.getLinkState(self.quadruped, 0)[0][0]
-        joints_state.append(distance_x)
+        pos_x = p.getLinkState(self.quadruped, 0)[0][0]
+        joints_state.append(pos_x)
         joints_state.append(up_stairs_x)
         return joints_state
 
@@ -81,55 +74,60 @@ class QuadrupedEnv:
         # Implement this based on your specific objectives
 
         global last_distance
-        fitness = 0.0
+        fitness = 0.0 # Default value
 
-        distance_x = p.getLinkState(self.quadruped, 0)[0][0]
-        distance_y = p.getLinkState(self.quadruped, 0)[0][1]
-        distance_z = p.getLinkState(self.quadruped, 0)[0][2]
-        orientation = p.getLinkState(self.quadruped, 0)[1]
-        angle_x = p.getEulerFromQuaternion(orientation)[0]
-        angle_y = p.getEulerFromQuaternion(orientation)[1]
-        angle_z = p.getEulerFromQuaternion(orientation)[2]
+        # Pose of the robot
+        pos_x =         p.getLinkState(self.quadruped, 0)[0][0]
+        pos_y =         p.getLinkState(self.quadruped, 0)[0][1]
+        pos_z =         p.getLinkState(self.quadruped, 0)[0][2]
+        orientation =   p.getLinkState(self.quadruped, 0)[1]
+        angle_x =       p.getEulerFromQuaternion(orientation)[0]
+        angle_y =       p.getEulerFromQuaternion(orientation)[1]
+        angle_z =       p.getEulerFromQuaternion(orientation)[2]
 
         if (self.check_quadruped()):
-            fitness=-1000
-            last_distance=0.0
+            fitness = -1000
+            last_distance = 0.0
 
-        elif (distance_x>last_distance):
-            fitness = distance_x*np.cos(angle_z) - abs(distance_y)
-            last_distance=distance_x
+        elif (pos_x > last_distance):
+            fitness = pos_x * np.cos(angle_z) - abs(pos_y)
+            last_distance = pos_x
             
-        elif (round(distance_x,1)==round(last_distance,1)):
+        elif (round(pos_x,1) == round(last_distance,1)):
             fitness = -1
-            last_distance=distance_x
+            last_distance = pos_x
 
-        elif(round(distance_x)==up_stairs_x):
-            with open('Tareas/TA3/checkpoint/best_genome', 'wb') as f:
-                pickle.dump(best_genome, f)
+        elif(round(pos_x) == up_stairs_x):
             exit()
 
-        if abs(angle_z)<0.1:
-            fitness*=0.7
+        if abs(angle_z) < 0.1:
+            fitness *= 0.7
 
         return fitness
 
     def check_quadruped(self):
         ori = p.getLinkState(self.quadruped, 0)[1]
-        angle_x = p.getEulerFromQuaternion(ori)[0]*180/np.pi
+        angle_x = p.getEulerFromQuaternion(ori)[0] * 180 / np.pi
         pos_y = p.getLinkState(self.quadruped, 0)[0][1]
 
         if (angle_x < -60 or angle_x > 60):
             quadruped_env.hard_reset()
             return True
         
-        if (abs(pos_y)>1.5):
+        if (abs(pos_y) > 1.5):
             quadruped_env.hard_reset()
             return True
         
         return False
     
-    def log_joint_values(self):  
+    def step(self, joints_state=np.zeros(12)):
+        p.setJointMotorControlArray(self.quadruped, jointIndices = self.joint_ids, 
+                                    controlMode = p.POSITION_CONTROL, 
+                                    targetPositions = joints_state, forces=MAX_FORCES)
+        self.log_joints = np.append(self.log_joints, self.get_quadruped_state())
+        p.stepSimulation()
 
+    def log_joint_values(self):
         with open('Tareas/TA3/joint_log.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(self.log_joints)
@@ -138,7 +136,6 @@ class QuadrupedEnv:
 # NEAT fitness evaluation
 def eval_genomes(genomes, config):
     for _, genome in genomes:
-        #quadruped_env.reset()
         quadruped_state = quadruped_env.get_quadruped_state()
         net = neat.nn.FeedForwardNetwork.create(genome, config)
         fitness = 0.0
@@ -154,10 +151,8 @@ def eval_genomes(genomes, config):
             quadruped_state = quadruped_env.get_quadruped_state()
             fitness += quadruped_env.get_fitness()
             
-
         # Assign fitness to the genome
         genome.fitness = fitness
-
 
 # NEAT setup
 config_path = "Tareas/TA3/config.cfg"  # Replace with the path to your NEAT configuration file
@@ -165,19 +160,16 @@ config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
 population = neat.Population(config)
 population.add_reporter(neat.StdOutReporter(True))
-stats = neat.StatisticsReporter()
-population.add_reporter(stats)
-
+population.add_reporter(neat.StatisticsReporter())
 
 # Quadruped environment initialization
 quadruped_env = QuadrupedEnv()
 
-
 for generation in range(NUM_GENERATIONS):
     
-    best_genome = population.run(eval_genomes,1)
+    best_genome = population.run(eval_genomes, 1)
+
     # Evaluate the best genome on a final test run
-    #quadruped_env.reset()
     quadruped_state = quadruped_env.get_quadruped_state()
     best_net = neat.nn.FeedForwardNetwork.create(best_genome, config)
 
@@ -188,9 +180,5 @@ for generation in range(NUM_GENERATIONS):
         joint_angles = outputs[:NUM_OUTPUTS]
         quadruped_env.step(joint_angles)
         quadruped_state = quadruped_env.get_quadruped_state()
-
-    # Save the best genome.
-    with open('Tareas/TA3/checkpoint/best_genome', 'wb') as f:
-        pickle.dump(best_genome, f)
 
 quadruped_env.log_joint_values()
