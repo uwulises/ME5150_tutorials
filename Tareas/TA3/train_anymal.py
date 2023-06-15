@@ -116,6 +116,12 @@ class QuadrupedEnv:
             quadruped_env.hard_reset()
             return True
         return False
+    
+    def log_joint_values(self, log):  
+
+        with open('Tareas/TA3/joint_log.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(log)
 
 # NEAT fitness evaluation
 
@@ -159,7 +165,7 @@ quadruped_env = QuadrupedEnv()
 
 
 for generation in range(NUM_GENERATIONS):
-
+    log_joints = np.array([])
     best_genome = population.run(eval_genomes,1)
     # Evaluate the best genome on a final test run
     quadruped_env.reset()
@@ -173,6 +179,9 @@ for generation in range(NUM_GENERATIONS):
         joint_angles = outputs[:NUM_OUTPUTS]
         quadruped_env.step(joint_angles)
         quadruped_state = quadruped_env.get_quadruped_state()
+        log_joints = np.append(log_joints,quadruped_state)
+    
+    quadruped_env.log_joint_values(log_joints)
     quadruped_env.check_quadruped()
     # Save the best genome.
     with open('Tareas/TA3/checkpoint/best_genome', 'wb') as f:
