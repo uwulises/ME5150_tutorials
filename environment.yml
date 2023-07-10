@@ -11,3 +11,4 @@ dependencies:
   - pip:
       - opencv-python
       - neat-python
+      - pygame
