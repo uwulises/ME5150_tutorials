@@ -4,11 +4,14 @@ channels:
 dependencies:
   - python=3.8
   - pip
-  - pybullet
-  - scipy
-  - numpy
-  - matplotlib
   - pip:
+      - numpy
+      - pandas
+      - scipy
+      - matplotlib
+      - pybullet
+      - pyserial
       - opencv-python
       - neat-python
       - pygame
+      - websockets
