@@ -1,6 +1,6 @@
 import pybullet as p
 import pybullet_data
-
+import numpy as np
 # Initialize PyBullet
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -14,8 +14,9 @@ p.setTimeStep(1 / 240)
 planeId = p.loadURDF("plane.urdf")
 tableId = p.loadURDF("table/table.urdf",
                      basePosition=[0.3, 0, 0], useFixedBase=useFixedBase)
+initialori = p.getQuaternionFromEuler([0, 0, np.deg2rad(90)]) # initial orientation of the robot
 robotId = p.loadURDF("../brazos/scara_fcfm_model/scara.urdf",
-                     basePosition=[0, 0, 0.63], useFixedBase=useFixedBase)
+                     basePosition=[0, 0, 0.63], baseOrientation=initialori,useFixedBase=useFixedBase)
 # tool coordinate position
 n_tcf = 2
 
@@ -31,13 +32,15 @@ x_slider = p.addUserDebugParameter("X", 0.15, 1.3, 0.6)
 y_slider = p.addUserDebugParameter("Y", -1.3, 1.3, 0)
 z_slider = p.addUserDebugParameter("Z", 0.7, 0.9, 0.8)
 
+p.addUserDebugLine([0, 0, 0], [0.2, 0, 0], [1, 0, 0], parentObjectUniqueId=robotId, parentLinkIndex=2)
+p.addUserDebugLine([0, 0, 0], [0, 0.2, 0], [0, 1, 0], parentObjectUniqueId=robotId, parentLinkIndex=2)
+p.addUserDebugLine([0, 0, 0], [0, 0, 0.2], [0, 0, 1], parentObjectUniqueId=robotId, parentLinkIndex=2)
 
 def FK():
-    while True:
         # get the current slider values
         q0 = p.readUserDebugParameter(q0_slider)
         q1 = p.readUserDebugParameter(q1_slider)
-        q2 = p.readUserDebugParameter(q2_slider)
+        q2 = -p.readUserDebugParameter(q2_slider) # negative for the simulation
         # target position
         q = [q0, q1, q2]
         p.setJointMotorControlArray(robotId, range(
@@ -46,7 +49,6 @@ def FK():
 
 
 def IK():
-    while True:
         # get the current slider values
         x = p.readUserDebugParameter(x_slider)
         y = p.readUserDebugParameter(y_slider)
@@ -60,6 +62,13 @@ def IK():
         p.stepSimulation()
 
 
+def main():
+    while True:
+        #Selects from Inverse or Forward Kinematics
+        FK()
+        #IK()
+
+
 if __name__ == "__main__":
-    # IK()
-    FK()
+    
+    main()
