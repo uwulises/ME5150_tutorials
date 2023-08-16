@@ -1,13 +1,17 @@
-name: robotica-dev
+name: robotica
 channels:
   - conda-forge
-dependencies:
-  - python=3.8
-  - pip
   - pybullet
-  - scipy
-  - numpy
-  - matplotlib
+dependencies:
+  - python=3.8.16
+  - pip
   - pip:
+      - numpy
+      - pandas
+      - scipy
+      - matplotlib
+      - pyserial
       - opencv-python
       - neat-python
+      - pygame
+      - websockets
