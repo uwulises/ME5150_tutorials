@@ -32,9 +32,9 @@ x_slider = p.addUserDebugParameter("X", 0.15, 1.3, 0.6)
 y_slider = p.addUserDebugParameter("Y", -1.3, 1.3, 0)
 z_slider = p.addUserDebugParameter("Z", 0.7, 0.9, 0.8)
 
-p.addUserDebugLine([0, 0, 0], [0.2, 0, 0], [1, 0, 0], parentObjectUniqueId=robotId, parentLinkIndex=2)
-p.addUserDebugLine([0, 0, 0], [0, 0.2, 0], [0, 1, 0], parentObjectUniqueId=robotId, parentLinkIndex=2)
-p.addUserDebugLine([0, 0, 0], [0, 0, 0.2], [0, 0, 1], parentObjectUniqueId=robotId, parentLinkIndex=2)
+p.addUserDebugLine([0, 0, 0], [0.2, 0, 0], [1, 0, 0], lineWidth=5, parentObjectUniqueId=robotId, parentLinkIndex=2)
+p.addUserDebugLine([0, 0, 0], [0, 0.2, 0], [0, 1, 0], lineWidth=5,parentObjectUniqueId=robotId, parentLinkIndex=2)
+p.addUserDebugLine([0, 0, 0], [0, 0, 0.2], [0, 0, 1], lineWidth=5,parentObjectUniqueId=robotId, parentLinkIndex=2)
 
 def FK():
         # get the current slider values
