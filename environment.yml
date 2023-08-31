@@ -1,9 +1,9 @@
 name: robotica
 channels:
   - conda-forge
-  - pybullet
 dependencies:
   - python=3.8.16
+  - pybullet
   - pip
   - pip:
       - numpy==1.23.5
