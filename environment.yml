@@ -6,12 +6,12 @@ dependencies:
   - python=3.8.16
   - pip
   - pip:
-      - numpy
-      - pandas
-      - scipy
-      - matplotlib
-      - pyserial
-      - opencv-python
-      - neat-python
-      - pygame
-      - websockets
+      - numpy==1.23.5
+      - pandas==2.0.3
+      - scipy==1.10.0
+      - matplotlib==3.7.2
+      - pyserial==3.5
+      - opencv-python==4.5.1.48
+      - pygame==2.5.0
+      - websockets==11.0.3
+      - djitellopy==2.5.0
