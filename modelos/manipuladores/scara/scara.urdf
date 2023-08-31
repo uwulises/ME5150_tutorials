@@ -10,7 +10,7 @@
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/base_corrected.dae" />
+                <mesh filename="package://scara/meshes/base_corrected.dae" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -19,7 +19,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/base_corrected.dae" />
+                <mesh filename="package://scara/meshes/base_corrected.dae" />
             </geometry>
         </collision>
     </link>
@@ -34,7 +34,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/humero_corrected.dae" />
+                <mesh filename="package://scara/meshes/humero_corrected.dae" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -43,7 +43,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/humero_corrected.dae" />
+                <mesh filename="package://scara/meshes/humero_corrected.dae" />
             </geometry>
         </collision>
     </link>
@@ -66,7 +66,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/rc_corrected.dae" />
+                <mesh filename="package://scara/meshes/rc_corrected.dae" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -75,7 +75,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/rc_corrected.dae" />
+                <mesh filename="package://scara/meshes/rc_corrected.dae" />
             </geometry>
         </collision>
     </link>
@@ -98,7 +98,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/z_corrected.dae" />
+                <mesh filename="package://scara/meshes/z_corrected.dae" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -107,7 +107,7 @@
         <!--collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://scara_fcfm_model/meshes/z_corrected.dae" />
+                <mesh filename="package://scara/meshes/z_corrected.dae" />
             </geometry>
         </collision-->
     </link>
