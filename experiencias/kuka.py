@@ -29,6 +29,9 @@ a_slider = p.addUserDebugParameter("A", -3.14, 3.14, 0)
 b_slider = p.addUserDebugParameter("B", -3.14, 3.14, 0)
 c_slider = p.addUserDebugParameter("C", -3.14, 3.14, 0)
 
+p.addUserDebugLine([0, 0, 0], [0, 0, 0.2], [1, 0, 0], lineWidth=5, parentObjectUniqueId=robotId, parentLinkIndex=5)
+p.addUserDebugLine([0, 0, 0], [0, 0.2, 0], [0, 1, 0], lineWidth=5,parentObjectUniqueId=robotId, parentLinkIndex=5)
+p.addUserDebugLine([0, 0, 0], [0.2, 0, 0], [0, 0, 1], lineWidth=5,parentObjectUniqueId=robotId, parentLinkIndex=5)
 
 # Run the simulation
 while True:
