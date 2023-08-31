@@ -9,7 +9,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-				<mesh filename="package://meshes/visual/puntero.stl" />
+				<mesh filename="package://puntero/meshes/visual/puntero.stl" />
       </geometry>
        <material name="Grey Black">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -18,7 +18,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-            <mesh filename="package://meshes/collision/puntero.stl" />
+            <mesh filename="package://puntero/meshes/collision/puntero.stl" />
       </geometry>
     </collision>
   </link>

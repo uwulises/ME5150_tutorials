@@ -58,7 +58,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/visual/base_link.stl"/>
+        <mesh filename="package://kuka/meshes/visual/base_link.stl"/>
       </geometry>
       <material name="Black">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -67,7 +67,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/collision/base_link.stl"/>
+        <mesh filename="package://kuka/meshes/collision/base_link.stl"/>
       </geometry>
     </collision>
   </link>
@@ -80,7 +80,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/visual/link_1.stl"/>
+        <mesh filename="package://kuka/meshes/visual/link_1.stl"/>
       </geometry>
       <material name="Orange">
         <color rgba="0.94 0.590 0.08 1"/>
@@ -89,7 +89,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/collision/link_1.stl"/>
+        <mesh filename="package://kuka/meshes/collision/link_1.stl"/>
       </geometry>
     </collision>
   </link>
@@ -102,7 +102,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/visual/link_2.stl"/>
+        <mesh filename="package://kuka/meshes/visual/link_2.stl"/>
       </geometry>
       <material name="Orange">
         <color rgba="0.94 0.590 0.08 1"/>
@@ -111,7 +111,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/collision/link_2.stl"/>
+        <mesh filename="package://kuka/meshes/collision/link_2.stl"/>
       </geometry>
     </collision>
   </link>
@@ -124,7 +124,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/visual/link_3.stl"/>
+        <mesh filename="package://kuka/meshes/visual/link_3.stl"/>
       </geometry>
       <material name="Orange">
         <color rgba="0.94 0.590 0.08 1"/>
@@ -133,7 +133,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/collision/link_3.stl"/>
+        <mesh filename="package://kuka/meshes/collision/link_3.stl"/>
       </geometry>
     </collision>
   </link>
@@ -146,7 +146,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/visual/link_4.stl"/>
+        <mesh filename="package://kuka/meshes/visual/link_4.stl"/>
       </geometry>
       <material name="Orange">
         <color rgba="0.94 0.590 0.08 1"/>
@@ -155,7 +155,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/collision/link_4.stl"/>
+        <mesh filename="package://kuka/meshes/collision/link_4.stl"/>
       </geometry>
     </collision>
   </link>
@@ -168,7 +168,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/visual/link_5.stl"/>
+        <mesh filename="package://kuka/meshes/visual/link_5.stl"/>
       </geometry>
       <material name="Orange">
         <color rgba="0.94 0.590 0.08 1"/>
@@ -177,7 +177,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/collision/link_5.stl"/>
+        <mesh filename="package://kuka/meshes/collision/link_5.stl"/>
       </geometry>
     </collision>
   </link>
@@ -190,7 +190,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/visual/link_6.stl"/>
+        <mesh filename="package://kuka/meshes/visual/link_6.stl"/>
       </geometry>
       <material name="Gray">
         <color rgba="0.74 0.74 0.74 1"/>
@@ -199,7 +199,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://kuka_model/meshes/collision/link_6.stl"/>
+        <mesh filename="package://kuka/meshes/collision/link_6.stl"/>
       </geometry>
     </collision>
   </link>
