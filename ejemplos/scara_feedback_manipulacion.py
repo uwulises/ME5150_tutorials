@@ -16,8 +16,8 @@ p.setTimeStep(1 / 240)
 # Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
 tableId = p.loadURDF("table/table.urdf", basePosition = [0.3, 0, 0], useFixedBase = useFixedBase)
-robotId = p.loadURDF("../brazos/scara_fcfm_model/scara.urdf", basePosition = [0, 0, 0.63], useFixedBase = useFixedBase)
-cubeId = p.loadURDF("../objetos/cubo.urdf", basePosition = [0.6, 0.2, 0.7])
+robotId = p.loadURDF("../modelos/manipuladores/scara/scara.urdf", basePosition = [0, 0, 0.63], useFixedBase = useFixedBase)
+cubeId = p.loadURDF("../modelos/objetos/cubo.urdf", basePosition = [0.6, 0.2, 0.7])
 # tool coordinate position
 n_tcf = 2
 
