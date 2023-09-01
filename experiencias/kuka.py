@@ -14,7 +14,8 @@ p.setTimeStep(1 / 240)
 
 # Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
-robotId = p.loadURDF("../modelos/manipuladores/kuka/kr6_2.urdf", basePosition = [0, 0, 0], useFixedBase = useFixedBase)
+baseId = p.loadURDF("../modelos/manipuladores/kuka/steel_base.urdf", basePosition = [0, 0, 0.0125], useFixedBase = useFixedBase)
+robotId = p.loadURDF("../modelos/manipuladores/kuka/kr6_2.urdf", basePosition = [0, 0, 0.035], useFixedBase = useFixedBase)
 tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBase = useFixedBase)
 
 

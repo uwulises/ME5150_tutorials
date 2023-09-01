@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="base_steel">
+  <link name="base_plate">
+    <visual>
+      <geometry>
+        <box size="1 1 0.025"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>
