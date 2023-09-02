@@ -12,11 +12,11 @@ p.setTimeStep(1 / 240)
 
 # Load SCARA robot arm and table
 planeId = p.loadURDF("plane.urdf")
-tableId = p.loadURDF("table/table.urdf",
-                     basePosition=[0.3, 0, 0], useFixedBase=useFixedBase)
+tableId = p.loadURDF("../modelos/manipuladores/scara/base_scara.urdf",
+                     basePosition=[0, 0, 0.69], useFixedBase=useFixedBase)
 initialori = p.getQuaternionFromEuler([0, 0, np.deg2rad(90)]) # initial orientation of the robot
 robotId = p.loadURDF("../modelos/manipuladores/scara/scara.urdf",
-                     basePosition=[0, 0, 0.63], baseOrientation=initialori,useFixedBase=useFixedBase)
+                     basePosition=[0, 0, 0.69], baseOrientation=initialori,useFixedBase=useFixedBase)
 # tool coordinate position
 n_tcf = 2
 
