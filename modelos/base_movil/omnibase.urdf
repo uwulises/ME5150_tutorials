@@ -113,6 +113,7 @@
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
         </visual>
         <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -132,6 +133,7 @@
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 3.14 0.0"/>
         </visual>
         <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -151,6 +153,7 @@
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
         </visual>
         <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -170,6 +173,7 @@
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
         </visual>
         <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -185,28 +189,28 @@
         <parent link="motor_dc_1"/>
         <child link="wheel_1"/>
         <origin xyz="0.0 0.025 0.0"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="0 1 0"/>
 		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/>  -->
     </joint>
 	<joint name="rueda2" type="continuous">
         <parent link="motor_dc_2"/>
         <child link="wheel_2"/>
         <origin xyz="0.0 -0.025 0.0"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="0 1 0"/>
 		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
     </joint>
 	<joint name="rueda3" type="continuous">
         <parent link="motor_dc_3"/>
         <child link="wheel_3"/>
         <origin xyz="0.0 0.025 0.0"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="0 1 0"/>
 		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
     </joint>
 	<joint name="rueda4" type="continuous">
         <parent link="motor_dc_4"/>
         <child link="wheel_4"/>
         <origin xyz="0.0 -0.025 0.0"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="0 1 0"/>
 		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
     </joint>
 </robot>
