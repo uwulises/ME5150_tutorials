@@ -10,7 +10,6 @@
         <color rgba="1.0 1.0 0.0 1.0"/> <!-- Amarillo -->
 	</material>
 
-    <link name="world"/>
 
     <link name="base_link">
         <visual>
@@ -84,13 +83,6 @@
         </inertial>
     </link>
     
-    <joint name="fixed_joint" type="fixed">
-        <parent link="world"/>
-        <child link="base_link"/>
-        <origin xyz="0 0 -0.37"/>
-    </joint>
-    
-    <!-- Joint entre base_link y el objeto adicional -->
     <joint name="motor_dc_1_joint" type="fixed">
         <parent link="base_link"/>
         <child link="motor_dc_1"/>
@@ -120,6 +112,11 @@
             <material name="black"/>
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
         </visual>
+        <collision>
+            <geometry>
+                <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <mass value="0.27282"/>
             <origin xyz="0.0 0.0 0.0"/>
@@ -134,6 +131,11 @@
             <material name="black"/>
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 3.14 0.0"/>
         </visual>
+        <collision>
+            <geometry>
+                <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <mass value="0.27282"/>
             <origin xyz="0.0 0.0 0.0"/>
@@ -148,6 +150,11 @@
             <material name="black"/>
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
         </visual>
+        <collision>
+            <geometry>
+                <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <mass value="0.27282"/>
             <origin xyz="0.0 0.0 0.0"/>
@@ -162,6 +169,11 @@
             <material name="black"/>
 			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
         </visual>
+        <collision>
+            <geometry>
+                <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <mass value="0.27282"/>
             <origin xyz="0.0 0.0 0.0"/>
@@ -169,32 +181,32 @@
         </inertial>
     </link>
 
-    <joint name="rueda1" type="revolute">
+    <joint name="rueda1" type="continuous">
         <parent link="motor_dc_1"/>
         <child link="wheel_1"/>
         <origin xyz="0.0 0.025 0.0"/>
         <axis xyz="0 0 1"/>
-		<limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> <!-- Límites de rotación en radianes -->
+		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/>  -->
     </joint>
-	<joint name="rueda2" type="revolute">
+	<joint name="rueda2" type="continuous">
         <parent link="motor_dc_2"/>
         <child link="wheel_2"/>
         <origin xyz="0.0 -0.025 0.0"/>
         <axis xyz="0 0 1"/>
-		<limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> <!-- Límites de rotación en radianes -->
+		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
     </joint>
-	<joint name="rueda3" type="revolute">
+	<joint name="rueda3" type="continuous">
         <parent link="motor_dc_3"/>
         <child link="wheel_3"/>
         <origin xyz="0.0 0.025 0.0"/>
         <axis xyz="0 0 1"/>
-		<limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> <!-- Límites de rotación en radianes -->
+		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
     </joint>
-	<joint name="rueda4" type="revolute">
+	<joint name="rueda4" type="continuous">
         <parent link="motor_dc_4"/>
         <child link="wheel_4"/>
         <origin xyz="0.0 -0.025 0.0"/>
         <axis xyz="0 0 1"/>
-		<limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> <!-- Límites de rotación en radianes -->
+		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
     </joint>
 </robot>
