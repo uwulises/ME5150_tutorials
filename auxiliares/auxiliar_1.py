@@ -10,8 +10,8 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
 # Set gravity and time step
 p.setGravity(0, 0, -9.81)
-p.setTimeStep(1 / 240) # Para el dron se recomienda trabajar con stepSimulation
-p.setRealTimeSimulation(0) # 0 Desactiva la simulacion en tiempo real
+#p.setTimeStep(1 / 240) # Para el dron se recomienda trabajar con stepSimulation
+p.setRealTimeSimulation(1) # 0 Desactiva la simulacion en tiempo real
 
 # Cargar ambiente de simulacion
 planeId = p.loadURDF("plane.urdf")
