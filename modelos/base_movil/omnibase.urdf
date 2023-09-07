@@ -32,11 +32,11 @@
 				<mesh filename= "ME5150_tutorials\modelos\base_movil\meshes\motor_scaled_v1.stl"/>
 			</geometry>
             <material name= "yellow"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 3.14159"/> <!-- Posición relativa al enlace base_link -->
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> <!-- Posición relativa al enlace base_link -->
         </visual>
         <inertial>
             <mass value= "0.182431"/>
-            <origin xyz= "0.019353 0.0 0.0"/>
+            <origin xyz= "0.017103 0.0 -0.064"/>
             <inertia ixx= "11974059" ixy="6925" ixz="44273" iyy="60417029" iyz="118" izz="61898680"/>
         </inertial>
     </link>
@@ -46,11 +46,11 @@
 				<mesh filename= "ME5150_tutorials\modelos\base_movil\meshes\motor_scaled_v1.stl"/>
 			</geometry>
             <material name= "yellow"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 3.14159"/> <!-- Posición relativa al enlace base_link -->
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> <!-- Posición relativa al enlace base_link -->
         </visual>
         <inertial>
             <mass value= "0.182431"/>
-            <origin xyz= "0.019353 0.0 0.0"/>
+            <origin xyz= "0.017103 0.0 -0.064"/>
             <inertia ixx= "11974059" ixy="6925" ixz="44273" iyy="60417029" iyz="118" izz="61898680"/>
         </inertial>
     </link>
@@ -60,11 +60,11 @@
 				<mesh filename= "ME5150_tutorials\modelos\base_movil\meshes\motor_scaled_v1.stl"/>
 			</geometry>
             <material name= "yellow"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/> <!-- Posición relativa al enlace base_link -->
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> <!-- Posición relativa al enlace base_link -->
         </visual>
         <inertial>
             <mass value= "0.182431"/>
-            <origin xyz= "0.019353 0.0 0.0"/>
+            <origin xyz= "0.017103 0.0 -0.064"/>
             <inertia ixx= "11974059" ixy="6925" ixz="44273" iyy="60417029" iyz="118" izz="61898680"/>
         </inertial>
     </link>
@@ -74,11 +74,11 @@
 				<mesh filename= "ME5150_tutorials\modelos\base_movil\meshes\motor_scaled_v1.stl"/>
 			</geometry>
             <material name= "yellow"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/> <!-- Posición relativa al enlace base_link -->
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> <!-- Posición relativa al enlace base_link -->
         </visual>
         <inertial>
             <mass value= "0.182431"/>
-            <origin xyz= "0.019353 0.0 0.0"/>
+            <origin xyz= "0.017103 0.0 -0.064"/>
             <inertia ixx= "11974059" ixy="6925" ixz="44273" iyy="60417029" iyz="118" izz="61898680"/>
         </inertial>
     </link>
@@ -86,22 +86,22 @@
     <joint name="motor_dc_1_joint" type="fixed">
         <parent link="base_link"/>
         <child link="motor_dc_1"/>
-        <origin xyz="0.06425 0.041487 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="0.06425 0.043487 -0.01287" rpy="-1.5708 0.0 3.14"/>
     </joint>
 	<joint name="motor_dc_2_joint" type="fixed">
         <parent link="base_link"/>
         <child link="motor_dc_2"/>
-        <origin xyz="0.06425 -0.041487 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="0.06425 -0.043487 -0.01287" rpy="1.5708 0.0 3.14"/>
     </joint>
 	<joint name="motor_dc_3_joint" type="fixed">
         <parent link="base_link"/>
         <child link="motor_dc_3"/>
-        <origin xyz="-0.06425 0.041487 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="-0.06425 0.043487 -0.01287" rpy="1.5708 0.0 0.0"/>
     </joint>
 	<joint name="motor_dc_4_joint" type="fixed">
         <parent link="base_link"/>
         <child link="motor_dc_4"/>
-        <origin xyz="-0.06425 -0.041487 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="-0.06425 -0.043487 -0.01287" rpy="-1.5708 0.0 0.0"/>
     </joint>
     
 	<link name="wheel_1">
@@ -110,10 +110,10 @@
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\ruedader.stl"/>
             </geometry>
             <material name="black"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         </visual>
         <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -130,10 +130,10 @@
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\ruedaizq.stl"/>
             </geometry>
             <material name="black"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 3.14 0.0"/>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> 
         </visual>
         <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -150,10 +150,10 @@
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\ruedaizq.stl"/>
             </geometry>
             <material name="black"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         </visual>
         <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -170,10 +170,10 @@
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\ruedader.stl"/>
             </geometry>
             <material name="black"/>
-			<origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         </visual>
         <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <mesh filename="ME5150_tutorials\modelos\base_movil\meshes\cilindro_ruedas_mesh.stl"/>
             </geometry>
@@ -184,33 +184,30 @@
             <inertia ixx="60736443" ixy="-0.0003584" ixz="-0.00000956" iyy="60741948" iyz="-0.0001412" izz="71971219"/>
         </inertial>
     </link>
-
+  
     <joint name="rueda1" type="continuous">
+        <axis xyz="0 0 1"/>
         <parent link="motor_dc_1"/>
         <child link="wheel_1"/>
-        <origin xyz="0.0 0.025 0.0"/>
-        <axis xyz="0 1 0"/>
-		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/>  -->
+        <origin xyz="0.0 0.0 -0.027043" rpy="0 3.14 0"/> <!--1.570796-->
     </joint>
 	<joint name="rueda2" type="continuous">
+        <axis xyz="0 0 1"/>
         <parent link="motor_dc_2"/>
         <child link="wheel_2"/>
-        <origin xyz="0.0 -0.025 0.0"/>
-        <axis xyz="0 1 0"/>
-		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
+        <origin xyz="0.0 0.0 -0.027043" rpy="0 -3.14 0"/>
     </joint>
 	<joint name="rueda3" type="continuous">
+        <axis xyz="0 0 1"/>
         <parent link="motor_dc_3"/>
         <child link="wheel_3"/>
-        <origin xyz="0.0 0.025 0.0"/>
-        <axis xyz="0 1 0"/>
-		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
+        <origin xyz="0.0 0.0 -0.027043" rpy="-3.14 0 0"/>
     </joint>
 	<joint name="rueda4" type="continuous">
+        <axis xyz="0 0 1"/>
         <parent link="motor_dc_4"/>
         <child link="wheel_4"/>
-        <origin xyz="0.0 -0.025 0.0"/>
-        <axis xyz="0 1 0"/>
-		<!-- <limit effort="100" velocity="3.14" lower="-3.1416" upper="3.1416"/> -->
-    </joint>
+        <origin xyz="0.0 0.0 -0.027043" rpy="3.14 0 0"/>
+    </joint> 
+    
 </robot>
