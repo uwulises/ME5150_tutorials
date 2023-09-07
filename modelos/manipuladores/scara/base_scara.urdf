@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<robot name="base_scara">
+  <link name="base_table">
+    <visual>
+      <geometry>
+         <mesh filename="package://scara/meshes/mesa_scara.stl" />
+      </geometry>
+      <material name="scara_table">
+                <color rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+    </visual>
+    <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://scara/meshes/mesa_scara.stl" />
+            </geometry>
+        </collision>
+  </link>
+</robot>

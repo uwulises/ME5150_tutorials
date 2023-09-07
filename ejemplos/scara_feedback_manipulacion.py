@@ -13,14 +13,20 @@ useFixedBase = True
 p.setGravity(0, 0, -9.81)
 p.setTimeStep(1 / 240)
 
-# Load KR6 robot arm and table
+# Load SCARA robot arm and table
 planeId = p.loadURDF("plane.urdf")
-tableId = p.loadURDF("table/table.urdf", basePosition = [0.3, 0, 0], useFixedBase = useFixedBase)
-robotId = p.loadURDF("../modelos/manipuladores/scara/scara.urdf", basePosition = [0, 0, 0.63], useFixedBase = useFixedBase)
+baseId = p.loadURDF("../modelos/manipuladores/scara/base_scara.urdf",
+                     basePosition=[0, 0, 0.69], useFixedBase=useFixedBase)
+table2Id = p.loadURDF("../modelos/manipuladores/scara/base_scara.urdf",
+                     basePosition=[0.8, 0, 0.69], useFixedBase=useFixedBase)
+robotId = p.loadURDF("../modelos/manipuladores/scara/scara.urdf", basePosition = [0, 0, 0.69], useFixedBase = useFixedBase)
 cubeId = p.loadURDF("../modelos/objetos/cubo.urdf", basePosition = [0.6, 0.2, 0.7])
 # tool coordinate position
 n_tcf = 2
 
+# Add sliders to control the position of the cube
+x_slider = p.addUserDebugParameter("x", 0.5, 0.8,0.6)
+y_slider = p.addUserDebugParameter("y", 0, 0.5, 0)
 
 ### funcion para obtener imagen de camara simulada
 def get_img_cam(width=240, height=240, fov=60, near=0.02, far=2, camposition=[1, 0, 1.5],distance=0.1,yaw=0,pitch=-90,roll=0):
@@ -48,12 +54,23 @@ def find_object_center(segmented_image, object_id):
     return int(center_x), int(center_y)
 
     
-    
+#function to move the cubeId to the target position using sliders
+def move_cube():
+    # get the current slider values
+    x = p.readUserDebugParameter(x_slider)
+    y = p.readUserDebugParameter(y_slider)
+    z = 0.715
+    # target position
+    xyz = [x, y, z]
+    p.resetBasePositionAndOrientation(cubeId, xyz, [0, 0, 0, 1])
+    p.stepSimulation()
 
 
 
 # Run the simulation
 while True:
+    #
+    move_cube()
 
     img_RGB, img_segmentada, img_depth = get_img_cam()
     center_segm_id = find_object_center(img_segmentada, cubeId)
@@ -63,7 +80,7 @@ while True:
     target_obj_x = (center_segm_id[0]-120)/215 + 1 
     target_obj_y = -(center_segm_id[1]-120)/215
 
-    xyz = [target_obj_x, target_obj_y, 0.7]
+    xyz = [target_obj_x, target_obj_y, 0.75]
 
     target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz)
     p.setJointMotorControlArray(robotId, range(3), p.POSITION_CONTROL, targetPositions = target)
