@@ -33,6 +33,7 @@ scara_arm = p.loadURDF("../modelos/manipuladores/scara/scara.urdf",
 omnibase = p.loadURDF("../modelos/base_movil/omnibase.urdf", basePosition = [0, 0, 0.0125], useFixedBase = False)
 
 #Dron con 4 helices
+drone = p.loadURDF("modelos/drones/djitello/djitello.urdf", basePosition=[0, 0, 1], useFixedBase=True)
 
 #ciclo basico de la simulacion
 
