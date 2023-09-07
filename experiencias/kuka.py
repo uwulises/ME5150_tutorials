@@ -10,8 +10,7 @@ useFixedBase = True
 
 # Set gravity and time step
 p.setGravity(0, 0, -9.81)
-p.setTimeStep(1 / 240)
-
+p.setRealTimeSimulation(1)
 # Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
 baseId = p.loadURDF("../modelos/manipuladores/kuka/steel_base.urdf", basePosition = [0, 0, 0.0125], useFixedBase = useFixedBase)
@@ -48,8 +47,6 @@ while True:
     xyz = [x,y,z]
     # target orientation
     ori = p.getQuaternionFromEuler([c,b,a])
-    
     # calculate joint target
     target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcp, targetPosition = xyz, targetOrientation = ori)
     p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions = target)
-    p.stepSimulation()
