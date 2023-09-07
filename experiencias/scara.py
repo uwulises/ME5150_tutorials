@@ -8,7 +8,7 @@ useFixedBase = True
 
 # Set gravity and time step
 p.setGravity(0, 0, -9.81)
-p.setTimeStep(1 / 240)
+p.setRealTimeSimulation(1)
 
 # Load SCARA robot arm and table
 planeId = p.loadURDF("plane.urdf")
@@ -45,7 +45,6 @@ def FK():
         q = [q0, q1, q2]
         p.setJointMotorControlArray(robotId, range(
             3), p.POSITION_CONTROL, targetPositions=q)
-        p.stepSimulation()
 
 
 def IK():
@@ -59,7 +58,7 @@ def IK():
             robotId, endEffectorLinkIndex=n_tcf, targetPosition=xyz)
         p.setJointMotorControlArray(robotId, range(
             3), p.POSITION_CONTROL, targetPositions=target)
-        p.stepSimulation()
+
 
 
 def main():
