@@ -4,6 +4,7 @@ import time
 import keyboard
 import math
 
+
 # Inicializar PyBullet
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Para encontrar los archivos URDF en pybullet_data

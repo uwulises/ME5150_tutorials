@@ -12,7 +12,7 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Para encontrar los arc
 floor = p.loadURDF("plane.urdf")
 
 # Crear el robot (base móvil)
-robot = p.loadURDF("ME5150_tutorials/modelos/base_movil/omnibase.urdf", [0, 0, 0.05]) 
+robot = p.loadURDF("Pybullet/ME5150_tutorials/modelos/base_movil/omnibase.urdf", [0, 0, 0.05]) 
 
 # Establecer gravedad y paso de tiempo
 p.setGravity(0, 0, -9.81)
@@ -29,20 +29,20 @@ while True:
         roll, pitch, yaw = p.getEulerFromQuaternion(base_orientation)
         
         # Mapa de eventos de teclado a comandos
-        if key_event.name == 'q':
+        if key_event.name == 'q': #adelante
             linear_velocity = [2.0*math.cos(yaw), 2.0*math.sin(yaw), 0.0]
             angular_velocity = [0.0, 0.0, 0.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
 
-        elif key_event.name == 's':
+        elif key_event.name == 's': #atras
             linear_velocity = [-2.0*math.cos(yaw), -2.0*math.sin(yaw), 0.0]
             angular_velocity = [0.0, 0.0, 0.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
-        elif key_event.name == 'a':
+        elif key_event.name == 'a': #giro izquierda
             linear_velocity = [0.0, 0.0, 0.0]
             angular_velocity = [0.0, 0.0, 8.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
-        elif key_event.name == 'd':
+        elif key_event.name == 'd': #giro derecha
             linear_velocity = [0.0, 0.0, 0.0]
             angular_velocity = [0.0, 0.0, -8.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
@@ -54,19 +54,19 @@ while True:
             linear_velocity = [-2.0*math.sin(yaw), 2.0*math.cos(yaw), 0.0]
             angular_velocity = [0.0, 0.0, 0.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
-        elif key_event.name == 'm': #movimiento diagonal derecha arriba
+        elif key_event.name == 'm': #movimiento diagonal izq arriba
             linear_velocity = [2.0*math.cos(yaw+desfase), 2.0*math.sin(yaw+desfase), 0.0]
             angular_velocity = [0.0, 0.0, 0.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
-        elif key_event.name == 'n': #movimiento diagonal derecha abajo
+        elif key_event.name == 'n': #movimiento diagonal derecha arriba
             linear_velocity = [2.0*math.cos(yaw-desfase), 2.0*math.sin(yaw-desfase), 0.0]
             angular_velocity = [0.0, 0.0, 0.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
-        elif key_event.name == 'b': #movimiento diagonal izquierda arriba
+        elif key_event.name == 'b': #movimiento diagonal izquierda abajo
             linear_velocity = [-2.0*math.cos(yaw-desfase), -2.0*math.sin(yaw-desfase), 0.0]
             angular_velocity = [0.0, 0.0, 0.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
-        elif key_event.name == 'c': #movimiento diagonal izquierda abajo
+        elif key_event.name == 'c': #movimiento diagonal der abajo
             linear_velocity = [-2.0*math.cos(yaw+desfase), -2.0*math.sin(yaw+desfase), 0.0]
             angular_velocity = [0.0, 0.0, 0.0]
             p.resetBaseVelocity(robot, linear_velocity, angular_velocity)
