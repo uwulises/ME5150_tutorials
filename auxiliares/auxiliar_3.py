@@ -30,7 +30,7 @@ class SCARAPoseViewer:
         #poses
  
 
-        poses = np.array([L1, L2, L3, L4, GC])
+        poses = np.array([])
 
         self.poses = poses
         return self.poses
