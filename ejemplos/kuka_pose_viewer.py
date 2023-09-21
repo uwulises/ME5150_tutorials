@@ -11,9 +11,27 @@ class KUKAPoseViewer:
 
     def get_pose_to_origin_pose_kuka(self):
 
-        Z1 = np.linalg.multi_dot([self.translation_z(0.675), self.rot_z(np.deg2rad(self.angles_list[0]))])
+        origin = np.identity(4)
+        Z1 = np.linalg.multi_dot([self.translation_z(675), self.rot_z(np.deg2rad(self.angles_list[0]))])
+        X1 = np.linalg.multi_dot([self.translation_x(300), self.rot_x(np.deg2rad(90))])
+        Z2 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.angles_list[1]))])
+        X2 = np.linalg.multi_dot([self.translation_x(650), self.rot_x(np.deg2rad(0))])
+        Z3 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.angles_list[2]))])
+        X3 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(90))])
+        Z4 = np.linalg.multi_dot([self.translation_z(600), self.rot_z(np.deg2rad(self.angles_list[3]))])
+        X4 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(-90))])
+        Z5 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.angles_list[4]))])
+        X5 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(90))])
+        Z6 = np.linalg.multi_dot([self.translation_z(125), self.rot_z(np.deg2rad(self.angles_list[5]))])
+        X6 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(0))])
+        A1 = np.linalg.multi_dot([origin,Z1])
+        A2 = np.linalg.multi_dot([A1, X1, Z2])
+        A3 = np.linalg.multi_dot([A2, X2, Z3])
+        A4 = np.linalg.multi_dot([A3, X3, Z4])
+        A5 = np.linalg.multi_dot([A4, X4, Z5])
+        A6 = np.linalg.multi_dot([A5, X5, Z6, X6])
 
-        poses = np.array([])
+        poses = np.array([origin, A1, A2, A3, A4, A5, A6])
         self.poses = poses
         return self.poses
     
@@ -53,8 +71,6 @@ class KUKAPoseViewer:
             self.ax3.set_zlabel('z-axis')
             self.ax3.scatter(xs=[0], ys=[0], zs=[0], marker='o', color=color)
             origin_pose = np.transpose(pose)[3, 0:3]
-            # multiply the first 3 rows of pose matrix by 1000 for mm
-            pose[0:3, 3] = pose[0:3, 3]*1000
             x_rot = np.linalg.multi_dot([pose, [1, 0, 0, 0]])
             y_rot = np.linalg.multi_dot([pose, [0, 1, 0, 0]])
             z_rot = np.linalg.multi_dot([pose, [0, 0, 1, 0]])
@@ -80,8 +96,8 @@ class KUKAPoseViewer:
         resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
 
         self.slider1 = Slider(self.slider1_ax, 'A1', -185, 185, valinit=0)
-        self.slider2 = Slider(self.slider2_ax, 'A2', -100, 115, valinit=-90)
-        self.slider3 = Slider(self.slider3_ax, 'A3', -210, 100, valinit=90)
+        self.slider2 = Slider(self.slider2_ax, 'A2', -100, 115, valinit=0)
+        self.slider3 = Slider(self.slider3_ax, 'A3', -210, 100, valinit=0)
         self.slider4 = Slider(self.slider4_ax, 'A4', -350, 350, valinit=0)
         self.slider5 = Slider(self.slider5_ax, 'A5', -130, 130, valinit=0)
         self.slider6 = Slider(self.slider6_ax, 'A6', -350, 350, valinit=0)
