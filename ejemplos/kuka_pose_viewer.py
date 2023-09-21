@@ -96,7 +96,7 @@ class KUKAPoseViewer:
         resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
 
         self.slider1 = Slider(self.slider1_ax, 'A1', -185, 185, valinit=0)
-        self.slider2 = Slider(self.slider2_ax, 'A2', -100, 115, valinit=0)
+        self.slider2 = Slider(self.slider2_ax, 'A2', -100, 115, valinit=90)
         self.slider3 = Slider(self.slider3_ax, 'A3', -210, 100, valinit=0)
         self.slider4 = Slider(self.slider4_ax, 'A4', -350, 350, valinit=0)
         self.slider5 = Slider(self.slider5_ax, 'A5', -130, 130, valinit=0)
