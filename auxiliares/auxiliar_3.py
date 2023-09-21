@@ -14,15 +14,22 @@ class SCARAPoseViewer:
         # usage np.linalg.multi_dot([Z1, X1, ...., Zn, Xn]), for rotations: rot_axis(np.deg2rad(self.values_list[i]))
 
         #Primer link, del suelo al primer eje
-        L1 = np.identity(4)
+        Z1 = np.identity(4)
+        X1 = np.identity(4)
         #Segundo link, del primer eje al segundo eje
-        L2 = np.identity(4)
+        Z2 = np.identity(4)
+        X2 = np.identity(4)
         #Tercer link, del segundo eje al tercer eje (Z)
-        L3 = np.identity(4)
+        Z3 = np.identity(4)
+        X3 = np.identity(4)
         #Cuarto link, del tercer eje al cuarto eje (A)
-        L4 = np.identity(4)
+        Z4 = np.identity(4)
+        X4 = np.identity(4)
         #END EFFECTOR
-        GC = np.identity(4)     
+        GC = np.identity(4)
+        #poses
+ 
+
         poses = np.array([L1, L2, L3, L4, GC])
 
         self.poses = poses

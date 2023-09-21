@@ -11,26 +11,23 @@ class KUKAPoseViewer:
 
     def get_pose_to_origin_pose_kuka(self):
 
-        #translation up to the first motor pose
-        A1 = np.linalg.multi_dot([self.translation_transform(0, 0, 0.675), self.rot_z(np.deg2rad(self.angles_list[0]))])
-        #second translation
-        A2 = np.linalg.multi_dot([A1, self.translation_transform(0.3, 0, 0), self.rot_y(np.deg2rad(self.angles_list[1]))])
-        #third translation
-        A3 = np.linalg.multi_dot([A2, self.translation_transform(0.65, 0, 0), self.rot_z(np.deg2rad(self.angles_list[2]))])
-        #fourth translation
-        A4 = np.linalg.multi_dot([A3, self.translation_transform(0.6, 0, 0), self.rot_x(np.deg2rad(self.angles_list[3]))])
-        #fifth translation
-        A5 = np.linalg.multi_dot([A4, self.translation_transform(0, 0, 0), self.rot_y(np.deg2rad(self.angles_list[4]))])
-        #sixth translation
-        A6 = np.linalg.multi_dot([A5, self.translation_transform(0.125, 0, 0), self.rot_z(np.deg2rad(self.angles_list[5]))])
+        Z1 = np.linalg.multi_dot([self.translation_z(0.675), self.rot_z(np.deg2rad(self.angles_list[0]))])
 
-        poses = np.array([A1, A2, A3, A4, A5, A6])
+        poses = np.array([])
         self.poses = poses
         return self.poses
+    
+    def translation_x(self,x):
 
-    def translation_transform(self,x, y, z):
+        return np.array([[1, 0, 0, x], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+    
+    def translation_y(self,y):
 
-        return np.array([[1, 0, 0, x], [0, 1, 0, y], [0, 0, 1, z], [0, 0, 0, 1]])
+        return np.array([[1, 0, 0, 0], [0, 1, 0, y], [0, 0, 1, 0], [0, 0, 0, 1]])
+    
+    def translation_z(self, z):
+
+        return np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, z], [0, 0, 0, 1]])
 
     def rot_x(self, qx):
 
