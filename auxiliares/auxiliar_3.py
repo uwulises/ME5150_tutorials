@@ -12,7 +12,7 @@ class SCARAPoseViewer:
 
     def get_pose_to_origin_pose_scara(self):
         # usage np.linalg.multi_dot([Z1, X1, ...., Zn, Xn]), for rotations: rot_axis(np.deg2rad(self.values_list[i]))
-
+        origen = np.identity(4)
         #Primer link, del suelo al primer eje
         Z1 = np.identity(4)
         X1 = np.identity(4)
@@ -30,7 +30,7 @@ class SCARAPoseViewer:
         #poses
  
 
-        poses = np.array([])
+        poses = np.array([origen])
 
         self.poses = poses
         return self.poses
@@ -96,7 +96,7 @@ class SCARAPoseViewer:
 
         self.slider1 = Slider(self.slider1_ax, 'Hombro', 0, 180, valinit=0)
         self.slider2 = Slider(self.slider2_ax, 'Codo', -180, 180, valinit=0)
-        self.slider3 = Slider(self.slider3_ax, 'Z', 0, 180, valinit=180)
+        self.slider3 = Slider(self.slider3_ax, 'Z [mm]', 0, 180, valinit=180)
         self.slider4 = Slider(self.slider4_ax, 'A', -180, 180, valinit=0)
         #add a button for reset
         
