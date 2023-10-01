@@ -13,9 +13,9 @@ class SCARAPoseViewer:
 
     def get_pose_to_origin_pose_scara(self):
         # Dimensiones del links según la tesis del SCARA [mm]
-        self.d1 = 360
+        self.d1 = 306.5
         self.r1 = 330
-        self.r2 = 668 - self.r1
+        self.r2 = 336
         
         # Usen np.linalg.multi_dot([Z1, X1, ...., Zn, Xn]), para rotaciones: rot_axis(np.deg2rad(self.values_list[i]))
 
