@@ -94,7 +94,7 @@ class SCARAPoseViewer:
         self.slider4_ax = plt.axes([0.2, 0.25, 0.65, 0.03])
         resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
 
-        self.slider1 = Slider(self.slider1_ax, 'Hombro', 0, 170, valinit=self.values_list[0])
+        self.slider1 = Slider(self.slider1_ax, 'Hombro', 10, 170, valinit=self.values_list[0])
         self.slider2 = Slider(self.slider2_ax, 'Codo', -130, 130, valinit=self.values_list[1])
         self.slider3 = Slider(self.slider3_ax, 'Z [mm]', 0, 180, valinit=self.values_list[2])
         self.slider4 = Slider(self.slider4_ax, 'A', 0, 360, valinit=self.values_list[3])
