@@ -30,9 +30,8 @@ class KUKAPoseViewer:
         A4 = np.linalg.multi_dot([A3, X3, Z4])
         A5 = np.linalg.multi_dot([A4, X4, Z5])
         A6 = np.linalg.multi_dot([A5, X5, Z6, X6])
-        TCP = np.linalg.multi_dot([A6, self.rot_z(np.deg2rad(180))])
 
-        poses = np.array([origin, A1, A2, A3, A4, A5, A6, TCP])
+        poses = np.array([origin, A1, A2, A3, A4, A5, A6])
         self.poses = poses
         return self.poses
     
