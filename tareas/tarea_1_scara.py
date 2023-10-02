@@ -174,7 +174,7 @@ class SCARAPoseViewer:
 if __name__ == "__main__":
     scara = SCARAPoseViewer()
 
-    param_joints = [180, 0, 100, 90] # Ejemplo de parametros de los 4 joints, modificar por cualquier otro valor
+    param_joints = [90, 0, 100, 90] # Ejemplo de parametros de los 4 joints, modificar por cualquier otro valor
 
     # No es necesario modificar esta parte
     dk = scara.forward_kinematics(param_joints)
