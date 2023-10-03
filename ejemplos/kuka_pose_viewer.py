@@ -4,25 +4,25 @@ from matplotlib.widgets import Slider
 
 class KUKAPoseViewer:
 
-    def __init__(self, angle_list=[0,0,0,0,0,0]):
-        self.angles_list=angle_list
+    def __init__(self, values_list=[0, -90, 90, 0, 0, 0]):
+        self.values_list = values_list
         self.poses = np.array([])
         self.ax3 = None
 
     def get_pose_to_origin_pose_kuka(self):
 
         origin = np.identity(4)
-        Z1 = np.linalg.multi_dot([self.translation_z(675), self.rot_z(np.deg2rad(self.angles_list[0]))])
-        X1 = np.linalg.multi_dot([self.translation_x(300), self.rot_x(np.deg2rad(90))])
-        Z2 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.angles_list[1]))])
+        Z1 = np.linalg.multi_dot([self.translation_z(675), self.rot_z(np.deg2rad(self.values_list[0]))])
+        X1 = np.linalg.multi_dot([self.translation_x(300), self.rot_x(np.deg2rad(-90))])
+        Z2 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.values_list[1]))])
         X2 = np.linalg.multi_dot([self.translation_x(650), self.rot_x(np.deg2rad(0))])
-        Z3 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.angles_list[2]))])
-        X3 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(90))])
-        Z4 = np.linalg.multi_dot([self.translation_z(600), self.rot_z(np.deg2rad(self.angles_list[3]))])
-        X4 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(-90))])
-        Z5 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.angles_list[4]))])
-        X5 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(90))])
-        Z6 = np.linalg.multi_dot([self.translation_z(125), self.rot_z(np.deg2rad(self.angles_list[5]))])
+        Z3 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.values_list[2]-90))])
+        X3 = np.linalg.multi_dot([self.translation_x(155), self.rot_x(np.deg2rad(-90))])
+        Z4 = np.linalg.multi_dot([self.translation_z(600), self.rot_z(np.deg2rad(self.values_list[3]))])
+        X4 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(90))])
+        Z5 = np.linalg.multi_dot([self.translation_z(0), self.rot_z(np.deg2rad(self.values_list[4]))])
+        X5 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(-90))])
+        Z6 = np.linalg.multi_dot([self.translation_z(125), self.rot_z(np.deg2rad(self.values_list[5]))])
         X6 = np.linalg.multi_dot([self.translation_x(0), self.rot_x(np.deg2rad(0))])
         A1 = np.linalg.multi_dot([origin,Z1])
         A2 = np.linalg.multi_dot([A1, X1, Z2])
@@ -86,6 +86,8 @@ class KUKAPoseViewer:
     def slider(self):
         fig = plt.figure(figsize=(6, 8))
         self.ax3 = fig.add_subplot(111, projection='3d', position=[0.1, 0.3, 0.8, 0.8])
+        self.get_pose_to_origin_pose_kuka()
+        self.draw_axes_tf(self.poses)
         # Create sliders
         self.slider1_ax = plt.axes([0.2, 0.1, 0.65, 0.03])
         self.slider2_ax = plt.axes([0.2, 0.15, 0.65, 0.03])
@@ -96,8 +98,8 @@ class KUKAPoseViewer:
         resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
 
         self.slider1 = Slider(self.slider1_ax, 'A1', -185, 185, valinit=0)
-        self.slider2 = Slider(self.slider2_ax, 'A2', -100, 115, valinit=90)
-        self.slider3 = Slider(self.slider3_ax, 'A3', -210, 100, valinit=0)
+        self.slider2 = Slider(self.slider2_ax, 'A2', -100, 115, valinit=-90)
+        self.slider3 = Slider(self.slider3_ax, 'A3', -210, 100, valinit=90)
         self.slider4 = Slider(self.slider4_ax, 'A4', -350, 350, valinit=0)
         self.slider5 = Slider(self.slider5_ax, 'A5', -130, 130, valinit=0)
         self.slider6 = Slider(self.slider6_ax, 'A6', -350, 350, valinit=0)
@@ -119,7 +121,7 @@ class KUKAPoseViewer:
         #clean the last plot
         self.ax3.cla()
         slider_values = np.array([self.slider1.val, self.slider2.val, self.slider3.val, self.slider4.val, self.slider5.val, self.slider6.val])
-        self.angles_list = slider_values
+        self.values_list = slider_values
         self.get_pose_to_origin_pose_kuka()
         self.draw_axes_tf(self.poses)
         pass
