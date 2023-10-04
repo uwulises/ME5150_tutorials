@@ -4,42 +4,94 @@ import numpy as np
 # Callback function for slider changes
 def on_slider_change(value):
     # Retrieve current slider values
-    h = cv2.getTrackbarPos('H', 'Sliders Window')
-    s = cv2.getTrackbarPos('S', 'Sliders Window')
-    v = cv2.getTrackbarPos('V', 'Sliders Window')
+    h1 = cv2.getTrackbarPos('H1', 'Sliders Window')
+    s1 = cv2.getTrackbarPos('S1', 'Sliders Window')
+    v1 = cv2.getTrackbarPos('V1', 'Sliders Window')
+    h2 = cv2.getTrackbarPos('H2', 'Sliders Window')
+    s2 = cv2.getTrackbarPos('S2', 'Sliders Window')
+    v2 = cv2.getTrackbarPos('V2', 'Sliders Window')
 
 # Create a window to display the sliders
 cv2.namedWindow('Sliders Window')
 
 # Create three sliders
-cv2.createTrackbar('H', 'Sliders Window', 0, 179, on_slider_change)
-cv2.createTrackbar('S', 'Sliders Window', 0, 255, on_slider_change)
-cv2.createTrackbar('V', 'Sliders Window', 0, 255, on_slider_change)
+cv2.createTrackbar('H1', 'Sliders Window', 0, 180, on_slider_change)
+cv2.createTrackbar('S1', 'Sliders Window', 0, 255, on_slider_change)
+cv2.createTrackbar('V1', 'Sliders Window', 0, 255, on_slider_change)
+cv2.createTrackbar('H2', 'Sliders Window', 0, 179, on_slider_change)
+cv2.createTrackbar('S2', 'Sliders Window', 0, 255, on_slider_change)
+cv2.createTrackbar('V2', 'Sliders Window', 0, 255, on_slider_change)
 
-# Create a blank image
-image = np.zeros((200, 200, 3), dtype=np.uint8)
 
-# Keep updating the window until the 'Esc' key is pressed
-while True:
-    # Get the current slider values
-    h = cv2.getTrackbarPos('H', 'Sliders Window')
-    s = cv2.getTrackbarPos('S', 'Sliders Window')
-    v = cv2.getTrackbarPos('V', 'Sliders Window')
 
-    # Set the color in HSV
-    color_hsv = np.array([[[h, s, v]]], dtype=np.uint8)
-    color_bgr = cv2.cvtColor(color_hsv, cv2.COLOR_HSV2BGR)
-    color_bgr = tuple(map(int, color_bgr[0, 0]))
+def process_frame(img, color_hsv1, color_hsv2):
+    # Convert the image to HSV
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # Fill the image with the specified color
-    image[:] = color_bgr
+    mask_blue = cv2.inRange(hsv, color_hsv1, color_hsv2)
 
-    # Display the image in the window
-    cv2.imshow('Sliders Window', image)
+    result = cv2.bitwise_and(hsv, hsv, mask= mask_blue)
 
-    # Wait for the 'Esc' key to be pressed
-    if cv2.waitKey(1) == 27:
-        break
+    brg = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+    return brg
 
-# Close the window and release resources
-cv2.destroyAllWindows()
+
+def main ():
+    image1 = np.zeros((240, 320, 3), dtype=np.uint8)
+    image2 = np.zeros((240, 320, 3), dtype=np.uint8)
+
+    proc_frame = np.zeros((480, 640, 3), dtype=np.uint8)
+    
+    cap = cv2.VideoCapture(1)
+
+    # Keep updating the window until the 'Esc' key is pressed
+    while True:
+        
+        # Get the current slider values
+        h1 = cv2.getTrackbarPos('H1', 'Sliders Window')
+        s1 = cv2.getTrackbarPos('S1', 'Sliders Window')
+        v1 = cv2.getTrackbarPos('V1', 'Sliders Window')
+        h2 = cv2.getTrackbarPos('H2', 'Sliders Window')
+        s2 = cv2.getTrackbarPos('S2', 'Sliders Window')
+        v2 = cv2.getTrackbarPos('V2', 'Sliders Window')
+
+        # Set the color in HSV
+        color_hsv1 = np.array([[[h1, s1, v1]]], dtype=np.uint8)
+        color_hsv2 = np.array([[[h2, s2, v2]]], dtype=np.uint8)
+
+        color_bgr1 = cv2.cvtColor(color_hsv1, cv2.COLOR_HSV2BGR)
+        color_bgr1 = tuple(map(int, color_bgr1[0, 0]))
+
+        color_bgr2 = cv2.cvtColor(color_hsv2, cv2.COLOR_HSV2BGR)
+        color_bgr2 = tuple(map(int, color_bgr2[0, 0]))
+
+        image1[:] = color_bgr1
+        image2[:] = color_bgr2
+
+        # Display the image in the window
+        hor1 = cv2.hconcat([image1, image2]) 
+        
+        # Read a frame from the webcam
+        ret, frame = cap.read()
+
+        # Check if frame reading was successful
+        if ret:
+            # Process the frame
+            frame = cv2.resize(frame, (320, 240))
+            proc_frame = process_frame(frame, color_hsv1[0][0], color_hsv2[0][0])
+            hor2 = cv2.hconcat([frame, proc_frame])
+
+        union = cv2.vconcat([hor1, hor2]) 
+        
+        cv2.imshow('Sliders Window', union)
+        # Wait for the 'Esc' key to be pressed
+        if cv2.waitKey(1) == 27:
+            break
+        
+
+    # Close the window and release resources
+    cv2.destroyAllWindows()
+    cap.release()
+# Run the main function
+if __name__ == '__main__':
+    main()
