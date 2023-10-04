@@ -3,20 +3,61 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
+# Function to find colors
+def find_green(img):
+    ctr = []
+    return ctr
+
+def find_red(img):
+    ctr = []
+    return ctr
+
+# Functions to find shapes
+def find_circle(img):
+    ctr = []
+    return ctr
+
+def find_square(img):
+    ctr = []
+    return ctr
+
+def find_rectangle(img):
+    ctr = []
+    return ctr
+
 # Function to process each frame
 def process_frame(img):
 
     # Convert the image to grayscale
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     k = 7
+
     # Apply Gaussian blur to the grayscale image
-    blur = cv2.GaussianBlur(gray, (k, k), 0)
+    blur = cv2.GaussianBlur(hsv, (k, k), 0)
+
+    #lower = np.array([90, 100, 160])
+    #upper = np.array([120, 255, 255])
+    lower = (90, 100, 160)
+    upper = (120, 255, 255)
+
+    # Aplicar dilatación a imagen hsv, con un kernel a definir
+    k = 13 
+    
+    # Define the kernel size and shape for dilatation
+    kernel = np.ones((k, k), np.uint8)
+
+    # Perform dilatation on the image
+    dilated_image = cv2.dilate(blur, kernel, iterations=1)
+
+    # Generar máscara a partir de rango de colores
+    mask_blue = cv2.inRange(dilated_image, lower_blue, upper_blue)
+
 
     lower_thr = 100
     upper_thr = 200
     # Apply Canny edge detection to the blurred image
-    edges = cv2.Canny(blur, lower_thr, upper_thr)
+    edges = cv2.Canny(mask, lower_thr, upper_thr)
 
     # Find contours in the edges image
     contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -29,15 +70,6 @@ def process_frame(img):
 
             approx = cv2.approxPolyDP(cnt, 0.1 * cv2.arcLength(cnt, True), True)
             if len(approx) == 3:
-                cv2.drawContours(img, [cnt], 0, (0, 255, 0), 4)
-            elif len(approx) == 4:
-                x, y, w, h = cv2.boundingRect(cnt)
-                aspect_ratio = float(w) / h
-                if aspect_ratio >= 0.95 and aspect_ratio <= 1.05:
-                    cv2.drawContours(img, [cnt], 0, (255, 255, 0), 4)
-                else: 
-                    cv2.drawContours(img, [cnt], 0, (255, 150, 0), 4)
-            elif len(approx) == 5:
                 cv2.drawContours(img, [cnt], 0, (0, 255, 0), 4)
             else:
                 cv2.drawContours(img, [cnt], 0, (255, 0, 255), 4)
