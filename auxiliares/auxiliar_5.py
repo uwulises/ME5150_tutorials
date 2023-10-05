@@ -49,14 +49,15 @@ def find_triangle(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # Aplicar filtro Gaussiano a la imagen, con un kernel a definir
-    k = 5
+    k = 7
     blur = cv2.GaussianBlur(gray, (k, k), 0)
 
     # Aplicar detección de bordes usando algoritmo Canny
-    lower_thr = 100
-    upper_thr = 200
+    lower_thr = 20
+    upper_thr = 100
     edges = cv2.Canny(blur, lower_thr, upper_thr)
 
+    #_, threshold = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY) 
     # Encontrar contornos en la imagen de bordes
     contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -64,10 +65,14 @@ def find_triangle(img):
     for cnt in contours:
         # Calcular el area del contorno
         area = cv2.contourArea(cnt)
+        cv2.drawContours(img, [cnt], contourIdx = 0, color = (0, 0, 255), thickness = 3)
+
         if area > 150:  # Ignore small contours
-            approx = cv2.approxPolyDP(cnt, epsilon = 0.05 * cv2.arcLength(cnt, closed = True), closed = True)
+            perimeter = cv2.arcLength(cnt, closed = True)
+            approx = cv2.approxPolyDP(cnt, epsilon = 0.05 * perimeter, closed = True)
             if len(approx) == 3:
-                val_contornos.append(cnt)
+                val_contornos.append(approx)
+    cv2.imshow('Processed Frame', img)
     return val_contornos
 
 def find_circle(img):
@@ -88,7 +93,7 @@ def process_frame(img):
     
     contours = []
     contours+=find_triangle(img)
-    contours+=find_yellow(img)
+    #contours+=find_yellow(img)
 
     # Dibujar los contornos en la imagen
     if len(contours) > 0:
