@@ -9,9 +9,9 @@ def find_yellow(img):
     # Convertir imagen a espacio de color HSV
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # Definir rangos de colores (esto no es amarillo)
-    lower = (90, 100, 160) # np.array([90, 100, 160])
-    upper = (120, 255, 255) # np.array([120, 255, 255])
+    # Definir rangos de colores
+    lower = (13, 89, 83) # np.array([90, 100, 160])
+    upper = (42, 213, 208) # np.array([120, 255, 255])
 
     # Generar máscara a partir de rango de colores
     mask = cv2.inRange(hsv, lower, upper)
@@ -72,7 +72,6 @@ def find_triangle(img):
             approx = cv2.approxPolyDP(cnt, epsilon = 0.05 * perimeter, closed = True)
             if len(approx) == 3:
                 val_contornos.append(approx)
-    cv2.imshow('Processed Frame', img)
     return val_contornos
 
 def find_circle(img):
@@ -92,8 +91,8 @@ def find_rectangle(img):
 def process_frame(img):
     
     contours = []
-    contours+=find_triangle(img)
-    #contours+=find_yellow(img)
+    #contours+=find_triangle(img)
+    contours+=find_yellow(img)
 
     # Dibujar los contornos en la imagen
     if len(contours) > 0:
