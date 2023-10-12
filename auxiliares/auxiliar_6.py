@@ -35,13 +35,14 @@ def perm_columns(pos):
 
 cap = cv2.VideoCapture(0)
 
-camera_matrix = np.array([[1080., 0., 290.],[0., 1072., 250.],[0., 0., 1.]])
-dist_coeff = np.array([[-1.125,  7.71, -0.044,  0.0143, -4.105]])
+
 
 hunter = ArucoHunting()
 # TODO -------- Parte 2.b: Cambiar el valor del largo del marcador
 hunter.set_marker_length(0.05) # en metros
 # TODO -------- Parte 2.c: Cambiar los valores de la matriz de la cámara y coeficientes de distorsión
+camera_matrix = np.zeros((3,2))
+dist_coeff = np.zeros(5)
 hunter.set_camera_parameters(camera_matrix, dist_coeff)
 
 shapito = ShapeDetector()
