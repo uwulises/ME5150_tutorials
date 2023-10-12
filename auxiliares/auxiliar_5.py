@@ -10,8 +10,8 @@ def find_yellow(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Definir rangos de colores
-    lower = (13, 89, 83) # np.array([90, 100, 160])
-    upper = (42, 213, 208) # np.array([120, 255, 255])
+    lower = (13, 89, 83)
+    upper = (42, 213, 208)
 
     # Generar máscara a partir de rango de colores
     mask = cv2.inRange(hsv, lower, upper)
@@ -37,9 +37,34 @@ def find_green(img):
     ctr = []
     return ctr
 
-def find_red(img):
-    ctr = []
-    return ctr
+def find_pink(img):
+    val_contornos = []
+    # Convertir imagen a espacio de color HSV
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    # Definir rangos de colores
+    lower = (5, 170, 146) # np.array([90, 100, 160])
+    upper = (21, 255, 255) # np.array([120, 255, 255])
+
+    # Generar máscara a partir de rango de colores
+    mask = cv2.inRange(hsv, lower, upper)
+
+    # Aplicar detección de bordes usnado algoritmo Canny
+    lower_thr = 100
+    upper_thr = 200
+    edges = cv2.Canny(mask, lower_thr, upper_thr)
+    # Encontrar contornos en la imagen de bordes
+    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    
+    if len(contours) > 0:
+        # Para cada contorno
+        for cnt in contours:
+            area = cv2.contourArea(cnt)
+            if area > 150:  # Ignore small contours
+                perimeter = cv2.arcLength(cnt, closed = True)
+                approx = cv2.approxPolyDP(cnt, epsilon = 0.05 * perimeter, closed = True)
+                val_contornos.append(approx)
+    return val_contornos
 
 # Functions to find shapes
 def find_triangle(img):
@@ -56,7 +81,7 @@ def find_triangle(img):
     lower_thr = 20
     upper_thr = 100
     edges = cv2.Canny(blur, lower_thr, upper_thr)
-
+    cv2.imshow('Bordes Frame', edges)
     #_, threshold = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY) 
     # Encontrar contornos en la imagen de bordes
     contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -66,7 +91,7 @@ def find_triangle(img):
         # Calcular el area del contorno
         area = cv2.contourArea(cnt)
         cv2.drawContours(img, [cnt], contourIdx = 0, color = (0, 0, 255), thickness = 3)
-
+        
         if area > 150:  # Ignore small contours
             perimeter = cv2.arcLength(cnt, closed = True)
             approx = cv2.approxPolyDP(cnt, epsilon = 0.05 * perimeter, closed = True)
@@ -93,6 +118,7 @@ def process_frame(img):
     contours = []
     #contours+=find_triangle(img)
     contours+=find_yellow(img)
+    contours+=find_pink(img)
 
     # Dibujar los contornos en la imagen
     if len(contours) > 0:
@@ -112,7 +138,7 @@ def process_frame(img):
 # Main function
 def main():
     # Open the webcam
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     while True:
         # Read a frame from the webcam
