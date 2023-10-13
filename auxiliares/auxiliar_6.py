@@ -31,24 +31,25 @@ def traslation_transform(x, y, z):
 def perm_columns(pos):
     # TODO -------- Parte 2.c: Permutar valores ejes coordenados para ajustar a coordenadas PyBullet
     n_position = np.zeros(3)
-    return pos # Cambiar por n_position para ver el efecto
+    n_position[0] = pos[2] 
+    n_position[1] = pos[0]
+    n_position[2] = -pos[1]
+    return n_position
 
 cap = cv2.VideoCapture(0)
 
-
-
 hunter = ArucoHunting()
 # TODO -------- Parte 2.b: Cambiar el valor del largo del marcador
-hunter.set_marker_length(0.05) # en metros
+hunter.set_marker_length(0.03) # en metros
 # TODO -------- Parte 2.c: Cambiar los valores de la matriz de la cámara y coeficientes de distorsión
-camera_matrix = np.zeros((3,2))
-dist_coeff = np.zeros(5)
+camera_matrix = np.array([[1080., 0., 290.],[0., 1072., 250.],[0., 0., 1.]])
+dist_coeff = np.array([[-1.125,  7.71, -0.044,  0.0143, -4.105]])
 hunter.set_camera_parameters(camera_matrix, dist_coeff)
 
 shapito = ShapeDetector()
 
-flagP2 = False
-flagP3 = True
+flagP2 = True
+flagP3 = False
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -74,7 +75,7 @@ while cap.isOpened():
         x, y = shapito.find_rectangle()
         #print(x, y)
         
-        aruco_corners = hunter.corner
+        aruco_corners = hunter.corners
 
         cv2.imshow('Rectangulos', shapito.img_detection)
         

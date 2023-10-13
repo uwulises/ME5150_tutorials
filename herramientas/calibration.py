@@ -6,7 +6,7 @@ import glob
   
 # Define the dimensions of checkerboard
 CHECKERBOARD = (6, 4)
-SIZE = 26 # mm
+SIZE = 20 # mm
 
 # stop the iteration when specified
 # accuracy, epsilon, is reached or
@@ -29,7 +29,7 @@ prev_img_shape = None
 # in a given directory. Since no path is
 # specified, it will take current directory
 # jpg files alone
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 found = 0
 
 while(found < 20):  # Here, 20 can be changed to whatever number you like to choose
