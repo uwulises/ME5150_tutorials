@@ -1,13 +1,22 @@
 import numpy as np
-import keyboard
+#import keyboard
 import cv2
 
 class MoveDrone:
-    def __init__(self, pose, vel=15):
+    def __init__(self, pose, vel = 1):
         self.pose = np.array(pose) # [x, y, z, roll, pitch, yaw]
         self.vel = vel # velocidad de movimiento
         self.target_pose = np.array(pose) # [x, y, z, roll, pitch, yaw]
+        self.on_target = True
 
+    def is_on_target(self):
+        dif = np.array(self.target_pose) - np.array(self.pose)
+        if np.linalg.norm(dif) < 0.001:
+            self.on_target = True
+        else:
+            self.on_target = False
+        return self.on_target
+    
     def update_pose(self):
         dif = np.array(self.target_pose) - np.array(self.pose)
         self.pose += dif * self.vel * 1/240

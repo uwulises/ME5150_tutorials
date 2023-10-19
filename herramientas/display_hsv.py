@@ -27,26 +27,26 @@ cv2.createTrackbar('V2', 'Sliders Window', 0, 255, on_slider_change)
 def process_frame(img, color_hsv1, color_hsv2):
     # Convert the image to HSV
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
     mask_blue = cv2.inRange(hsv, color_hsv1, color_hsv2)
-
-    result = cv2.bitwise_and(hsv, hsv, mask= mask_blue)
-
-    brg = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+    brg = cv2.cvtColor(mask_blue, cv2.COLOR_GRAY2BGR)
     return brg
 
 
 def main ():
     image1 = np.zeros((240, 320, 3), dtype=np.uint8)
     image2 = np.zeros((240, 320, 3), dtype=np.uint8)
-
     proc_frame = np.zeros((480, 640, 3), dtype=np.uint8)
     
-    cap = cv2.VideoCapture(0)
+    # Cambiar path según video o bien, 0 para webcam
+    path = './multimedia/tarea2/s2.mp4'
+    cap = cv2.VideoCapture(path)
 
-    # Keep updating the window until the 'Esc' key is pressed
+    ret = 0
     while True:
-        
+        # Si es video este se va a repetir cuando se acabe
+        if path.split('.')[-1] == 'mp4' and not ret:
+            cap = cv2.VideoCapture(path)
+
         # Get the current slider values
         h1 = cv2.getTrackbarPos('H1', 'Sliders Window')
         s1 = cv2.getTrackbarPos('S1', 'Sliders Window')
@@ -92,6 +92,7 @@ def main ():
     # Close the window and release resources
     cv2.destroyAllWindows()
     cap.release()
+
 # Run the main function
 if __name__ == '__main__':
     main()
