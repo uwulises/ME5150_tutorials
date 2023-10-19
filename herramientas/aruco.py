@@ -48,7 +48,7 @@ class ArucoHunting():
             _, rvec, tvec = cv2.solvePnP(_objPoints, _marker_corner, self.camera_matrix, self.dist_coeff, flags=cv2.SOLVEPNP_IPPE_SQUARE)
             # Dibuja ejes de cada marcador detectado
             self.img_detection = cv2.drawFrameAxes(self.img_detection, self.camera_matrix, self.dist_coeff, rvec, tvec, self.marker_length)
-
+            self.img_detection = cv2.aruco.drawDetectedMarkers(self.img_detection, marker_corners, borderColor=(255, 0, 0))
         # Se ajustan ejes de coordenadas
         rvec = np.transpose(rvec)
         tvec = np.transpose(tvec)[0]
