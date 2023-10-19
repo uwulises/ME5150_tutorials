@@ -36,7 +36,7 @@ planeId = p.loadURDF("plane.urdf")
 #drone = p.loadURDF("modelos/drones/djitello/djitello.urdf", basePosition=[0, 0, 1], useFixedBase=True)	    
 drone = p.loadURDF("modelos/drones/matrice100/matrice100.urdf", basePosition=[0, 0, 1], useFixedBase=True)
 dron_pose = p.getBasePositionAndOrientation(drone)[0]+p.getEulerFromQuaternion(p.getBasePositionAndOrientation(drone)[1])
-movdrone = MoveDrone(dron_pose)
+movdrone = MoveDrone(dron_pose, vel=5)
 
 #ciclo basico de la simulacion
 time0 = time.time()

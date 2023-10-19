@@ -3,9 +3,9 @@ import keyboard
 import cv2
 
 class MoveDrone:
-    def __init__(self, pose):
+    def __init__(self, pose, vel=15):
         self.pose = np.array(pose) # [x, y, z, roll, pitch, yaw]
-        self.vel = 15 # velocidad de movimiento
+        self.vel = vel # velocidad de movimiento
         self.target_pose = np.array(pose) # [x, y, z, roll, pitch, yaw]
 
     def update_pose(self):
