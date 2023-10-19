@@ -76,6 +76,10 @@ def move_scara(xyz=[-0.4,0.6,0.2]):
     p.setJointMotorControlArray(robotId, range(3), p.POSITION_CONTROL, targetPositions = target)
 
 
+aruco_look = ArucoHunting()
+aruco_look.set_marker_length(0.04)
+aruco_look.camera_matrix = np.array([[1080., 0., 290.],[0., 1072., 250.],[0., 0., 1.]])
+aruco_look.dist_coeff= np.array([[-1.125,  7.71, -0.044,  0.0143, -4.105]])
 
 # Run the simulation
 while True:
@@ -83,11 +87,17 @@ while True:
     img_RGB = get_img_cam()
     #resize
     img_RGB = cv2.resize(img_RGB, (640, 480))
+    aruco_look.update_image(img_RGB)
+    aruco_look.update_pose_and_corners()
+
+    #pose aruco
+    pose = aruco_look.pose
+
 
     move_scara()
 
   
-    cv2.imshow("Seg", img_RGB)
+    cv2.imshow("Seg", aruco_look.img_detection)
     #waitkey esc
     if cv2.waitKey(1) == 27:
         break
