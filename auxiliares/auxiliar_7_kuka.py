@@ -2,9 +2,9 @@ import pybullet as p
 import pybullet_data
 import time
 import numpy as np
-import cv2
 import os
 import sys
+import cv2
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../herramientas')))
 from aruco import ArucoHunting
 
@@ -16,18 +16,15 @@ useFixedBase = True
 # Set gravity and time step
 p.setGravity(0, 0, -9.81)
 p.setRealTimeSimulation(1)
-
-# Load SCARA robot arm and table
+# Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
-baseId = p.loadURDF("../modelos/manipuladores/scara/base_scara.urdf",
-                     basePosition=[0, 0, 0.69], useFixedBase=useFixedBase)
-robotId = p.loadURDF("../modelos/manipuladores/scara/scara.urdf", basePosition = [0, 0, 0.69], baseOrientation= p.getQuaternionFromEuler([np.deg2rad(0),np.deg2rad(0),np.deg2rad(180)]),useFixedBase = useFixedBase)
-arucoId = p.loadURDF("../modelos/objetos/ArucoBox/model.urdf", basePosition = [-0.4, 0.2, 1])
+baseId = p.loadURDF("../modelos/manipuladores/kuka/steel_base.urdf", basePosition = [0, 0, 0.0125], useFixedBase = useFixedBase)
+robotId = p.loadURDF("../modelos/manipuladores/kuka/kr6_2.urdf", basePosition = [0, 0, 0.035], useFixedBase = useFixedBase)
+tableId = p.loadURDF("table/table.urdf", basePosition = [1.5, 0, 0], useFixedBase = useFixedBase)
+arucoId = p.loadURDF("../modelos/objetos/ArucoBox/model.urdf", basePosition = [1, 0.2, 1])
+
 # tool coordinate position
-n_tcf = 2
-
-
-
+n_tcp = 5
 
 def cvK2BulletP(K, w, h, near, far):
         """
@@ -58,7 +55,7 @@ def cvK2BulletP(K, w, h, near, far):
         return np.array(projection_matrix).T.reshape(16).tolist()
 
 ### funcion para obtener imagen de camara simulada
-def get_img_cam(width=1920, height=1080, near=0.2, far=2, camposition=[-0.5, 0.2, 1.5],distance=0.05,yaw=0,pitch=-90,roll=0):
+def get_img_cam(width=1920, height=1080, near=0.2, far=2, camposition=[1, 0.2, 1.5],distance=0.05,yaw=0,pitch=-90,roll=0):
     K=np.array([[1080., 0., 290.],[0., 1072., 250.],[0., 0., 1.]])
     aspect = width / height
     view_matrix = p.computeViewMatrixFromYawPitchRoll(camposition,distance,yaw,pitch,roll,upAxisIndex=2)
@@ -68,12 +65,15 @@ def get_img_cam(width=1920, height=1080, near=0.2, far=2, camposition=[-0.5, 0.2
     rgbaImg = cv2.cvtColor(rgbaImg, cv2.COLOR_BGR2RGB)
     return rgbaImg
 
+def move_kuka(xyz=[1,0,0.8],abc=[0,0,0]):
 
-def move_scara(xyz=[-0.4,0.6,0.2]):
-    offset_z = 0.69 #considering the base height
-    xyz[2] = xyz[2] + offset_z
-    target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcf, targetPosition = xyz)
-    p.setJointMotorControlArray(robotId, range(3), p.POSITION_CONTROL, targetPositions = target)
+
+    # target orientation
+    ori = p.getQuaternionFromEuler([abc[2], abc[1], abc[0]])
+    # calculate joint target
+    target = p.calculateInverseKinematics(robotId, endEffectorLinkIndex = n_tcp, targetPosition = xyz, targetOrientation = ori)
+    p.setJointMotorControlArray(robotId, range(6), p.POSITION_CONTROL, targetPositions = target)
+
 
 
 aruco_look = ArucoHunting()
@@ -81,10 +81,12 @@ aruco_look.set_marker_length(0.04)
 aruco_look.camera_matrix = np.array([[1080., 0., 290.],[0., 1072., 250.],[0., 0., 1.]])
 aruco_look.dist_coeff= np.array([[-1.125,  7.71, -0.044,  0.0143, -4.105]])
 
+
+
 # Run the simulation
 while True:
-    move_scara()
-
+    move_kuka()
+    
     img_RGB = get_img_cam()
     #resize
     img_RGB = cv2.resize(img_RGB, (640, 480))
@@ -94,14 +96,14 @@ while True:
         aruco_look.update_image(img_RGB)
         aruco_look.update_pose_and_corners()
     count += 1
-    
     #pose aruco
     pose = aruco_look.pose
     print("pose estimada rvec, tvec: ", pose)
+
+    
+
 
     cv2.imshow("Seg", aruco_look.img_detection)
     #waitkey esc
     if cv2.waitKey(1) == 27:
         break
-
-    
