@@ -63,7 +63,7 @@ def get_img_cam(width=1920, height=1080, near=0.2, far=2, camposition=[-0.5, 0.2
     aspect = width / height
     view_matrix = p.computeViewMatrixFromYawPitchRoll(camposition,distance,yaw,pitch,roll,upAxisIndex=2)
     projection_matrix = cvK2BulletP(K, width, height, near, far)
-    w_img, h_img, rgbaImg, depthImg, segImg = p.getCameraImage(width, height, view_matrix, projection_matrix, renderer=p.ER_BULLET_HARDWARE_OPENGL,flags = p.ER_SEGMENTATION_MASK_OBJECT_AND_LINKINDEX)
+    w_img, h_img, rgbaImg, depthImg, segImg = p.getCameraImage(width, height, view_matrix, projection_matrix, renderer=p.ER_BULLET_HARDWARE_OPENGL,flags = p.ER_NO_SEGMENTATION_MASK)
     depth_buffer_opengl = np.reshape(depthImg, [width, height])
     rgbaImg = cv2.cvtColor(rgbaImg, cv2.COLOR_BGR2RGB)
     return rgbaImg
@@ -87,12 +87,19 @@ while True:
     img_RGB = get_img_cam()
     #resize
     img_RGB = cv2.resize(img_RGB, (640, 480))
-    aruco_look.update_image(img_RGB)
-    aruco_look.update_pose_and_corners()
+    #call aruco every 5 cycles
+    count = 0
+    if count % 5 == 0:
+        aruco_look.update_image(img_RGB)
+        aruco_look.update_pose_and_corners()
+    count += 1
+
+    # aruco_look.update_image(img_RGB)
+    # aruco_look.update_pose_and_corners()
 
     #pose aruco
     pose = aruco_look.pose
-
+    print("pose estimada rvec, tvec: ", pose)
 
     move_scara()
 
