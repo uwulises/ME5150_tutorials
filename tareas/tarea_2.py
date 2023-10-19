@@ -149,7 +149,22 @@ def process_s4(img):
     ctr = []
     ctr.append(find_rectangle(img))
     return ctr
-    
+
+def process_s5(img):
+    """
+    Detectar cuadrado amarillo y rectangulo morado
+    """
+    ctr = []
+
+    return ctr
+
+def process_s6(img):
+    """
+    Detectar cuadrados
+    """
+    ctr = []
+
+    return ctr
 # Function to process each frame
 def process_frame(img):
 
