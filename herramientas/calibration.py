@@ -5,8 +5,9 @@ import os
 import glob
   
 # Define the dimensions of checkerboard
-CHECKERBOARD = (6, 9)
-  
+CHECKERBOARD = (6, 4)
+SIZE = 20 # mm
+
 # stop the iteration when specified
 # accuracy, epsilon, is reached or
 # specified number of iterations are completed.
@@ -21,17 +22,17 @@ objectp3d = np.zeros((1, CHECKERBOARD[0]
                       * CHECKERBOARD[1], 
                       3), np.float32)
 objectp3d[0, :, :2] = np.mgrid[0:CHECKERBOARD[0],
-                               0:CHECKERBOARD[1]].T.reshape(-1, 2)*26
+                               0:CHECKERBOARD[1]].T.reshape(-1, 2)*SIZE
 prev_img_shape = None
   
 # Extracting path of individual image stored
 # in a given directory. Since no path is
 # specified, it will take current directory
 # jpg files alone
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 found = 0
 
-while(found < 50):  # Here, 10 can be changed to whatever number you like to choose
+while(found < 20):  # Here, 20 can be changed to whatever number you like to choose
     ret, image = cap.read() # Capture frame-by-frame
     grayColor = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   

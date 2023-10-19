@@ -13,5 +13,4 @@ dependencies:
       - pyserial==3.5
       - pygame==2.5.0
       - websockets==11.0.3
-      - djitellopy==2.5.0
       - opencv-contrib-python==4.8.0.76

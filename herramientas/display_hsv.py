@@ -42,7 +42,7 @@ def main ():
 
     proc_frame = np.zeros((480, 640, 3), dtype=np.uint8)
     
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     # Keep updating the window until the 'Esc' key is pressed
     while True:
