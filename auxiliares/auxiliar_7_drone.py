@@ -12,7 +12,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../herr
 from movedrone import MoveDrone
 from aruco import ArucoHunting
 
-
 path = 'multimedia/tello_real_cut.mp4'
 """
 Parte detección de ArUco

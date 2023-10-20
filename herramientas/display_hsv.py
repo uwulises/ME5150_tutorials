@@ -22,8 +22,6 @@ cv2.createTrackbar('H2', 'Sliders Window', 0, 179, on_slider_change)
 cv2.createTrackbar('S2', 'Sliders Window', 0, 255, on_slider_change)
 cv2.createTrackbar('V2', 'Sliders Window', 0, 255, on_slider_change)
 
-
-
 def process_frame(img, color_hsv1, color_hsv2):
     # Convert the image to HSV
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -32,7 +30,7 @@ def process_frame(img, color_hsv1, color_hsv2):
     return brg
 
 
-def main ():
+def main (path):
     image1 = np.zeros((240, 320, 3), dtype=np.uint8)
     image2 = np.zeros((240, 320, 3), dtype=np.uint8)
     proc_frame = np.zeros((480, 640, 3), dtype=np.uint8)
@@ -42,6 +40,7 @@ def main ():
     cap = cv2.VideoCapture(path)
 
     ret = 0
+    
     while True:
         # Si es video este se va a repetir cuando se acabe
         if path.split('.')[-1] == 'mp4' and not ret:
@@ -80,7 +79,14 @@ def main ():
             frame = cv2.resize(frame, (320, 240))
             proc_frame = process_frame(frame, color_hsv1[0][0], color_hsv2[0][0])
             hor2 = cv2.hconcat([frame, proc_frame])
-
+        else:
+            if path.split('.')[-1] == 'mp4':
+                source = 'video file'
+            else:
+                source = 'webcam'
+            print('Error reading frame from %s, exiting...'%source)
+            break
+            
         union = cv2.vconcat([hor1, hor2]) 
         
         cv2.imshow('Sliders Window', union)
@@ -95,4 +101,10 @@ def main ():
 
 # Run the main function
 if __name__ == '__main__':
-    main()
+
+    """
+    Cambiar path según video o bien, poner 0 para webcam
+    """
+
+    path = './multimedia/tarea2/s5.mp4'
+    main(path)
