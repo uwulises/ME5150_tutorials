@@ -7,179 +7,6 @@ input_images_path = "./multimedia/tarea2"
 files_names = os.listdir(input_images_path)
 #print('Archivos cargados', files_names)
 
-def find_rectangle(img):
-    ctr = []
-    
-    # Convertir imagen a espacio de color HSV
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
-    # Definir rangos de colores
-    lower = (66, 0, 86)
-    upper = (117, 255, 255)
-
-    # Generar máscara a partir de rango de colores
-    mask = cv2.inRange(hsv, lower, upper)
-
-    # Dilate
-    kernel = np.ones((5,5), np.uint8)
-    mask = cv2.erode(mask, kernel, iterations = 1)
-
-    # Dilate
-    kernel = np.ones((3,3), np.uint8)
-    mask = cv2.dilate(mask, kernel, iterations = 1)
-
-    
-
-    # Aplicar detección de bordes usando algoritmo Canny
-    lower_thr = 50
-    upper_thr = 100
-    edges = cv2.Canny(mask, lower_thr, upper_thr)
-    
-    cv2.imshow("bla", edges)
-    cv2.waitKey(1)
-    #blur_edges = cv2.GaussianBlur(edges, (3, 3), 0)
-    # Encontrar contornos en la imagen de bordes
-    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Para cada contorno
-    for cnt in contours:
-        # Calcular el area del contorno
-        area = cv2.contourArea(cnt)        
-        if area > 5000:  # Ignore small contours
-            perimeter = cv2.arcLength(cnt, closed = True)
-            approx = cv2.approxPolyDP(cnt, epsilon = 0.01 * perimeter, closed = True)
-            if len(approx) == 4:
-                ctr.append(approx)
-    return ctr
-
-def find_circle (img):
-    ctr = []
-    
-    # Convertir imagen a espacio de color HSV
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
-    # Definir rangos de colores
-    lower = (10, 0 , 75)
-    upper = (52, 35, 255)
-
-    # Generar máscara a partir de rango de colores
-    mask = cv2.inRange(hsv, lower, upper)
-
-    # Dilate
-    kernel = np.ones((7,7), np.uint8)
-    mask = cv2.dilate(mask, kernel, iterations = 1)
-
-    kernel = np.ones((3,3), np.uint8)
-    mask = cv2.erode(mask, kernel, iterations = 1)
-
-    # Aplicar detección de bordes usando algoritmo Canny
-    lower_thr = 20
-    upper_thr = 100
-    edges = cv2.Canny(mask, lower_thr, upper_thr)
-
-    cv2.imshow("bla", mask)   
-    cv2.waitKey(1)
-
-    # Encontrar contornos en la imagen de bordes
-    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    # Para cada contorno
-    for cnt in contours:
-        # Calcular el area del contorno
-        area = cv2.contourArea(cnt)        
-        if area > 500:  # Ignore small contours
-            perimeter = cv2.arcLength(cnt, closed = True)
-            approx = cv2.approxPolyDP(cnt, epsilon = 0.01 * perimeter, closed = True)
-            if len(approx) >= 17:
-                ctr.append(approx)
-    return ctr
-
-def find_pentagon (img):
-    ctr = []
-    
-    # Convertir imagen a espacio de color HSV
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
-    # Definir rangos de colores
-    lower = (0, 0, 0)
-    upper = (179, 172, 152)
-
-    # Generar máscara a partir de rango de colores
-    mask = cv2.inRange(hsv, lower, upper)
-
-    # Encontrar contornos en la imagen de bordes
-    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Para cada contorno
-    for cnt in contours:
-        # Calcular el area del contorno
-        area = cv2.contourArea(cnt)        
-        if area > 5000:  # Ignore small contours
-            perimeter = cv2.arcLength(cnt, closed = True)
-            approx = cv2.approxPolyDP(cnt, epsilon = 0.015 * perimeter, closed = True)
-            if len(approx) == 5:
-                ctr.append(approx)
-    return ctr
-
-def find_triangle(img):
-    ctr = []
-    
-
-    # Convertir a escala de grises
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # Aplicar filtro gaussiano
-    blur_img = cv2.GaussianBlur(gray_img, (3, 3), 0)
-    
-    # Aplicar detección de bordes usando algoritmo Canny
-    lower_thr = 20
-    upper_thr = 100
-    edges = cv2.Canny(img, lower_thr, upper_thr)
-
-    # Encontrar contornos en la imagen de bordes
-    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    # Para cada contorno
-    for cnt in contours:
-        # Calcular el area del contorno
-        area = cv2.contourArea(cnt)        
-        if area > 150:  # Ignore small contours
-            perimeter = cv2.arcLength(cnt, closed = True)
-            approx = np.array(cv2.approxPolyDP(cnt, epsilon = 0.09 * perimeter, closed = True))
-            if len(approx) == 3:
-                ctr.append(approx)
-    return ctr
-
-def find_shapes (img):
-    ctr = []
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    threshold = 170
-    thres_img = cv2.threshold(gray_img, threshold, 255, cv2.THRESH_BINARY)[1]
-
-    
-    # Aplicar detección de bordes usando algoritmo Canny
-    lower_thr = 20
-    upper_thr = 100
-    edges = cv2.Canny(thres_img, lower_thr, upper_thr)
-
-    # Encontrar contornos en la imagen de bordes
-    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    # Para cada contorno
-    for cnt in contours:
-        # Calcular el area del contorno
-        area = cv2.contourArea(cnt)        
-        if area > 150:  # Ignore small contours
-            perimeter = cv2.arcLength(cnt, closed = True)
-            approx = np.array(cv2.approxPolyDP(cnt, epsilon = 0.02 * perimeter, closed = True))
-            if len(approx) == 3:
-                ctr.append(approx)
-            elif len(approx) == 4:
-                ctr.append(approx)
-            approx2 = np.array(cv2.approxPolyDP(cnt, epsilon = 0.005 * perimeter, closed = True))
-            if len(approx2) >= 10:
-                ctr.append(cnt)
-
-    return  ctr
-
 def process_s1(img):
     """
     Detectar triangulos, cuadrados, rectangulos y circulos.
@@ -187,11 +14,6 @@ def process_s1(img):
                 para encontrar los circulos generar un approxPolyDP más estricto.
     """
     ctr = []
-    #ctr.append(find_triangle(img))
-    #ctr.append(find_rectangle(img))
-    #ctr.append(find_circle(img))
-    ctr.append(find_shapes(img))
-    
     return ctr
 
 def process_s2(img):
@@ -202,8 +24,6 @@ def process_s2(img):
 
     """
     ctr = []
-    ctr.append(find_pentagon(img))
-    ctr.append(find_rectangle(img))
     return ctr
 
 def process_s3(img):
@@ -212,7 +32,6 @@ def process_s3(img):
     Sugerencia: filtrar por color, erosionar y dilatar.
     """
     ctr = []
-    ctr.append(find_rectangle(img))
     return ctr
 
 def process_s4(img):
@@ -220,35 +39,32 @@ def process_s4(img):
     Detectar cuadrado
     Sugerencia: usar threshold sobre la imagen.
     """
-    #find black square in the image, binarising the image
-    #convert to binary
     ctr = []
-    #cv2.imshow("mask", res)
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #erode image
-    gray_img = cv2.erode(gray_img, (21,21)) 
-    #use gaussian blur
-    gray_img = cv2.GaussianBlur(gray_img, (9,9), 0)
-    ret, thresh = cv2.threshold(gray_img, 100, 255, cv2.THRESH_BINARY_INV)
-    edges = cv2.Canny(thresh, 590,600)
-    contorno, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    ctr.append(contorno)
+    return ctr
 
+def process_all(img):
+    """
+    
+    """
+    ctr = []
     return ctr
 
 # Function to process each frame
 def process_frame(img, process):
+    # Redimencionar el frame
     img = cv2.resize(img, (640, 480))
+    
+    # Recolectar contornos del procesamiento del frame
     contours = []
     for ctr in process(img):
         contours+=ctr
 
-    # Dibujar los contornos en la imagen
+    # Dibujar los contornos en la imagen original
     if len(contours) > 0:
         for cnt in contours:
             cv2.drawContours(img, [cnt], contourIdx = 0, color = (0, 255, 0), thickness = 3)
 
-    # Display the processed frame
+    # Mostrar el frame procesado
     cv2.imshow('Processed Frame', img)
     cv2.waitKey(1)
     
@@ -260,15 +76,20 @@ def main():
     """
     PASO 0: Cambiar nombre del video o imagen a procesar
     """
-    name_file = 's7.mp4'
+    name_file = 'all.jpg'
 
+    # Generar el path completo del video o imagen
     path = input_images_path + '/' + name_file
+
+    # Generar nombre de la función a ejecutar
+    name_process = 'process_' + name_file.split('.')[0]
+    process = eval(name_process)
 
     # Si es un video
     if path.split('.')[-1] == 'mp4':
         new_video = []
 
-        # Open the webcam
+        # Abrir el video
         cap = cv2.VideoCapture(path)
 
         if not cap.isOpened():
@@ -281,10 +102,6 @@ def main():
             # Revisar si el frame es válido
             if not ret:
                 break
-
-            # Generar nombre de la función a ejecutar
-            name_process = 'process_' + name_file.split('.')[0]
-            process = eval(name_process)
 
             # Procesar frame
             new_frame = process_frame(frame, process)
@@ -311,8 +128,15 @@ def main():
 
     # Si es una imagen
     elif path.split('.')[-1] == 'jpg':
+        # Abrir la imagen
         cap = cv2.imread(path)
-        new_video = process_frame(cap)
+
+        # Procesar la imagen
+        new_img = process_frame(cap, process)
+
+        # Guardar la imagen
+        name_img = '.' + path.split('.')[-2] + '_proc.jpg'
+        cv2.imwrite(name_img, new_img)
     
     cv2.destroyAllWindows()
 
