@@ -35,9 +35,12 @@ def main (path):
     image2 = np.zeros((240, 320, 3), dtype=np.uint8)
     proc_frame = np.zeros((480, 640, 3), dtype=np.uint8)
     
+    # Cambiar path según video o bien, 0 para webcam
+    path = './multimedia/tarea2/s2.mp4'
     cap = cv2.VideoCapture(path)
-    ret = 0
 
+    ret = 0
+    
     while True:
         # Si es video este se va a repetir cuando se acabe
         if path.split('.')[-1] == 'mp4' and not ret:

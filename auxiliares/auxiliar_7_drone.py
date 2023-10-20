@@ -6,48 +6,21 @@ import pybullet_data
 import time
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../herramientas')))
 from movedrone import MoveDrone
 from aruco import ArucoHunting
 
-
-path = 'multimedia'
-# Open the webcam
-cap = cv2.VideoCapture(path)
-
-hunter = ArucoHunting()
-if not cap.isOpened():
-    print("Error opening video file")
-
-while True:
-    # Leer frame del video
-    ret, frame = cap.read()
-
-    # Revisar si el frame es válido
-    if not ret:
-        break
+path = 'multimedia/tello_real_cut.mp4'
+"""
+Parte detección de ArUco
+"""
 
 
-    # Procesar frame
-    new_frame = process_frame(frame)
-    hunter.update_image(frame)
-    hunter.update_pose_and_corners()
-    list_poses.append(hunter.pose)
-
-    # Cuando ya no queden frames
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-
-### funcion para obtener imagen de camara simulada
-def get_img_cam(width=240, height=240, fov=60, near=0.02, far=4, camposition=[1, 0, 1.5], camorientation = [0, -90, 0], distance=0.1):
-    aspect = width / height
-    yaw, pitch, roll = camorientation
-    view_matrix = p.computeViewMatrixFromYawPitchRoll(camposition, distance, yaw, pitch, roll, upAxisIndex = 2)
-    projection_matrix = p.computeProjectionMatrixFOV(fov, aspect, near, far)
-    _, _, rgbaImg, depthImg, segImg = p.getCameraImage(width, height, view_matrix, projection_matrix, renderer=p.ER_BULLET_HARDWARE_OPENGL,flags = p.ER_SEGMENTATION_MASK_OBJECT_AND_LINKINDEX)
-    rgbaImg = cv2.cvtColor(rgbaImg, cv2.COLOR_BGR2RGB)
-    return rgbaImg, segImg, depthImg
+"""
+Parte de simulación
+"""
 
 # Initialize PyBullet
 physicsClient = p.connect(p.GUI)
@@ -65,14 +38,30 @@ planeId = p.loadURDF("plane.urdf")
 #Dron con 4 helices
 #drone = p.loadURDF("modelos/drones/djitello/djitello.urdf", basePosition=[0, 0, 1], useFixedBase=True)	    
 drone = p.loadURDF("modelos/drones/matrice100/matrice100.urdf", basePosition=[0, 0, 1], useFixedBase=True)
-dron_pose = p.getBasePositionAndOrientation(drone)[0]+p.getEulerFromQuaternion(p.getBasePositionAndOrientation(drone)[1])
+dron_pose = p.getBasePositionAndOrientation(drone)[0] + p.getEulerFromQuaternion(p.getBasePositionAndOrientation(drone)[1])
 movdrone = MoveDrone(dron_pose, vel=1)
 
-# TODO: Cargar AruCo markers y ubicar en punto fijo
 
-# TODO: Procesar video pregrabado y obtener la pose relativa del dron con respecto al marker
+def get_img_cam(width=240, height=240, fov=60, near=0.02, far=4, camposition=[1, 0, 1.5], camorientation = [0, -90, 0], distance=0.1):
+    """
+    Función para obtener imagen de la cámara simulada
+    """
+    aspect = width / height
+    yaw, pitch, roll = camorientation
+    view_matrix = p.computeViewMatrixFromYawPitchRoll(camposition, distance, yaw, pitch, roll, upAxisIndex = 2)
+    projection_matrix = p.computeProjectionMatrixFOV(fov, aspect, near, far)
+    _, _, rgbaImg, depthImg, segImg = p.getCameraImage(width, height, view_matrix, projection_matrix, renderer=p.ER_BULLET_HARDWARE_OPENGL,flags = p.ER_SEGMENTATION_MASK_OBJECT_AND_LINKINDEX)
+    rgbaImg = cv2.cvtColor(rgbaImg, cv2.COLOR_BGR2RGB)
+    return rgbaImg, segImg, depthImg
+
+
+# TODO: Cargar AruCo markers a la simulación y ubicar en punto fijo
 
 # TODO: Completar lista de poses con esas poses relativas
+""""
+[x, y, z, roll, pitch, yaw] en [m, m, m, rad, rad, rad]
+"""
+
 list_poses= [[0, 0, 1, 0, 0, 0], [0, 0, 1, 0, 0, np.pi/2], [0, 0, 1.5, 0, 0, np.pi], [0, 0, 1, 0, 0, 3*np.pi/2]]
 
 #ciclo basico de la simulacion
