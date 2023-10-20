@@ -14,21 +14,29 @@ def find_rectangle(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Definir rangos de colores
-    lower = (36, 69, 91)
-    upper = (100, 255, 255)
+    lower = (66, 0, 86)
+    upper = (117, 255, 255)
 
     # Generar máscara a partir de rango de colores
     mask = cv2.inRange(hsv, lower, upper)
-    
+
     # Dilate
-    kernel = np.ones((5,5),np.uint8)
+    kernel = np.ones((5,5), np.uint8)
+    mask = cv2.erode(mask, kernel, iterations = 1)
+
+    # Dilate
+    kernel = np.ones((3,3), np.uint8)
     mask = cv2.dilate(mask, kernel, iterations = 1)
 
+    
+
     # Aplicar detección de bordes usando algoritmo Canny
-    lower_thr = 20
+    lower_thr = 50
     upper_thr = 100
     edges = cv2.Canny(mask, lower_thr, upper_thr)
-
+    
+    cv2.imshow("bla", edges)
+    cv2.waitKey(1)
     #blur_edges = cv2.GaussianBlur(edges, (3, 3), 0)
     # Encontrar contornos en la imagen de bordes
     contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -47,16 +55,30 @@ def find_rectangle(img):
 def find_circle (img):
     ctr = []
     
-    # Convertir a escala de grises
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # Convertir imagen a espacio de color HSV
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # Aplicar filtro gaussiano
-    blur_img = cv2.GaussianBlur(gray_img, (3, 3), 0)
-    
+    # Definir rangos de colores
+    lower = (10, 0 , 75)
+    upper = (52, 35, 255)
+
+    # Generar máscara a partir de rango de colores
+    mask = cv2.inRange(hsv, lower, upper)
+
+    # Dilate
+    kernel = np.ones((7,7), np.uint8)
+    mask = cv2.dilate(mask, kernel, iterations = 1)
+
+    kernel = np.ones((3,3), np.uint8)
+    mask = cv2.erode(mask, kernel, iterations = 1)
+
     # Aplicar detección de bordes usando algoritmo Canny
     lower_thr = 20
     upper_thr = 100
-    edges = cv2.Canny(img, lower_thr, upper_thr)
+    edges = cv2.Canny(mask, lower_thr, upper_thr)
+
+    cv2.imshow("bla", mask)   
+    cv2.waitKey(1)
 
     # Encontrar contornos en la imagen de bordes
     contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -64,7 +86,7 @@ def find_circle (img):
     for cnt in contours:
         # Calcular el area del contorno
         area = cv2.contourArea(cnt)        
-        if area > 150:  # Ignore small contours
+        if area > 500:  # Ignore small contours
             perimeter = cv2.arcLength(cnt, closed = True)
             approx = cv2.approxPolyDP(cnt, epsilon = 0.01 * perimeter, closed = True)
             if len(approx) >= 17:
@@ -74,7 +96,7 @@ def find_circle (img):
 def find_pentagon (img):
     ctr = []
     
-   # Convertir imagen a espacio de color HSV
+    # Convertir imagen a espacio de color HSV
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Definir rangos de colores
@@ -157,6 +179,7 @@ def find_shapes (img):
                 ctr.append(cnt)
 
     return  ctr
+
 def process_s1(img):
     """
     Detectar triangulos, cuadrados, rectangulos y circulos.
@@ -183,16 +206,16 @@ def process_s2(img):
     ctr.append(find_rectangle(img))
     return ctr
 
-def process_s4(img):
+def process_s3(img):
     """
     Detectar cuadrado gris
+    Sugerencia: filtrar por color, erosionar y dilatar.
     """
     ctr = []
     ctr.append(find_rectangle(img))
     return ctr
 
-
-def process_s6(img):
+def process_s4(img):
     """
     Detectar cuadrado
     Sugerencia: usar threshold sobre la imagen.
@@ -213,18 +236,11 @@ def process_s6(img):
 
     return ctr
 
-def process_s7(img):
-    """
-    Detectar circulo interno de la cinta
-    """
-    ctr = []
-    return ctr
-
 # Function to process each frame
 def process_frame(img, process):
     img = cv2.resize(img, (640, 480))
     contours = []
-    for ctr in process(img): # Cambiar según que video se está analizando
+    for ctr in process(img):
         contours+=ctr
 
     # Dibujar los contornos en la imagen
@@ -244,7 +260,7 @@ def main():
     """
     PASO 0: Cambiar nombre del video o imagen a procesar
     """
-    name_file = 's2.mp4'
+    name_file = 's7.mp4'
 
     path = input_images_path + '/' + name_file
 
