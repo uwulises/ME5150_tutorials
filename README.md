@@ -5,7 +5,8 @@
 - Actualizar anaconda si ya tienes una versión antigua: `conda update --all`
 - Navegar hasta la carpeta ME5150_tutorials usando el comando `cd`
 - Crear ambiente virtual de anaconda con archivo .yml: `conda env create -f environment.yml`
-- Desde Visual Studio Code habilitar interprete de python `3.8.16 ('robotica': conda)`
+- Desde Visual Studio Code instalar extensión de Python
+- Selección interprete de python `3.8.16 ('robotica': conda)` en la barra inferior derecha.
 - Correr los ejemplos & disfrutar
 
 ## Actualizar contenido del repositorio:
