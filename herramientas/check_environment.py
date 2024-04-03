@@ -6,7 +6,6 @@ import pyserial
 import cv2
 import pygame
 import websockets
-import djitellopy
 import pybullet
 import pybullet_data
 
