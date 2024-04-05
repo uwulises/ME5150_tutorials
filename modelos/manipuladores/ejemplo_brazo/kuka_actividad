@@ -27,6 +27,29 @@ jointInfo3 = p.getJointInfo(robotId, 3)
 jointInfo4 = p.getJointInfo(robotId, 4)
 jointInfo5 = p.getJointInfo(robotId, 5)
 
+# # Define the joint indices for each link of the robot
+# num_joints = p.getNumJoints(robotId)
+# link_indices = [joint_index for joint_index in range(num_joints)]
+
+# # Create sliders for each joint
+# sliders = [p.addUserDebugParameter(f"Link {i+1}", -np.pi, np.pi, 0) for i in range(num_joints)]
+
+# def move_robot():
+#     while True:
+#         # Get the slider values
+#         angles = [p.readUserDebugParameter(slider) for slider in sliders]
+
+#         # Set the joint angles of the robot
+#         for i, angle in enumerate(angles):
+#             p.setJointMotorControl2(robotId, link_indices[i], p.POSITION_CONTROL, targetPosition=angle)
+
+#         # Step the simulation
+#         p.stepSimulation()
+#         time.sleep(1/240)  # Control the simulation speed
+
+# # Call the move_robot function
+# move_robot()
+
 # A1 -> A6
 path_KR6_2 = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
 
