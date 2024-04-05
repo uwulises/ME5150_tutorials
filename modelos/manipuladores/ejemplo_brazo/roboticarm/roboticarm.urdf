@@ -78,7 +78,7 @@
                 <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/gripper_mesh_scaled.stl" />
             </geometry>
             <material name="blue">
-                <color rgba="0 248 248 1" />
+                <color rgba="0 248 248 0.7" />
             </material>
         </visual>
         <collision>
