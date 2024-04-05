@@ -20,7 +20,7 @@ planeId = p.loadURDF("plane.urdf")
 
 #KUKA
 base_kuka = p.loadURDF("../modelos/manipuladores/kuka/steel_base.urdf", basePosition = [0, 1, 0.0125], useFixedBase = True)
-kuka_arm = p.loadURDF("../modelos/manipuladores/kuka/kr6_2.urdf", basePosition = [0, 1, 0.035], useFixedBase = True)
+kuka_arm = p.loadURDF("../modelos/manipuladores/twolinks/urdftest.urdf", basePosition = [0, 1, 0.035], useFixedBase = True)
 
 #SCARA
 mesa_scara = p.loadURDF("../modelos/manipuladores/scara/base_scara.urdf",

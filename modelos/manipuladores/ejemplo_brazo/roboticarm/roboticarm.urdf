@@ -1,24 +1,23 @@
 <?xml version="1.0" ?>
-<robot name="robotic_arm">
-
+<robot name="roboticarm">
     <!-- Define the base link -->
     <link name="base_link">
         <inertial>
-            <mass value="3815"/>
+            <mass value="4"/>
             <origin xyz="0 0 0.309" rpy="0 0 0"/>
             <inertia ixx="36.11" ixy="0.0" ixz="0.0" iyy="36.11" iyz="0.0" izz="47.69"/>
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="roboticarm/meshes/baseMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/base_mesh_scaled.stl" /> 
             </geometry>
             <material name="pink">
-                <color rgba="246 36 89 1" />
+                <color rgba="255 0 132 1" />
             </material>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="roboticarm/meshes/baseMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/base_mesh_scaled.stl" />
             </geometry>
         </collision>
     </link>
@@ -26,21 +25,21 @@
     <!-- Define the first arm link -->
     <link name="arm_link1">
         <inertial>
-            <mass value="1297"/>
+            <mass value="1"/>
             <origin xyz="0.47 0 0.695" rpy="0 0 0"/>
             <inertia ixx="43.93" ixy="-0.000047" ixz="-30.7" iyy="67.71" iyz="-0.000068" izz="25.76"/>
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="roboticarm/meshes/primerbrazoMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/primerbrazo_mesh_scaled.stl" />
             </geometry>
-            <material name="green">
-                <color rgba="1 152 117 1" />
+            <material name="red">
+                <color rgba="248 0 0 1" />
             </material>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="roboticarm/meshes/primerbrazoMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/primerbrazo_mesh_scaled.stl" />
             </geometry>
         </collision>
     </link>
@@ -48,21 +47,21 @@
     <!-- Define the second arm link -->
     <link name="arm_link2">
         <inertial>
-            <mass value="8747"/>
-            <origin xyz="0.94 0.125 0" rpy="0 0 0"/>
+            <mass value="9"/>
+            <origin xyz="0.94 0.125 0" rpy="1.5708 0 0"/>
             <inertia ixx="0.9649" ixy="0.0" ixz="0.0" iyy="24.17" iyz="0.0" izz="24.19"/>
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="roboticarm/meshes/segundobrazoMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/segundobrazo_mesh_scaled.stl" />
             </geometry>
             <material name="yellow">
-                <color rgba="216 250 8 1" />
+                <color rgba="248 248 0 1" />
             </material>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="roboticarm/meshes/segundobrazoMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/segundobrazo_mesh_scaled.stl" />
             </geometry>
         </collision>
     </link>
@@ -70,21 +69,21 @@
     <!-- Define the gripper link -->
     <link name="gripper_link">
         <inertial>
-            <mass value="38.479"/>
-            <origin xyz="0.013 0.125 0.125" rpy="0 0 0"/>
+            <mass value="0.04"/>
+            <origin xyz="0.013 0.125 0.125" rpy="0 1.5708 0"/>
             <inertia ixx="0.0519" ixy="0.0" ixz="0.0" iyy="0.03277" iyz="0.0" izz="0.04381"/>
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="roboticarm/meshes/gripperMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/gripper_mesh_scaled.stl" />
             </geometry>
             <material name="blue">
-                <color rgba="129 207 224 1" />
+                <color rgba="0 248 248 1" />
             </material>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="roboticarm/meshes/gripperMESH.stl" />
+                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/gripper_mesh_scaled.stl" />
             </geometry>
         </collision>
     </link>
@@ -99,18 +98,19 @@
     </joint>
 
     <joint name="arm1_to_arm2" type="revolute">
-        <origin xyz="1.294 -0.125 1.84" rpy="0 0 0" />
+        <origin xyz="1.294 0 1.84" rpy="1.5708 0 0" />
         <parent link="arm_link1" />
         <child link="arm_link2" />
-        <axis xyz="0 1 0" />
-        <limit lower="-3.1416" upper="3.1416"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708"/>
     </joint>
 
     <joint name="arm2_to_gripper" type="revolute">
-        <origin xyz="1.85 0 -0.125" rpy="0 0 0" />
+        <origin xyz="1.85 0 0" rpy="0 1.5708 0" />
         <parent link="arm_link2" />
         <child link="gripper_link" />
-        <axis xyz="1 0 0" />
+        <axis xyz="0 0 1" />
         <limit lower="-3.1416" upper="3.1416"/>
     </joint>
+
 </robot>
