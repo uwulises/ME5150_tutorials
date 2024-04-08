@@ -14,7 +14,7 @@ p.setRealTimeSimulation(1) # Set the simulation to be real time
 planeId = p.loadURDF("plane.urdf") # Load the plane into the simulation
 
 # Load the roboticArmURDF into the simulation
-robotic_arm = p.loadURDF("modelos/manipuladores/ejemplo_brazo/roboticarm/roboticarm.urdf", basePosition=[0,0,0], useFixedBase=True)
+robotic_arm = p.loadURDF("modelos/manipuladores/twolinks/twolinks.urdf", basePosition=[0,0,0], useFixedBase=True)
 
 # Define the joint indices for each link of the robot
 num_joints = p.getNumJoints(robotic_arm)

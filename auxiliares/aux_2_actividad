@@ -7,6 +7,7 @@ import numpy as np
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 useFixedBase = True #Para que el brazo no flote o se desplace
+
 # Load KR6 robot arm and table
 planeId = p.loadURDF("plane.urdf")
 robotId = p.loadURDF("modelos/manipuladores/kuka/kr6_2.urdf", basePosition=[0, 0, 0],useFixedBase=useFixedBase)
@@ -27,7 +28,7 @@ jointInfo3 = p.getJointInfo(robotId, 3)
 jointInfo4 = p.getJointInfo(robotId, 4)
 jointInfo5 = p.getJointInfo(robotId, 5)
 
-# # Define the joint indices for each link of the robot
+# Define the joint indices for each link of the robot
 # num_joints = p.getNumJoints(robotId)
 # link_indices = [joint_index for joint_index in range(num_joints)]
 
@@ -51,7 +52,7 @@ jointInfo5 = p.getJointInfo(robotId, 5)
 # move_robot()
 
 # A1 -> A6
-path_KR6_2 = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+path_KR6_2 = [[1.65,1.16,0.33,1.52,0,0], [1.65,0.36,0.33,1.52,0,0], [0.13,0.36,0.33,1.52,0,0], [0.13,0.6,0.33,3.14,-0.43,1.32], [0.13,0.36,0.33,1.52,0,0], [1.65,0.36,0.33,1.52,0,0], [1.65,1.16,0.33,1.52,0,0] ]
 
 # Ciclos por instrucción
 rate = 2000

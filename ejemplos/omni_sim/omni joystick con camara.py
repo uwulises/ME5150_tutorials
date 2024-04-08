@@ -15,7 +15,7 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Para encontrar los arc
 floor = p.loadURDF("plane.urdf")
 
 # Crear el robot (base móvil)
-omnibase = p.loadURDF("Pybullet/ME5150_tutorials/modelos/base_movil/omnibase.urdf", [0, 0, 0.05]) 
+omnibase = p.loadURDF("modelos/base_movil/omnibase.urdf", [0, 0, 0.05]) 
 # Establecer gravedad y paso de tiempo
 p.setGravity(0, 0, -9.81)
 p.setTimeStep(1 / 240)

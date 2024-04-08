@@ -13,10 +13,10 @@ p.setRealTimeSimulation(1)
 # Load SCARA robot arm and table
 planeId = p.loadURDF("plane.urdf")
 
-omnibaseId = p.loadURDF("/modelos/base_movil/omnibase.urdf",
+omnibaseId = p.loadURDF("modelos/base_movil/omnibase.urdf",
                      basePosition=[0, 0, 0.1],useFixedBase=False)
 
-cubeId = p.loadURDF("/modelos/objetos/cubo.urdf",basePosition=[0.5,0,0.1],useFixedBase=False)
+cubeId = p.loadURDF("modelos/objetos/cubo.urdf",basePosition=[0.5,0,0.1],useFixedBase=False)
 
 # Add sliders to control the position of the cube
 x_slider = p.addUserDebugParameter("x", 0, 3,0.6)

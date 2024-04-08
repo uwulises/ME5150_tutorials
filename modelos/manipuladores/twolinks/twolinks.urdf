@@ -9,7 +9,7 @@
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/base_mesh_scaled.stl" /> 
+                <mesh filename="modelos/manipuladores/twolinks/meshes/base.stl" /> 
             </geometry>
             <material name="pink">
                 <color rgba="255 0 132 1" />
@@ -17,7 +17,7 @@
         </visual>
         <collision>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/base_mesh_scaled.stl" />
+                <mesh filename="modelos/manipuladores/twolinks/meshes/base.stl" />
             </geometry>
         </collision>
     </link>
@@ -31,7 +31,7 @@
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/primerbrazo_mesh_scaled.stl" />
+                <mesh filename="modelos/manipuladores/twolinks/meshes/primerbrazo.stl" />
             </geometry>
             <material name="red">
                 <color rgba="248 0 0 1" />
@@ -39,7 +39,7 @@
         </visual>
         <collision>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/primerbrazo_mesh_scaled.stl" />
+                <mesh filename="modelos/manipuladores/twolinks/meshes/primerbrazo.stl" />
             </geometry>
         </collision>
     </link>
@@ -53,7 +53,7 @@
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/segundobrazo_mesh_scaled.stl" />
+                <mesh filename="modelos/manipuladores/twolinks/meshes/segundobrazo.stl" />
             </geometry>
             <material name="yellow">
                 <color rgba="248 248 0 1" />
@@ -61,7 +61,7 @@
         </visual>
         <collision>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/segundobrazo_mesh_scaled.stl" />
+                <mesh filename="modelos/manipuladores/twolinks/meshes/segundobrazo.stl" />
             </geometry>
         </collision>
     </link>
@@ -75,7 +75,7 @@
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/gripper_mesh_scaled.stl" />
+                <mesh filename="modelos/manipuladores/twolinks/meshes/gripper.stl" />
             </geometry>
             <material name="blue">
                 <color rgba="0 248 248 0.7" />
@@ -83,7 +83,7 @@
         </visual>
         <collision>
             <geometry>
-                <mesh filename="modelos/manipuladores/ejemplo_brazo/roboticarm/meshes/gripper_mesh_scaled.stl" />
+                <mesh filename="modelos/manipuladores/twolinks/meshes/gripper.stl" />
             </geometry>
         </collision>
     </link>
@@ -94,7 +94,7 @@
         <parent link="base_link" />
         <child link="arm_link1" />
         <axis xyz="0 0 1" />
-        <limit lower="-3.1416" upper="3.1416"/> 
+        <limit lower="0" upper="3.1416"/> 
     </joint>
 
     <joint name="arm1_to_arm2" type="revolute">
