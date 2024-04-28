@@ -23,9 +23,9 @@
         <mesh filename="package://tweezer/meshes/collision/tweezer_baselink.stl"/>
       </geometry>
     </collision>
-     <contact>
+    <contact>
     	<friction_anchor/>
-    	   <lateral_friction value="1.0"/>
+    	<lateral_friction value="1.0"/>
     </contact>
 
   </link>
@@ -38,9 +38,9 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
     </inertial>
-  <contact>
+    <contact>
     	<friction_anchor/>
-    	   <lateral_friction value="1.0"/>
+    	<lateral_friction value="1.0"/>
     </contact>
     <visual>
       <origin rpy="0 0 0" xyz="0.04 0 0"/>
@@ -85,9 +85,9 @@
         <mesh filename="package://tweezer/meshes/collision/tweezer_patita.stl"/>
       </geometry>
     </collision>
-     <contact>
+    <contact>
     	<friction_anchor/>
-    	   <lateral_friction value="1.0"/>
+    	<lateral_friction value="1.0"/>
     </contact>
   </link>
 
