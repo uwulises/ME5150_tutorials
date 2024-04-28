@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- This URDF was crafted by the one and only Feliping. RFIDudes 2 the future -->
 
-<robot name="skaren">
+<robot name="scarapris">
     <link name="base_link">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -10,7 +10,7 @@
         </inertial>
         <visual>
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/base.stl" />
+                <mesh filename="package://scarapris/meshes/visual/base.stl" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -19,7 +19,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/collision/base.stl" />
+                <mesh filename="package://scarapris/meshes/collision/base.stl" />
             </geometry>
         </collision>
     </link>
@@ -34,7 +34,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/link_1.stl" />
+                <mesh filename="package://scarapris/meshes/visual/link_1.stl" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -43,7 +43,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/link_1.stl" />
+                <mesh filename="package://scarapris/meshes/visual/link_1.stl" />
             </geometry>
         </collision>
     </link>
@@ -57,7 +57,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/link_2.stl" />
+                <mesh filename="package://scarapris/meshes/visual/link_2.stl" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -66,7 +66,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/link_2.stl" />
+                <mesh filename="package://scarapris/meshes/visual/link_2.stl" />
             </geometry>
         </collision>
     </link>
@@ -80,7 +80,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/link_3.stl" />
+                <mesh filename="package://scarapris/meshes/visual/link_3.stl" />
             </geometry>
             <material name="red">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -89,7 +89,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/link_3.stl" />
+                <mesh filename="package://scarapris/meshes/visual/link_3.stl" />
             </geometry>
         </collision>
     </link>
@@ -103,7 +103,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/pris_z.stl" />
+                <mesh filename="package://scarapris/meshes/visual/pris_z.stl" />
             </geometry>
             <material name="red">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -112,7 +112,30 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://skaren/meshes/visual/pris_z.stl" />
+                <mesh filename="package://scarapris/meshes/visual/pris_z.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="brush">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="5" />
+            <inertia ixx="0.019084" ixy="-1.4804E-10" ixz="-2.2963E-09" iyy="0.020036" iyz="-0.00043182" izz="0.0013447" />
+        </inertial>
+
+        <visual>
+            <origin xyz="0 0 -0.06" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://scarapris/meshes/visual/brush.stl" />
+            </geometry>
+            <material name="red">
+                <color rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -0.06" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://scarapris/meshes/visual/brush.stl" />
             </geometry>
         </collision>
     </link>
@@ -146,7 +169,13 @@
         <parent link="off_x" />
         <child link="pris_z" />
         <axis xyz="0 0 1" />
-        <limit lower="-0.1" upper="0" />
+        <limit lower="-0.07" upper="0" />
+    </joint>
+
+    <joint name="brush" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="pris_z" />
+        <child link="brush" />
     </joint>
 
 </robot>

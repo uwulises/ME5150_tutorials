@@ -13,7 +13,7 @@ p.setRealTimeSimulation(1) # Set the simulation to be real time
 planeId = p.loadURDF("plane.urdf") # Load the plane into the simulation
 
 # Load the roboticArmURDF into the simulation
-robotic_arm = p.loadURDF("modelos/manipuladores/skaren/skaren.urdf", basePosition = [0, 0, 0], useFixedBase = True)
+robotic_arm = p.loadURDF("modelos/manipuladores/scarapris/scarapris.urdf", basePosition = [0, 0, 0], useFixedBase = True)
 
 # Define the joint indices for each link of the robot
 num_joints = p.getNumJoints(robotic_arm)
@@ -24,7 +24,7 @@ sliders = []
 sliders.append(p.addUserDebugParameter("Link 1", -np.pi/2, np.pi/2, 0))
 sliders.append(p.addUserDebugParameter("Link 2", -np.pi, np.pi, 0))
 sliders.append(p.addUserDebugParameter("Link 3", 0, 0.1, 0))
-sliders.append(p.addUserDebugParameter("Link 4", -0.1, 0, 0))
+sliders.append(p.addUserDebugParameter("Link 4", -0.08, 0, 0))
 
 def move_robot():
     while True:
@@ -35,7 +35,7 @@ def move_robot():
         # Step the simulation
         p.stepSimulation()
         time.sleep(1/240)
-        print(p.getLinkState(robotic_arm, 3)[0])
+        print(p.getLinkState(robotic_arm, 4)[0])
 
 # Call the move_robot function
 move_robot()
