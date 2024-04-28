@@ -124,7 +124,7 @@
         </inertial>
 
         <visual>
-            <origin xyz="0 0 -0.06" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/brush.stl" />
             </geometry>
@@ -133,7 +133,7 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0 0 -0.06" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/brush.stl" />
             </geometry>
@@ -165,15 +165,15 @@
     </joint>
 
     <joint name="pris_z" type="prismatic">
-        <origin xyz="0 0.04 -0.05" rpy="0 0 0" />
+        <origin xyz="0 0.039 -0.05" rpy="0 0 0" />
         <parent link="off_x" />
         <child link="pris_z" />
         <axis xyz="0 0 1" />
-        <limit lower="-0.07" upper="0" />
+        <limit lower="-0.06" upper="0" />
     </joint>
 
     <joint name="brush" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 -0.07" rpy="0 0 0" />
         <parent link="pris_z" />
         <child link="brush" />
     </joint>
