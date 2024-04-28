@@ -25,6 +25,11 @@ n_tcf = 2
 L1=330
 L2=336
 
+"""
+Se crea la función que calcula la matriz jacobiana de una funcion
+f: función que se desea calcular la matriz jacobiana (vector)
+x: punto en el que se desea calcular la matriz jacobiana (vector)
+"""
 def jacobian(f, x, epsilon=1e-1): #epsilon es el error admisible
     n = len(x)
     jacobian_matrix = np.zeros((n, n))
@@ -38,29 +43,36 @@ def jacobian(f, x, epsilon=1e-1): #epsilon es el error admisible
         
     return jacobian_matrix
 
-def NewtonRaphson(f, theta0, target_pos, tol=1e-3, max_iter=100):
-    theta = theta0
-    for _ in range(max_iter):
-        try:
-            jacobiano_val=jacobian(f, theta)
-        except:
-            #usar la pseudo inversa si es singular
-            jacobiano_val=np.linalg.pinv(jacobian(f, theta))
-            
-        if np.abs(np.linalg.det(jacobiano_val))>0.001:
-            theta_new = theta - np.linalg.inv(jacobiano_val).dot(f(theta) - target_pos)
-        else:
-            theta_new = theta + np.random.rand(len(theta))
-        if np.linalg.norm(theta_new - theta) < tol:
-            return theta_new 
-        theta = theta_new
-    raise ValueError("No se pudo encontrar la solución después de %d iteraciones" % max_iter)
+
+
+# def NewtonRaphson(f, theta0, target_pos, tol=1e-3, max_iter=100):
+#     theta = theta0 #theta0 es el initial guess
+#     for _ in range(max_iter):
+#         #calcular jacobiano con la funcion anterior
+#         jacobiano_val = 
+#         #primero calcular la matriz inversa
+#         try:
+#         except np.linalg.LinAlgError:
+#             #si no es invertible, habrá un error, en ese caso se calcula la pseudoinversa
+#         #aplicar metodo newton raphson
+#         if np.abs(np.linalg.det(jacobiano_val))>tol:
+        
+#         #si el determinante es cercano a 0, se agrega ruido al vector theta, para que no diverja 
+#         else:
+#             theta_new = theta + np.random.rand(len(theta)) #se mueve theta aleatoriamente
+#         #si la norma de la diferencia entre theta_new y theta es menor que la tolerancia, se retorna theta_new
+
+#         #condicion de convergencia
+#         if np.linalg.norm(theta_new - theta) < tol:
+#             return theta_new 
+#         theta = theta_new
+#     raise ValueError("No se pudo encontrar la solución después de %d iteraciones" % max_iter)
 
 #funciones de la cinemática directa
 def F(theta):
     f1=L1*np.cos(theta[0])+L2*np.cos(theta[0]+theta[1])
     f2=L1*np.sin(theta[0])+L2*np.sin(theta[0]+theta[1])
-    f3=theta[2] #arreglar esto
+    f3=#agregar funcion en z
     return np.array([f1, f2, f3])
 
 
@@ -68,13 +80,13 @@ def F(theta):
 Obtener los parámetros (resolucion cinematica inversa)
 NewtonRapson(funcion, punto inicial, posicion deseada)
 punto incial representa los valores de los joints, como semilla,
-en este caso son 3: 2 rotaciones y uno de traslacion
+en este caso son 3: dos rotaciones y uno de traslacion
 posicion deseada es un vector de 3: x,y,z en el espacio cartesiano
 
 """
-#entregar posicion deseada
-posicion_deseada=np.array([250, 70, 150])
-q= NewtonRaphson(F, np.array([np.pi/4, np.pi/4,150]), posicion_deseada)
+#entregar posicion deseada x,y,z
+posicion_deseada=np.array([])
+#q= NewtonRaphson(F, np.array([np.pi/4, np.pi/4, 150]), posicion_deseada)
 
 #mover el robot a las posiciones calculadas usando pybullet, con c. directa
 def mover_parametros_obtenidos(q):
