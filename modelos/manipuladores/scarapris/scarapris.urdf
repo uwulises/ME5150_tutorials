@@ -47,6 +47,30 @@
             </geometry>
         </collision>
     </link>
+    <link name="rod">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="5" />
+            <inertia ixx="0.019084" ixy="-1.4804E-10" ixz="-2.2963E-09" iyy="0.020036" iyz="-0.00043182" izz="0.0013447" />
+        </inertial>
+
+        <visual>
+            <origin xyz="0 0 0.756" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://scarapris/meshes/visual/link_1_rod.stl" />
+            </geometry>
+            <material name="">
+                <color rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.756" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://scarapris/meshes/visual/link_1_rod.stl" />
+            </geometry>
+        </collision>
+    </link>
+
     <link name="antebrazo">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -176,6 +200,11 @@
         <origin xyz="0 0 -0.07" rpy="0 0 0" />
         <parent link="pris_z" />
         <child link="brush" />
+    </joint>
+    <joint name="rodamiento" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="humero" />
+        <child link="rod" />
     </joint>
 
 </robot>
