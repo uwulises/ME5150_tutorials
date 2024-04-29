@@ -14,6 +14,7 @@ planeId = p.loadURDF("plane.urdf") # Load the plane into the simulation
 
 # Load the roboticArmURDF into the simulation
 robotic_arm = p.loadURDF("modelos/manipuladores/scarapris/scarapris.urdf", basePosition = [0, 0, 0], useFixedBase = True)
+vaso = p.loadURDF("modelos/objetos/vaso.urdf", basePosition = [0.2, -0.15, 0], useFixedBase = True)
 
 # Define the joint indices for each link of the robot
 num_joints = p.getNumJoints(robotic_arm)
@@ -24,7 +25,7 @@ sliders = []
 sliders.append(p.addUserDebugParameter("Link 1", -np.pi/2, np.pi/2, 0))
 sliders.append(p.addUserDebugParameter("Link 2", -np.pi, np.pi, 0))
 sliders.append(p.addUserDebugParameter("Link 3", 0, 0.1, 0))
-sliders.append(p.addUserDebugParameter("Link 4", -0.08, 0, 0))
+sliders.append(p.addUserDebugParameter("Link 4", -0.06, 0, 0))
 
 def move_robot():
     while True:

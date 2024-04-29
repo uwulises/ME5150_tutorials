@@ -1,3 +1,7 @@
+
+"""
+NOMBRE: _____________________________________
+"""
 import pybullet as p
 import pybullet_data
 import time
@@ -11,19 +15,13 @@ p.setGravity(0,0,-9.81) # Set the gravity to be in the negative z direction
 p.setRealTimeSimulation(1) # Set the simulation to be real time
 
 planeId = p.loadURDF("plane.urdf") # Load the plane into the simulation
-
-# Load the roboticArmURDF into the simulation
 robotic_arm = p.loadURDF("../modelos/manipuladores/scarapris/scarapris.urdf", basePosition = [0, 0, 0], useFixedBase = True)
 vaso = p.loadURDF("../modelos/objetos/vaso.urdf", basePosition = [0.2, -0.15, 0], useFixedBase = True)
 
 # tool coordinate position
 n_tcf = 4
 
-# Define the joint indices for each link of the robot
-num_joints = p.getNumJoints(robotic_arm)
-link_indices = [joint_index for joint_index in range(num_joints)]
-
-# TODO: Crear una serie de puntos en el espacio que representen una trayectoria 
+# TODO: Crear una serie de puntos XYZ que representen una trayectoria 
 # para "untar" el pincel en el vaso y posteriormente "dibujar" tu inicial en el plano.
 # Mínimo 50 puntos.
 poses = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -31,14 +29,13 @@ poses = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
 def move_robot():
     while True:
         for pose in poses:       
-            target = p.calculateInverseKinematics(robotic_arm, endEffectorLinkIndex = n_tcf, targetPosition = pose)
-            print(target)
+            # Calculate the inverse kinematics of the robot
+            q = p.calculateInverseKinematics(robotic_arm, endEffectorLinkIndex = n_tcf, targetPosition = pose)
             # Set the joint angles of the robot
             p.setJointMotorControlArray(robotic_arm, range(4), p.POSITION_CONTROL, targetPositions = q)
             # Step the simulation
             p.stepSimulation()
             time.sleep(1/240)
             
-
 # Call the move_robot function
 move_robot()

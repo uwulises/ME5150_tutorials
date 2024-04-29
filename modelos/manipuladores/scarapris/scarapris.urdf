@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- This URDF was crafted by the one and only Feliping. RFIDudes 2 the future -->
-
 <robot name="scarapris">
+
+    <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+    </material>
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+    <material name="applegreen" >
+        <color rgba="0.4627450980392157 0.803921568627451 0.14901960784313725 1.0" />
+    </material>
+    <material name="babypink" >
+        <color rgba="1.0 0.7176470588235294 0.807843137254902 1.0" />
+    </material>
+
     <link name="base_link">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -12,9 +27,7 @@
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/base.stl" />
             </geometry>
-            <material name="">
-                <color rgba="0.75294 0.75294 0.75294 1" />
-            </material>
+            <material name="black"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -36,9 +49,7 @@
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/link_1.stl" />
             </geometry>
-            <material name="">
-                <color rgba="0.75294 0.75294 0.75294 1" />
-            </material>
+            <material name="applegreen"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -47,7 +58,7 @@
             </geometry>
         </collision>
     </link>
-    <link name="rod">
+    <!-- <link name="rod">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <mass value="5" />
@@ -59,9 +70,7 @@
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/link_1_rod.stl" />
             </geometry>
-            <material name="">
-                <color rgba="0.75294 0.75294 0.75294 1" />
-            </material>
+            <material name="blue"/>
         </visual>
         <collision>
             <origin xyz="0 0 0.756" rpy="0 0 0" />
@@ -69,7 +78,7 @@
                 <mesh filename="package://scarapris/meshes/visual/link_1_rod.stl" />
             </geometry>
         </collision>
-    </link>
+    </link> -->
 
     <link name="antebrazo">
         <inertial>
@@ -83,9 +92,7 @@
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/link_2.stl" />
             </geometry>
-            <material name="">
-                <color rgba="0.75294 0.75294 0.75294 1" />
-            </material>
+            <material name="babypink"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -106,9 +113,7 @@
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/link_3.stl" />
             </geometry>
-            <material name="red">
-                <color rgba="0.75294 0.75294 0.75294 1" />
-            </material>
+            <material name="applegreen"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -129,9 +134,7 @@
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/pris_z.stl" />
             </geometry>
-            <material name="red">
-                <color rgba="0.75294 0.75294 0.75294 1" />
-            </material>
+            <material name="white"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -152,9 +155,7 @@
             <geometry>
                 <mesh filename="package://scarapris/meshes/visual/brush.stl" />
             </geometry>
-            <material name="red">
-                <color rgba="0.75294 0.75294 0.75294 1" />
-            </material>
+            <material name="babypink"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -201,11 +202,11 @@
         <parent link="pris_z" />
         <child link="brush" />
     </joint>
-    <joint name="rodamiento" type="fixed">
+    <!-- <joint name="rodamiento" type="fixed">
         <origin xyz="0 0 0" rpy="0 0 0" />
         <parent link="humero" />
         <child link="rod" />
-    </joint>
+    </joint> -->
 
 </robot>
 
