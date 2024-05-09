@@ -15,7 +15,7 @@ def on_slider_change(value):
 cv2.namedWindow('Sliders Window')
 
 # Create three sliders
-cv2.createTrackbar('H1', 'Sliders Window', 0, 180, on_slider_change)
+cv2.createTrackbar('H1', 'Sliders Window', 0, 179, on_slider_change)
 cv2.createTrackbar('S1', 'Sliders Window', 0, 255, on_slider_change)
 cv2.createTrackbar('V1', 'Sliders Window', 0, 255, on_slider_change)
 cv2.createTrackbar('H2', 'Sliders Window', 0, 179, on_slider_change)
@@ -25,26 +25,25 @@ cv2.createTrackbar('V2', 'Sliders Window', 0, 255, on_slider_change)
 def process_frame(img, color_hsv1, color_hsv2):
     # Convert the image to HSV
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    # Create a mask using the color range
     mask_blue = cv2.inRange(hsv, color_hsv1, color_hsv2)
+
+    # Convert the mask to a BGR image
     brg = cv2.cvtColor(mask_blue, cv2.COLOR_GRAY2BGR)
     return brg
-
 
 def main (path):
     image1 = np.zeros((240, 320, 3), dtype=np.uint8)
     image2 = np.zeros((240, 320, 3), dtype=np.uint8)
     proc_frame = np.zeros((480, 640, 3), dtype=np.uint8)
     
-    # Cambiar path según video o bien, 0 para webcam
-    path = './multimedia/tarea2/s2.mp4'
     cap = cv2.VideoCapture(path)
 
     ret = 0
     
     while True:
-        # Si es video este se va a repetir cuando se acabe
-        if path.split('.')[-1] == 'mp4' and not ret:
-            cap = cv2.VideoCapture(path)
+        
 
         # Get the current slider values
         h1 = cv2.getTrackbarPos('H1', 'Sliders Window')
@@ -69,8 +68,8 @@ def main (path):
 
         # Display the image in the window
         hor1 = cv2.hconcat([image1, image2]) 
-        
-        # Read a frame from the webcam
+
+        # Read a frame from the webcam or video
         ret, frame = cap.read()
 
         # Check if frame reading was successful
@@ -80,13 +79,14 @@ def main (path):
             proc_frame = process_frame(frame, color_hsv1[0][0], color_hsv2[0][0])
             hor2 = cv2.hconcat([frame, proc_frame])
         else:
-            if path.split('.')[-1] == 'mp4':
-                source = 'video file'
+            if isinstance(path, int):
+                # If webcam, break
+                break
             else:
-                source = 'webcam'
-            print('Error reading frame from %s, exiting...'%source)
-            break
-            
+                # If video, restart
+                cap = cv2.VideoCapture(path)
+                continue
+
         union = cv2.vconcat([hor1, hor2]) 
         
         cv2.imshow('Sliders Window', union)
@@ -103,8 +103,10 @@ def main (path):
 if __name__ == '__main__':
 
     """
-    Cambiar path según video o bien, poner 0 para webcam
+    Cambiar path según video o bien, poner 0 para webcam (como entero)
     """
 
-    path = './multimedia/tarea2/s5.mp4'
+    path = './multimedia/shapes.jpg'
+    # path = './multimedia/pitufos.mp4'
+    path = 0
     main(path)
