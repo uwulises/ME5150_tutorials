@@ -22,6 +22,15 @@ cv2.createTrackbar('H2', 'Sliders Window', 0, 179, on_slider_change)
 cv2.createTrackbar('S2', 'Sliders Window', 0, 255, on_slider_change)
 cv2.createTrackbar('V2', 'Sliders Window', 0, 255, on_slider_change)
 
+
+""" FUNCIÓN DE PROCESAMIENTO DE IMÁGENES
+Parametros:
+    img: imagen a procesar
+    color_hsv1: color en HSV
+    color_hsv2: color en HSV
+Retorno:
+    brg: imagen en BGR
+"""
 def process_frame(img, color_hsv1, color_hsv2):
     # Convert the image to HSV
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -33,18 +42,17 @@ def process_frame(img, color_hsv1, color_hsv2):
     brg = cv2.cvtColor(mask_blue, cv2.COLOR_GRAY2BGR)
     return brg
 
+
+
 def main (path):
     image1 = np.zeros((240, 320, 3), dtype=np.uint8)
     image2 = np.zeros((240, 320, 3), dtype=np.uint8)
     proc_frame = np.zeros((480, 640, 3), dtype=np.uint8)
     
     cap = cv2.VideoCapture(path)
-
     ret = 0
     
     while True:
-        
-
         # Get the current slider values
         h1 = cv2.getTrackbarPos('H1', 'Sliders Window')
         s1 = cv2.getTrackbarPos('S1', 'Sliders Window')
@@ -78,6 +86,7 @@ def main (path):
             frame = cv2.resize(frame, (320, 240))
             proc_frame = process_frame(frame, color_hsv1[0][0], color_hsv2[0][0])
             hor2 = cv2.hconcat([frame, proc_frame])
+            union = cv2.vconcat([hor1, hor2]) 
         else:
             if isinstance(path, int):
                 # If webcam, break
@@ -86,14 +95,11 @@ def main (path):
                 # If video, restart
                 cap = cv2.VideoCapture(path)
                 continue
-
-        union = cv2.vconcat([hor1, hor2]) 
         
         cv2.imshow('Sliders Window', union)
         # Wait for the 'Esc' key to be pressed
         if cv2.waitKey(1) == 27:
             break
-        
 
     # Close the window and release resources
     cv2.destroyAllWindows()
@@ -106,7 +112,7 @@ if __name__ == '__main__':
     Cambiar path según video o bien, poner 0 para webcam (como entero)
     """
 
-    path = './multimedia/shapes.jpg'
+    # path = './multimedia/destacador.jpg'
     # path = './multimedia/pitufos.mp4'
     path = 0
     main(path)
