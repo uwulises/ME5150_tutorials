@@ -3,10 +3,10 @@ import cv2
 import numpy as np
 import os
 import glob
-  
+import time
 # Define the dimensions of checkerboard
-CHECKERBOARD = (6, 4)
-SIZE = 20 # mm
+CHECKERBOARD = (7, 4)
+SIZE = 33 # mm
 
 # stop the iteration when specified
 # accuracy, epsilon, is reached or
@@ -32,7 +32,7 @@ prev_img_shape = None
 cap = cv2.VideoCapture(0)
 found = 0
 
-while(found < 20):  # Here, 20 can be changed to whatever number you like to choose
+while(found < 30):  # Here, 20 can be changed to whatever number you like to choose
     ret, image = cap.read() # Capture frame-by-frame
     grayColor = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   
@@ -65,6 +65,7 @@ while(found < 20):  # Here, 20 can be changed to whatever number you like to cho
         found += 1
     cv2.imshow('img', image)
     cv2.waitKey(10)
+    time.sleep(0.1)
   
 cv2.destroyAllWindows()
   
@@ -85,9 +86,3 @@ print(np.array(matrix, dtype=np.int32))
   
 print("\n Distortion coefficient:")
 print(np.array(distortion, dtype=np.float16))
-  
-#print("\n Rotation Vectors:")
-#print(r_vecs)
-  
-#print("\n Translation Vectors:")
-#print(t_vecs)
