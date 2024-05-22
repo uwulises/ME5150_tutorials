@@ -32,7 +32,7 @@ prev_img_shape = None
 cap = cv2.VideoCapture(0)
 found = 0
 
-while(found < 30):  # Here, 20 can be changed to whatever number you like to choose
+while(found < 30):  # Here, 30 can be changed to whatever number you like to choose
     ret, image = cap.read() # Capture frame-by-frame
     grayColor = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   
@@ -68,9 +68,6 @@ while(found < 30):  # Here, 20 can be changed to whatever number you like to cho
     time.sleep(0.1)
   
 cv2.destroyAllWindows()
-  
-h, w = image.shape[:2]
-  
   
 # Perform camera calibration by
 # passing the value of above found out 3D points (threedpoints)
