@@ -53,8 +53,8 @@ while True:
     # Obtener imagen de camara
     if time0 + 0.1 < time.time():
         # Pose de la camara
-        camposition = movdrone.pose[:3]+[0,0,-0.2] # usar -0.1 para DJI Tello
-        camorientation = [movdrone.get_pose()[5] * 180/np.pi, -90, 0]
+        camposition = movdrone.pose[:3] + [0, 0, -0.15] # usar z = -0.1 para DJI Tello
+        camorientation = [movdrone.get_pose()[5] * 180/np.pi - 90, -30, 0]
 
         # Actualizar imagen de camara
         img_RGB, img_segmentada, img_depth = get_img_cam(camposition = camposition, camorientation = camorientation)

@@ -28,8 +28,8 @@ class MoveDrone:
         self.target_pose = pose
 
     def move_by_key(self, keys):
-        d = 0.001 # variación de posición
-        d_degrees = 0.001 # variación de ángulo
+        d = 0.0001 # variación de posición
+        d_degrees = 0.0001 # variación de ángulo
         if keys.get(114)==1:
             # Go up, R
             self.target_pose[2] += d
