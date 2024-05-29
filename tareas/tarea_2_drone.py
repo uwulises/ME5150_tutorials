@@ -10,12 +10,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../herr
 from movedronev2 import MoveDrone
 from aruco_huntingv2 import ArucoHunting
 
-# Initialize PyBullet
+# Inicializar PyBullet
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.configureDebugVisualizer(p.COV_ENABLE_KEYBOARD_SHORTCUTS, 0)
 p.setGravity(0, 0, -9.81)
 p.setTimeStep(1 / 240)
+
+""" Se puede activar el control por teclas o por detección de arucos """
+move_with_keys = False
+if move_with_keys:
+    p.configureDebugVisualizer(p.COV_ENABLE_KEYBOARD_SHORTCUTS, 0)
 
 # Cargar ambiente de simulacion
 planeId = p.loadURDF("plane.urdf")
@@ -30,7 +34,10 @@ dron_pose = p.getBasePositionAndOrientation(drone)[0]+p.getEulerFromQuaternion(p
 # Posicion final del drone, se sabe que está en -0.5 en x respecto al arucoId3
 final_pose = p.getBasePositionAndOrientation(cube)[0]
 
-movdrone = MoveDrone(dron_pose, vel = 3) # Clase para mover el drone
+# Útil para llevar tracking de acciones a realizar
+step = 0 
+
+movdrone = MoveDrone(dron_pose, vel = 0.1) # Clase para mover el drone
 hunter = ArucoHunting() # Clase para cazar aruco
 
 # TODO: Actualizar la matriz de la cámara usando los valores obtenidos en tu calibración
@@ -38,7 +45,7 @@ camera_matrix = np.array([[691.,0. , 289.],[0., 690., 264.], [0., 0., 1.]])
 hunter.set_marker_length(0.078) # Dado por cubo simulado
 hunter.set_camera_parameters(camera_matrix) # Matriz de la cámara
 
-# Calculo de matriz de proyeccion de camara
+# No modificar - Calculo de matriz de proyeccion de camara
 def cvK2BulletP(width, height, cam_mat, near, far):
     fx, fy, cx, cy = cam_mat[0, 0], cam_mat[1, 1], cam_mat[0, 2], cam_mat[1, 2]
     aspect = width / height
@@ -46,7 +53,7 @@ def cvK2BulletP(width, height, cam_mat, near, far):
     projection_matrix = p.computeProjectionMatrixFOV(fov, aspect, near, far)
     return projection_matrix
 
-# Obtener imagen de camara simulada
+# No modificar - Obtener imagen de camara simulada
 def get_img_cam(width=480,
                 height=480, 
                 fov=None, 
@@ -68,50 +75,74 @@ def get_img_cam(width=480,
     rgbaImg = cv2.cvtColor(rgbaImg, cv2.COLOR_BGR2RGB)
     return rgbaImg, segImg, depthImg
 
-# Procesamiento de imagen
+# Función para obtener la siguiente pose del drone
 def get_drone_next_pose(img):
-    drone_next_pose = None # Siguiente pose del drone [x, y, z, roll, pitch, yaw]
-    arucos_data = None # Información de los arucos detectados
-    # TODO: Procesar imagen para obtener las detecciones de arucos
+    global step
+    drone_next_pose = [0, 0, 0.5, 0, 0, 0] # Lista de poses [x, y, z, roll, pitch, yaw]
+    arucos_data = [] # Ejecutar aruco_huntingv2.py y llamar esa clase
 
-    # arucos_data = hunter.poses #descomentar cuando se tenga la información de los arucos
-    if arucos_data is not None:
-        # TODO: Calcular en base a las detecciones de arucos la siguiente pose del drone
-        drone_next_pose = [1, 0, 1] + [0, 0, 0] # Modificar
+    # TODO: Procesar imagen para obtener la posición de los arucos
+
+    """# Ejemplo de detección de arucos, descomentar para probar
+    arucos_data = [{'id': 1, 'position': [0.4, 0, 0.8], 'orientation': [0, 0, 0]}]"""
+
+    if arucos_data != []:
+
+        # TODO: Calcular la siguiente pose del drone, basado en la posición de los arucos
+
+        """# Ejemplo de path, descomentar para probar
+        if step == 0:
+            drone_next_pose = [1, 0, 2] + [0, 0, 0] 
+            step += 1
+        else:
+            drone_next_pose = [2, 0, 0.5] + [0, 0, 0]  """
+        print("Arucos detectados: ", arucos_data) # Comentar después de probar
     return drone_next_pose
 
-# Sección que actualiza la posición del drone 
-t0 = 0
+t = 0
 while True:
     # Actualizar imagen de camara cada 0.1 segundos
-    if t0 + 0.1 < time.time():
+    if t + 0.01 < time.time():
         # Pose de la camara
-        camposition = movdrone.pose[:3] + [0, 0, -0.15] # usar z = -0.1 para DJI Tello
-        camorientation = [movdrone.pose[5] * 180/np.pi - 90, -20, 0]
-
+        camposition = movdrone.pose[:3] + [0, 0, -0.15]
+        camorientation = movdrone.pose[3:] + [-90, -20, 0]
         # Actualizar imagen de camara
         img_RGB, img_segmentada, img_depth = get_img_cam(camposition = camposition, camorientation = camorientation, cam_mat=camera_matrix)
-        t0 = time.time()
+        t = time.time()
     
-    """ Se puede activar el control por teclas o por detección de arucos """
-    move_with_keys = False
     if move_with_keys:
-        # Mover drone con teclas, solo para pruebas
         movdrone.move_by_key(p.getKeyboardEvents())
+        movdrone.update_pose()
+        dron_position = movdrone.pose[:3]
+        dron_orientation = p.getQuaternionFromEuler(movdrone.pose[3:])
+        p.resetBasePositionAndOrientation(drone, dron_position, dron_orientation)
     else:
         # Mover drone con detección de arucos
         next_pose = get_drone_next_pose(img_RGB) # Procesar imagen para obtener siguiente pose del drone
         if next_pose is not None:
             movdrone.set_target_pose(next_pose)
 
-    movdrone.update_pose() # Actualizar pose del drone
-    dron_position = movdrone.pose[:3]
-    dron_orientation = p.getQuaternionFromEuler(movdrone.pose[3:])
-    p.resetBasePositionAndOrientation(drone, dron_position, dron_orientation)
-    p.stepSimulation()
+            while True:
+                movdrone.update_pose() # Actualizar pose del drone
+                dron_position = movdrone.pose[:3]
+                dron_orientation = p.getQuaternionFromEuler(movdrone.pose[3:])
+                p.resetBasePositionAndOrientation(drone, dron_position, dron_orientation)
 
+                if t + 0.01 < time.time():
+                    camposition = dron_position + [0, 0, -0.15]
+                    camorientation = [movdrone.pose[5] * 180/np.pi - 90, -20, 0]
+                    img_RGB, img_segmentada, img_depth = get_img_cam(camposition = camposition, camorientation = camorientation, cam_mat=camera_matrix)
+                    t = time.time()
+
+                p.stepSimulation()
+
+                # Si el drone llega a la pose pedida, terminar
+                dif = np.array(next_pose[:3]) - np.array(dron_position)
+                if np.linalg.norm(dif) < 0.10:
+                    break
+
+    p.stepSimulation()
     # Si el drone está cerca de la pose pedida, terminar
     dif = np.array(final_pose) - np.array(movdrone.pose[:3])
     if np.linalg.norm(dif) < 0.25:
         break
-

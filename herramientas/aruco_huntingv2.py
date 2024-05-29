@@ -3,13 +3,12 @@ import cv2
 
 class ArucoHunting():
     def __init__(self):
-        self.poses = None
+        self.arucos_data = []
         self.marker_length = 0.0
         self.camera_matrix = None
         self.dist_coeff = None
         self.img = None
         self.img_detection = None
-        self.aruco_ids = []
 
     def update_image(self, img):
         self.img = img
@@ -30,8 +29,9 @@ class ArucoHunting():
         assert self.marker_length != 0, "Debe definir el largo del marcador"
         assert self.camera_matrix is not None, "Debe definir los parámetros de la cámara"
         assert self.img is not None, "Debe definir la imagen"
-        poses = []
-        self.img_detection = np.copy(self.img)
+        arucos_data = []
+
+        
         # Diccionario de marcadores
         _aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
@@ -43,8 +43,10 @@ class ArucoHunting():
 
         # Detecta marcadores
         marker_corners, ids, _ = _detector.detectMarkers(self.img)
+
+        self.img_detection = np.copy(self.img)
         if marker_corners == ():
-            return None, None
+            pass
         
         # Crea distribución de puntos 3D de cualquier marcador (es igual para todos)
         _objPoints = np.array([[-self.marker_length/2, self.marker_length/2, 0], [self.marker_length/2, self.marker_length/2, 0],
@@ -62,8 +64,39 @@ class ArucoHunting():
             tvec = np.transpose(tvec)[0]
             rvec = np.transpose(rvec)[0]
             
-            aruco_pose = {'id': ids[id][0], 'position': tvec, 'orientation': rvec}
-            poses.append(aruco_pose)
+            aruco_data = {'id': ids[id][0], 'position': tvec, 'orientation': rvec}
+            arucos_data.append(aruco_data)
 
-        self.poses = poses
-        self.aruco_ids = ids
+        self.arucos_data = arucos_data
+
+def main():
+    cap = cv2.VideoCapture(0)
+    hunter = ArucoHunting()
+    camera_matrix = np.array([[691., 0. , 289.],[0., 690., 264.], [0., 0., 1.]]) 
+    hunter.set_marker_length(0.06)
+    hunter.set_camera_parameters(camera_matrix)
+
+    while True:
+        ret, frame = cap.read()
+
+        if not ret:
+            print("Error al abrir la cámara")
+            return
+
+        hunter.update_image(frame)
+        hunter.update_pose_and_ids()
+
+        if hunter.arucos_data != []:
+            print(hunter.arucos_data)
+
+        cv2.imshow('frame', hunter.img_detection)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+
+if __name__ == "__main__":
+    main()
+
+    
+    
