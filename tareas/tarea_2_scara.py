@@ -29,7 +29,7 @@ robotId = p.loadURDF("../modelos/manipuladores/scara/scara.urdf", basePosition=[
 
 # Crea sliders para controlar la posición de los arucos
 x_slider = p.addUserDebugParameter("x", 0, 0.25, 0)
-off_slider = p.addUserDebugParameter("offset", 0.15, 0.4, 0.15)
+off_slider = p.addUserDebugParameter("offset", 0.15, 0.25, 0.15)
 
 # Coordenadas del endeffector del robot
 n_tcf = 2
@@ -74,7 +74,7 @@ def get_img_cam(width=480,
 
 # No modificar - Mover scara a su posición de home
 def scara_go_home():
-    home = [0, 0, -0.17]
+    home = [-0.3, 0, -0.17]
     t = time.time()
     while t + 0.5 > time.time():
         go_q(home)
@@ -126,6 +126,7 @@ t2 = 0
 path = []
 
 while True:
+    # Actualizar la posición de los arucos según los sliders
     if t1 + 0.05 < time.time():
         t = [0.3, 0.1, 0.74]
         x = p.readUserDebugParameter(x_slider)

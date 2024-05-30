@@ -95,7 +95,7 @@ def get_drone_next_pose(img):
             drone_next_pose = [1, 0, 2] + [0, 0, 0] 
             step += 1
         else:
-            drone_next_pose = [2, 0, 0.5] + [0, 0, 0]  """
+            drone_next_pose = [2, 0, 0.5] + [0, 0, 0]"""
         print("Arucos detectados: ", arucos_data) # Comentar después de probar
     return drone_next_pose
 
@@ -130,7 +130,7 @@ while True:
 
                 if t + 0.01 < time.time():
                     camposition = dron_position + [0, 0, -0.15]
-                    camorientation = [movdrone.pose[5] * 180/np.pi - 90, -20, 0]
+                    camorientation = movdrone.pose[3:] + [-90, -20, 0]
                     img_RGB, img_segmentada, img_depth = get_img_cam(camposition = camposition, camorientation = camorientation, cam_mat=camera_matrix)
                     t = time.time()
 
@@ -142,6 +142,10 @@ while True:
                     break
 
     p.stepSimulation()
+
+    # pose_drone = p.getBasePositionAndOrientation(drone)[0]
+    # print(pose_drone)
+
     # Si el drone está cerca de la pose pedida, terminar
     dif = np.array(final_pose) - np.array(movdrone.pose[:3])
     if np.linalg.norm(dif) < 0.25:
