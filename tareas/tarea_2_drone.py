@@ -82,7 +82,8 @@ def get_img_cam(width=480,
 # Función para obtener la siguiente pose del drone
 def get_drone_next_pose(img):
     global step
-    drone_next_pose = [0, 0, 0.5, 0, 0, 0] # Lista de poses [x, y, z, roll, pitch, yaw]
+    global hunter
+    drone_next_pose = [0, 0, 1, 0, 0, 0] # Lista de poses [x, y, z, roll, pitch, yaw]
     arucos_data = [] # Ejecutar aruco_huntingv2.py y llamar esa clase
 
     # TODO: Procesar imagen para obtener la posición de los arucos

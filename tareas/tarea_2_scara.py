@@ -97,6 +97,7 @@ def go_q(q):
 
 # Función para obtener el siguiente path del scara
 def get_scara_path(img):
+    global hunter
     path = [] # Lista de posiciones [x, y, z]
     arucos_data = [] # Ejecutar aruco_huntingv2.py y llamar esa clase
 
@@ -108,7 +109,7 @@ def get_scara_path(img):
     if arucos_data != []:
         # TODO: Calcular en base a las detecciones de arucos la siguiente pose del drone
         path = []
-        """# Ejemplo de path, descomentar para probar
+        # Ejemplo de path, descomentar para probar
         p1 = [0.4, 0, 0.8]
         p2 = [0.4, 0.2, 0.8]
         p3 = [0.5, 0.2, 0.8]
@@ -120,7 +121,7 @@ def get_scara_path(img):
             path.append(np.sum([p2, [0.1*i/100, 0, 0]], axis=0))
         # Crea 100 puntos entre p3 y p1
         for i in range(100):
-            path.append(np.sum([p3, [-0.1*i/100, -0.2*i/100, 0]], axis=0))"""
+            path.append(np.sum([p3, [-0.1*i/100, -0.2*i/100, 0]], axis=0))
 
     return path
 
