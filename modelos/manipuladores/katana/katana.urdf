@@ -22,7 +22,40 @@
        speed limit for all joints, according to the Katana 4D documentation -->
   <!-- the effort limits have been measured experimentally from the maximum effort the Gazebo controller 
        uses in normal conditions -->
- 
+  <link name="katana_base_controlbox">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://katana/katana/katana_internal_controlbox.stl"/>
+      </geometry>
+
+      <material name="grey">
+        <color rgba="0.8 0.8 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://katana/katana/katana_internal_controlbox.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5" />
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" 
+        iyy="0.0001" iyz="0" 
+        izz="0.0001" />
+    </inertial>
+  </link>
+
+  <joint name="katana_base_controlbox_joint" type="fixed">
+    <parent link="katana_base_controlbox"/>
+    <child link="katana_base_link" />
+    <origin xyz="0 0 0.07" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1.5" lower="-3.025528" upper="2.891097" velocity="2.208932"/>
+  </joint>
+  
   <link name="katana_base_link">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -201,7 +234,7 @@
       <!-- Joint 5 in Katana Manual -->
       <parent link="katana_motor4_lift_link" />
       <child  link="katana_motor5_wrist_roll_link" />
-      <origin rpy="$1.5708 0 -1.5708" xyz="0.1523 0 0"/>
+      <origin rpy="1.5708 0 -1.5708" xyz="0.1523 0 0"/>
       <axis xyz="0 0 1"/>
       <limit effort="0.01" lower="-2.993240" upper="2.870985"  velocity="2.208932"/>
     </joint>
@@ -264,54 +297,80 @@
           izz="0.000011290" /></inertial>
     </link>
 
-    <xacro:macro name="finger" params="prefix rotate">
-      <joint name="katana_${prefix}_finger_joint" type="revolute">
-        <parent link="katana_gripper_link" />
-        <child  link="katana_${prefix}_finger_link" />
-        <origin rpy="${rotate} 0 0" xyz="0.034 0 0"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="0.5" lower="-0.44" upper="0.30"  velocity="0.718834"/>
-      </joint>
-
-      <link name="katana_${prefix}_finger_link">
-        <visual>
-          <origin rpy="0 3.14159 0" xyz="0 0 0"/>
-          <geometry>
-            <mesh filename="package://katana/katana/katana_gripper_${prefix}_finger.stl"/>
-          </geometry>
-
-          <material name="grey" />
-        </visual>
-        <collision>
-          <origin rpy="0 3.14159 0" xyz="0 0 0"/>
-          <geometry>
-            <mesh filename="package://katana_description/meshes/katana/convex/katana_gripper_${prefix}_finger_convex.stl"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <mass value="0.0251722230462" />
-          <origin xyz="${0.034 + (-0.032216)} 0.025167 -.001603"/>
-          <inertia ixx="0.000005990" ixy="0.000008473" ixz="0.000001448" 
-            iyy="0.000019757" iyz="-0.000000996" 
-            izz="0.000023588" />        
-        </inertial>
-      </link>
-    </xacro:macro>
-
-    <xacro:finger prefix="r" rotate="0" />
-    <xacro:finger prefix="l" rotate="${M_PI}" />
-
-<joint name="katana_gripper_tool_frame_joint" type="fixed">
-      <parent link="katana_motor5_wrist_roll_link"/>
-      <child link="katana_gripper_tool_frame" />
-      <origin xyz="0 0 -0.1505" rpy="0 ${M_PI/2} 0"/>
+    <joint name="katana_r_finger_joint" type="revolute">
+      <parent link="katana_gripper_link" />
+      <child  link="katana_r_finger_link" />
+      <origin rpy="0 0 0" xyz="0.034 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="0.5" lower="-0.44" upper="0.30"  velocity="0.718834"/>
     </joint>
 
-    <link name="katana_gripper_tool_frame">
-      <!-- This is the coordinate system of the tool (this is the position
-         used in IK etc., relative to the base frame); there is no actual
-         arm part attached to this link -->
-    </link> 
+    <link name="katana_r_finger_link">
+      <visual>
+        <origin rpy="0 3.14159 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://katana/katana/katana_gripper_r_finger.stl"/>
+        </geometry>
+
+        <material name="grey" />
+      </visual>
+      <collision>
+        <origin rpy="0 3.14159 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://katana/katana/katana_gripper_r_finger.stl"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.0251722230462" />
+        <origin xyz="0.034 + (-0.032216) 0.025167 -.001603"/>
+        <inertia ixx="0.000005990" ixy="0.000008473" ixz="0.000001448" 
+          iyy="0.000019757" iyz="-0.000000996" 
+          izz="0.000023588" />        
+      </inertial>
+    </link>
+
+     <joint name="katana_l_finger_joint" type="revolute">
+      <parent link="katana_gripper_link" />
+      <child  link="katana_l_finger_link" />
+      <origin rpy="3.14159 0 0" xyz="0.034 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="0.5" lower="-0.44" upper="0.30"  velocity="0.718834"/>
+    </joint>
+
+    <link name="katana_l_finger_link">
+      <visual>
+        <origin rpy="0 3.14159 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://katana/katana/katana_gripper_l_finger.stl"/>
+        </geometry>
+        <material name="grey" />
+      </visual>
+      <collision>
+        <origin rpy="0 3.14159 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://katana/katana/katana_gripper_l_finger.stl"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.0251722230462" />
+        <origin xyz="0.034 + (-0.032216) 0.025167 -.001603"/>
+        <inertia ixx="0.000005990" ixy="0.000008473" ixz="0.000001448" 
+          iyy="0.000019757" iyz="-0.000000996" 
+          izz="0.000023588" />        
+      </inertial>
+    </link>
+
+<joint name="katana_gripper_tool_frame_joint" type="fixed">
+    <parent link="katana_motor5_wrist_roll_link"/>
+    <child link="katana_gripper_tool_frame" />
+    <origin xyz="0 0 -0.1505" rpy="0 1.5708 0"/>
+  </joint>
+
+  <link name="katana_gripper_tool_frame">
+    <!-- This is the coordinate system of the tool (this is the position
+        used in IK etc., relative to the base frame); there is no actual
+        arm part attached to this link -->
+  </link> 
 
 
 
@@ -320,7 +379,7 @@
   <joint name="katana_base_frame_joint" type="fixed">
     <parent link="katana_base_link"/>
     <child link="katana_base_frame" />
-    <origin xyz="0 0 ${base_height}" rpy="0 0 0"/>
+    <origin xyz="0 0 0.2015" rpy="0 0 0"/>
   </joint>
 
   <link name="katana_base_frame">
